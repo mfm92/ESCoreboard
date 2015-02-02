@@ -1,0 +1,1 @@
+ESCoreboard: For anyone organizing online contests or similar and who quickly needs scoreboards and/or banners. Note there's still a couple flaws within this code that will be improved upon in the nearest future.
