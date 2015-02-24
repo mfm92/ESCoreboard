@@ -7,6 +7,9 @@ resources/Entries Videos
 #Do not upload scoreboards
 scoreboards/
 
+#no banners either
+banners/
+
 #Ignore Eclipse-related and other stuff
 .*
 !.gitignore
