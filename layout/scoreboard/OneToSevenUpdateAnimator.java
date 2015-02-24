@@ -25,7 +25,7 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 	public void updateAnimate(final Scoreboard scoreboard,
 			final Participant voter, final Standings overview,
 			final ArrayList<Participant> oldStandings,
-			final ArrayList<Participant> standings) {
+			final ArrayList<Participant> standings, final boolean tradVP) {
 
 		scoreboard.root.getChildren ().remove (
 				scoreboard.root.lookup ("#media"));
@@ -130,16 +130,14 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 										for (int i = 0; i < 7; i++) {
 											scoreboard.root
 													.getChildren ()
-													.remove (
-															scoreboard.pointViews
-																	.get (i));
+													.remove (scoreboard.pointViews.get (i));
 										}
 
 										// NEXT VOTES, PLEASE...
 										Platform.runLater (new VoteAdder (
 												overview, scoreboard,
 												scoreboard.utilities,
-												++scoreboard.inCountryCounter));
+												++scoreboard.inCountryCounter, tradVP));
 										return;
 									}
 								});
@@ -151,28 +149,9 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 		}
 	}
 
-	void votesClear(Participant voter, Scoreboard scoreboard) {
-		scoreboard.currentVoter = voter;
-		for (Participant finalist : scoreboard.participants) {
-			finalist.setTmpScore (0);
-			finalist.setScoredFlag (false);
-			scoreboard.groupNationMap
-					.get (finalist)
-					.getChildren ()
-					.remove (
-							scoreboard.groupNationMap.get (finalist).lookup (
-									"#ptsProof"));
-		}
-
-		scoreboard.voteSideBarCreator.makeSideOfScoreboard (scoreboard.root,
-				voter, scoreboard);
-	}
-
 	int indicesToPoints(int index) {
-		if (index == 0)
-			return 12;
-		if (index == 9)
-			return 10;
+		if (index == 0) return 12;
+		if (index == 9) return 10;
 
 		return index;
 	}

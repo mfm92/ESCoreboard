@@ -8,10 +8,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.RectangleBuilder;
 import data.Standings;
 
-public abstract class OneToSevenScreenCreator {
+public abstract class IntermediatePreparator {
 
 	public abstract void showSplitScreen(Scoreboard scoreboard,
-			Standings standings);
+			Standings standings, boolean tradVP);
 
 	void createPointsArray(Scoreboard scoreboard) {
 		ArrayList<Rectangle> pointViews = new ArrayList<> ();

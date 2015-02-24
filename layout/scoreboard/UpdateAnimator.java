@@ -18,7 +18,7 @@ public abstract class UpdateAnimator {
 	public abstract void updateAnimate(final Scoreboard scoreboard,
 			final Participant voter, final Standings overview,
 			final ArrayList<Participant> oldStandings,
-			final ArrayList<Participant> standings);
+			final ArrayList<Participant> standings, final boolean tradVP);
 
 	void countUpScore(Scoreboard scoreboard, Participant receiver) {
 		// SET CORRECT SCORE
@@ -48,6 +48,23 @@ public abstract class UpdateAnimator {
 		scoreVBox.getChildren ().add (scoreTest);
 
 		nationGroup.getChildren ().add (3, scoreVBox);
+	}
+	
+	void votesClear(Participant voter, Scoreboard scoreboard) {
+		scoreboard.currentVoter = voter;
+		for (Participant finalist : scoreboard.participants) {
+			finalist.setTmpScore (0);
+			finalist.setScoredFlag (false);
+			scoreboard.groupNationMap
+					.get (finalist)
+					.getChildren ()
+					.remove (
+							scoreboard.groupNationMap.get (finalist).lookup (
+									"#ptsProof"));
+		}
+
+		scoreboard.voteSideBarCreator.makeSideOfScoreboard (scoreboard.root,
+				voter, scoreboard);
 	}
 
 	double getXCoordByPos(int position, Scoreboard scoreboard) {

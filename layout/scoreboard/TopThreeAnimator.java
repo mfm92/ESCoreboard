@@ -25,15 +25,19 @@ public class TopThreeAnimator extends UpdateAnimator {
 	public void updateAnimate(final Scoreboard scoreboard,
 			final Participant voter, final Standings overview,
 			final ArrayList<Participant> oldStandings,
-			final ArrayList<Participant> standings) {
+			final ArrayList<Participant> standings, final boolean tradVP) {
+		
+		if (scoreboard.inCountryCounter % 10 == 1) {
+			scoreboard.root.getChildren ().remove (scoreboard.root.lookup ("#media"));
+			votesClear (voter, scoreboard);
+			scoreboard.tileUpdater.updateBackgroundOnly (scoreboard);
+		}
 		
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
 		int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr);
 		
 		// PLACE POINT NODE
-		Rectangle pointView = scoreboard.pointViews
-				.get ((scoreboard.inCountryCounter - 1) % 10);
-		
+		Rectangle pointView = scoreboard.pointViews.get ((scoreboard.inCountryCounter - 1) % 10);
 		pointView.setHeight (0.7 * (scoreboard.height/sizeDenom));
 		Votes votes = scoreboard.utilities.voteMap.get (voter);
 		Participant receiver = votes.getReceivers ()[(scoreboard.inCountryCounter - 1) % 10];
@@ -117,10 +121,7 @@ public class TopThreeAnimator extends UpdateAnimator {
 								scoreboard.groupNationMap
 										.get (rece)
 										.getChildren ()
-										.remove (
-												scoreboard.groupNationMap.get (
-														rece)
-														.lookup ("#tmpPts"));
+										.remove (scoreboard.groupNationMap.get (rece).lookup ("#tmpPts"));
 
 								// SHOW 12 POINTER MEZZO
 								if (scoreboard.inCountryCounter % 10 == 1
@@ -134,7 +135,7 @@ public class TopThreeAnimator extends UpdateAnimator {
 
 								// NEXT VOTES, PLEASE...
 								Platform.runLater (new VoteAdder (overview,
-										scoreboard, scoreboard.utilities, save));
+										scoreboard, scoreboard.utilities, save, tradVP));
 							}
 						});
 					}

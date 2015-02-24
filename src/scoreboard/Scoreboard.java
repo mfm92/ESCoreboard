@@ -46,7 +46,7 @@ public class Scoreboard extends Application {
 	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
 	ArrayList<Participant> participants;
 
-	int columnsNr = 3;
+	int columnsNr = 2;
 	int specialBorder = 6;
 	
 	int globalXOffset = 100;
@@ -55,6 +55,8 @@ public class Scoreboard extends Application {
 	int height = 1000;
 	int columnNameWidth = 500;
 	int columnWidth = 600;
+	
+	boolean tradVP = false;
 	
 	Participant currentVoter;
 
@@ -68,7 +70,7 @@ public class Scoreboard extends Application {
 	TwelvePairShower twelvePairShower = new TwelvePairShowOne ();
 	VoteSideBarCreator voteSideBarCreator = new ConcreteVoteSideBarCreator ();
 	TileUpdater tileUpdater = new TileUpdaterMidSizedPartField ();
-	OneToSevenScreenCreator to7ScreenMaker = new ConcreteOneToSevenScreenCreator ();
+	IntermediatePreparator to7ScreenMaker = new ConcreteOneToSevenScreenCreator ();
 
 	UpdateAnimator oneToSevenAnimator = new OneToSevenUpdateAnimator ();
 	UpdateAnimator topThreeAnimator = new TopThreeAnimator ();
@@ -139,8 +141,12 @@ public class Scoreboard extends Application {
 			final Participant voter, final ArrayList<Participant> oldStandings,
 			Standings overview) {
 		
-		((inCountryCounter % 10 == 7) ? oneToSevenAnimator : topThreeAnimator)
-				.updateAnimate (this, voter, overview, oldStandings, standings);
+		if (!tradVP) {
+			((inCountryCounter % 10 == 7) ? oneToSevenAnimator : topThreeAnimator)
+			.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);	
+		} else {
+			topThreeAnimator.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);
+		}
 	}
 
 	// NEED A DEEP COPY
@@ -160,8 +166,7 @@ public class Scoreboard extends Application {
 				twelvePairShower.addTwelvePair (scoreboard, voter, receiver);
 
 				// CREATE TABLE
-				root.getChildren ().add (
-						sideTableCreator.createSideTable (participants));
+				root.getChildren ().add (sideTableCreator.createSideTable (participants));
 
 				// GET THE VIDEO
 				showVideoAndDirect (receiver, standings, scoreboard);
@@ -174,10 +179,8 @@ public class Scoreboard extends Application {
 		Entry recEntry = receiver.getEntry ();
 		Media entry = recEntry.getMedia ();
 		MediaPlayer entryPlayer = new MediaPlayer (entry);
-		entryPlayer.setStartTime (Duration.seconds (recEntry
-				.getStartDuration ()));
-		entryPlayer
-				.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
+		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
+		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
 		entryPlayer.setAutoPlay (true);
 		entryPlayer.setVolume (0.5);
 		entryPlayer.setCycleCount (1);
@@ -202,7 +205,7 @@ public class Scoreboard extends Application {
 		return new Thread (new Runnable () {
 			@Override
 			public void run() {
-				to7ScreenMaker.showSplitScreen (scoreboard, standings);
+				to7ScreenMaker.showSplitScreen (scoreboard, standings, tradVP);
 			}
 		});
 	}

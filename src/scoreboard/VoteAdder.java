@@ -17,15 +17,18 @@ public class VoteAdder implements Runnable {
 	ArrayList<Votes> allVotes;
 	volatile int inCountryCounter;
 	volatile int nrOfCountryToVote;
+	
+	boolean tradVP;
 
 	public VoteAdder(Standings standings, Scoreboard scoreboard,
-			NSCUtilities utilities, int inCountryCounter) {
+			NSCUtilities utilities, int inCountryCounter, boolean tradVP) {
 		this.standings = standings;
 		this.scoreboard = scoreboard;
 		this.utilities = utilities;
 		allVotes = utilities.allVotes;
 		this.inCountryCounter = inCountryCounter;
 		this.nrOfCountryToVote = (inCountryCounter - 1) / 10;
+		this.tradVP = tradVP;
 	}
 
 	public void addVotes() throws InterruptedException {
@@ -49,12 +52,16 @@ public class VoteAdder implements Runnable {
 
 		Participant voter = vote.getVoter ();
 
-		if (inCountryCounter % 10 == 7) {
-			for (int i = 1; i <= 7; i++) {
-				standings.addVote (vote, i, i);
-			}
-		} else
+		if (!tradVP) {
+			if (inCountryCounter % 10 == 7) {
+				for (int i = 1; i <= 7; i++) {
+					standings.addVote (vote, i, i);
+				}
+			} else
+				standings.addVote (vote, nrOfPoints, inCountryCounter % 10);	
+		} else {
 			standings.addVote (vote, nrOfPoints, inCountryCounter % 10);
+		}
 
 		ArrayList<Participant> newStanding = new ArrayList<> ();
 		newStanding = standings.getStandings ();
