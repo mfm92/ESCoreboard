@@ -44,17 +44,12 @@ public class NSCUtilities {
 	public HashMap<Participant, Votes> voteMap;
 	public HashMap<Participant, Image> diamondMap;
 	
+	public ArrayList<Participant> participants = new ArrayList<Participant>();
+	
 	BannerCreator bannerCreator = new SimpleBannerCreator (130, 810);
 	
 	private ArrayList<Image> pointsTokens;
 	public ArrayList<Votes> allVotes;
-	
-	public String[] finalists = {"SmileyLand & Folegandria", "New Acadia", "Zumkotzen",
-			"Cefiya", "Doire", "Zombira", "Zaprya", "Öösingimaed", "Reym-L-Dneurb",
-			"Biflovatia", "Ölanda", "Jéru", "Noizeland", "Luxona", "Adelland",
-			"Lacrea", "Bigicia", "Reignland", "Eterland", "Calypso", "Comino",
-			"Aspirinia", "Cydoni-Gibberia", "Yaaayland", "Vylkuzeme", "Trollheimr",
-			"Zechonia", "Waloria"};
 	
 	public NSCUtilities () throws IOException {
 		initialize();
@@ -159,6 +154,12 @@ public class NSCUtilities {
 				diamondMap.put(newNation,
 						readImage(diamondFile + "Diamond " + newNation.shortName() + ".png"));
 				nameMap.put(tokens[0], newNation);
+				
+				boolean shouldBeCreated = tokens[8].equals("P");
+				
+				if (shouldBeCreated) {
+					participants.add(newNation);
+				}
 			}
 			return nations;
 		}
@@ -173,16 +174,18 @@ public class NSCUtilities {
 			
 			while ((nation = bReader.readLine()) != null) {
 				String[] tokens = nation.split("\\$");
-				bannerCreator.createBanners
-					(getRosterNationByShortName(tokens[1]), 
-							tokens[7], tokens[6]);
+				boolean shouldBeCreated = tokens[8].equals("P");
+				
+				if (shouldBeCreated) {
+					bannerCreator.createBanners (getRosterNationByShortName(tokens[1]), tokens[7], tokens[6]);
+				}
 			}
 		}
 	}
 	
 	public void readEntries() throws NumberFormatException, IOException {
 		String mediaFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\EntriesFile.txt";
+				+ "ESCoreboard\\resources\\ParticipantsFile.txt";
 		String mediaLocation = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
 				+ "ESCoreboard\\resources\\Entries Videos\\";
 		
@@ -190,12 +193,12 @@ public class NSCUtilities {
 			String entry;
 			while ((entry = bReader.readLine()) != null) {
 				String[] tokens = entry.split("\\$");
-				Participant p = getRosterNationByShortName(tokens[0]);
+				Participant p = getRosterNationByShortName(tokens[1]);
 				Media entryVid = new Media(new File(mediaLocation + 
-						tokens[1] + " - " + tokens[2] + ".mp4").toURI().toString());
-				int start = Integer.parseInt(tokens[3]);
-				int stop = Integer.parseInt(tokens[4]);
-				p.setEntry(new Entry(tokens[1], tokens[2], entryVid, start, stop));
+						tokens[2] + " - " + tokens[3] + ".mp4").toURI().toString());
+				int start = Integer.parseInt(tokens[4]);
+				int stop = Integer.parseInt(tokens[5]);
+				p.setEntry(new Entry(tokens[2], tokens[3], entryVid, start, stop));
 			}
 		}
 	}
@@ -249,6 +252,12 @@ public class NSCUtilities {
 			if (nation.getName().equals(shortName)) return nation;
 		}
 		return null;
+	}
+	
+	public String[] getListOfNames () {
+		String[] namesArray = new String[participants.size()];		
+		for (int i = 0; i < participants.size(); i++) namesArray[i] = participants.get(i).getName().get();
+		return namesArray;
 	}
 	
 	public Votes getVoteByNation (String shortName) {

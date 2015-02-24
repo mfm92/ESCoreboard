@@ -40,8 +40,8 @@ public class TopThreeAnimator extends UpdateAnimator {
 		nationGroup.getChildren().remove(pointView);
 		nationGroup.getChildren().add(pointView);
     	    	
-        double newPosX = getXCoordByPos(overview.getPosition(oldStandings, receiver)) + 10;
-        double newPosY = getYCoordByPos(overview.getPosition(oldStandings, receiver)) + 8;
+        double newPosX = getXCoordByPos(overview.getPosition(oldStandings, receiver), oldStandings.size()) + 10;
+        double newPosY = getYCoordByPos(overview.getPosition(oldStandings, receiver), oldStandings.size()) + 8;
         double oldPosX = pointView.getX();
         double oldPosY = pointView.getY(); 	
         
@@ -54,7 +54,7 @@ public class TopThreeAnimator extends UpdateAnimator {
         			new KeyValue(pointView.xProperty(), newPosX - nationGroup.getLayoutX()),
         			new KeyValue(pointView.yProperty(), newPosY - nationGroup.getLayoutY())));
         
-        scoreboard.groupNationMap.get(scoreboard.finalists.get(13)).toFront();
+        scoreboard.groupNationMap.get(scoreboard.participants.get(13)).toFront();
         nationGroup.toFront();
 		timeline.play();
 		
@@ -65,14 +65,14 @@ public class TopThreeAnimator extends UpdateAnimator {
 				countUpScore(scoreboard, rece);
 			        
 		    	//MOVE TILES
-			   	for (Participant participant : scoreboard.finalists) {    	
+			   	for (Participant participant : scoreboard.participants) {    	
 			   		int oldPos = overview.getPosition(oldStandings, participant);
 			   		int newPos = overview.getPosition(standings, participant);
 				   		
-			   		double oldX = getXCoordByPos(oldPos);
-			   		double oldY = getYCoordByPos(oldPos);
-			       	double newX = getXCoordByPos(newPos);
-			       	double newY = getYCoordByPos(newPos);   
+			   		double oldX = getXCoordByPos(oldPos, oldStandings.size());
+			   		double oldY = getYCoordByPos(oldPos, oldStandings.size());
+			       	double newX = getXCoordByPos(newPos, oldStandings.size());
+			       	double newY = getYCoordByPos(newPos, oldStandings.size());   
 				        	
 			       	double xShift = newX - oldX;
 			       	double yShift = newY - oldY;
@@ -98,7 +98,7 @@ public class TopThreeAnimator extends UpdateAnimator {
 		    		if (tT == transTrans.get(transTrans.size()-1)) {
 		    			tT.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override public void handle(ActionEvent event) {
-								Collections.sort(scoreboard.finalists);
+								Collections.sort(scoreboard.participants);
 								scoreboard.tileUpdater.updateTiles(scoreboard);
 								
 								//GET RID OF THAT

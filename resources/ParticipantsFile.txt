@@ -1,60 +1,60 @@
-Adelland$ADE$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Anselmsmumonia$AMM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Aspirinia$ASP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Balearica Island$BII$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Biflovatia$BIF$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Bigicia$BIG$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Calypso$CAL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Carpatina$CRP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Cefiya$CEF$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Cherniya$CHE$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Comino$COM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Cydoni-Gibberia$CYG$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Dal Riata$DLR$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Denmark of Peace$DOP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Doire$DOI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Eterland$ETE$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Fervorosia$FER$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Halito$HAL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Illumia$ILL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Jéru$JER$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Lacrea$LAC$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Llama Republic$LLR$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Luxona$LUX$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Luzinia$LUZ$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Moisantia$MOI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-New Acadia$NAC$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Noizeland$NOZ$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Ölanda$OLA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Öösingimaed$OOS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Orangualia$ORA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Oussou Empire$OUS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Paper & INK$PAI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Perryfornia$PER$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Pigeon Island$PII$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Prasia$PRA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-QuiénDQ$QDQ$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Reignland$RGN$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Reym-L-Dneurb$RLD$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Roseland$ROS$Belle & Sebastian$Nobody's Empire$53$73$06$SF2
-Rumia$RUM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-SmileyLand & Folegandria$SLF$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-SR Indiria$SRI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Srivijaya & Sasentia$SRS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Tír an Abhainn$TAA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Trash Canyon$TRC$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Trollheimr$TRO$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Ugaly$UGA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Ujedinjeni Gvozd$UJG$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-United Huts of Haustor$UHH$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Vedatistan$VED$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Viola Per Sempre$VPS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Vylkuzeme$VYL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Waiting Iist of Shelley & Nici$WSN$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Waloria$WAL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Yaaayland$YYL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Yaponesia$YAP$Belle & Sebastian$Nobody's Empire$53$73$PQ$PQ
-Zaprya$ZAP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Zechonia$ZCH$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Zombira$ZOM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
-Zumkotzen$ZUM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1
+Adelland$ADE$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Anselmsmumonia$AMM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Aspirinia$ASP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Balearica Island$BII$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Biflovatia$BIF$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Bigicia$BIG$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Calypso$CAL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Carpatina$CRP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Cefiya$CEF$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Cherniya$CHE$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Comino$COM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Cydoni-Gibberia$CYG$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Dal Riata$DLR$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Denmark of Peace$DOP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Doire$DOI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Eterland$ETE$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Fervorosia$FER$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Halito$HAL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Illumia$ILL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Jéru$JER$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Lacrea$LAC$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Llama Republic$LLR$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Luxona$LUX$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Luzinia$LUZ$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Moisantia$MOI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+New Acadia$NAC$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Noizeland$NOZ$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Ölanda$OLA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Öösingimaed$OOS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Orangualia$ORA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Oussou Empire$OUS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Paper & INK$PAI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Perryfornia$PER$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Pigeon Island$PII$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Prasia$PRA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+QuiénDQ$QDQ$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Reignland$RGN$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Reym-L-Dneurb$RLD$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Roseland$ROS$Belle & Sebastian$Nobody's Empire$53$73$06$SF2$V
+Rumia$RUM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+SmileyLand & Folegandria$SLF$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+SR Indiria$SRI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Srivijaya & Sasentia$SRS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Tír an Abhainn$TAA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Trash Canyon$TRC$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Trollheimr$TRO$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Ugaly$UGA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Ujedinjeni Gvozd$UJG$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+United Huts of Haustor$UHH$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Vedatistan$VED$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Viola Per Sempre$VPS$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Vylkuzeme$VYL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Waiting Iist of Shelley & Nici$WSN$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Waloria$WAL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Yaaayland$YYL$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Yaponesia$YAP$Belle & Sebastian$Nobody's Empire$53$73$PQ$PQ$V
+Zaprya$ZAP$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Zechonia$ZCH$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Zombira$ZOM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
+Zumkotzen$ZUM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V

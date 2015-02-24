@@ -43,7 +43,9 @@ public class Scoreboard extends Application {
 	Group root;
 	Group superNations;
 	HashMap<Participant, Group> groupNationMap = new HashMap<>();
-	ArrayList<Participant> finalists;
+	ArrayList<Participant> participants;
+	
+	int specialBorder = 6;
 	
 	Participant currentVoter;
 	
@@ -85,13 +87,15 @@ public class Scoreboard extends Application {
     		.build();
     	
     	this.background = background; 	
-		String[] finalists = utilities.finalists;
+		String[] finalists = utilities.getListOfNames();
     	ArrayList<Participant> rosterNations = utilities.getListOfNations(finalists);
-    	this.finalists = new ArrayList<>(rosterNations);
+    	this.participants = new ArrayList<>(rosterNations);
     	Collections.sort(rosterNations);
     	root = new Group();
     	root.setId("RootGroup");
     	
+    	
+    	System.out.println(rosterNations.size());
     	drawScoreboard(rosterNations, standings, primaryStage);
     	
     	Platform.runLater(showOneToSeven(standings, this));	
@@ -129,7 +133,7 @@ public class Scoreboard extends Application {
     		final ArrayList<Participant> oldStandings, Standings overview) {
 		
 		((inCountryCounter%10 == 7) ? oneToSevenAnimator : topThreeAnimator).
-			updateAnimate (this, voter, overview, oldStandings, oldStandings);
+			updateAnimate (this, voter, overview, oldStandings, standings);
     }
     
     //NEED A DEEP COPY
@@ -147,7 +151,7 @@ public class Scoreboard extends Application {
     		    twelvePairShower.addTwelvePair(scoreboard, voter, receiver);
 				
 				//CREATE TABLE
-    		    root.getChildren().add(sideTableCreator.createSideTable(finalists));
+    		    root.getChildren().add(sideTableCreator.createSideTable(participants));
     		    
     			//GET THE VIDEO
     			showVideoAndDirect(receiver, standings, scoreboard);

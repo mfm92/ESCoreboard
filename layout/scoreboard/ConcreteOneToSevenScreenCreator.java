@@ -151,16 +151,7 @@ public class ConcreteOneToSevenScreenCreator extends OneToSevenScreenCreator {
 	    entryPlayer.setOnEndOfMedia(new Runnable() {
 			@Override public void run() {
 				final int save = scoreboard.inCountryCounter+=6;
-				Timeline timeline = new Timeline();
-				timeline.getKeyFrames().addAll(new KeyFrame(new Duration(4000), 
-						new KeyValue (scoreboard.root.translateXProperty(), 0)));
-				timeline.play();
-				timeline.setOnFinished(new EventHandler<ActionEvent>() {
-					@Override public void handle (ActionEvent event) {
-        				Platform.runLater
-        					(new VoteAdder(standings, scoreboard, scoreboard.utilities, save));
-					}
-				});	
+        		Platform.runLater(new VoteAdder(standings, scoreboard, scoreboard.utilities, save));
 			}
 		});
 		

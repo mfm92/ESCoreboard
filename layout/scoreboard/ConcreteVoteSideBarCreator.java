@@ -24,8 +24,11 @@ public class ConcreteVoteSideBarCreator extends VoteSideBarCreator {
 		Group sidebar = new Group();
 		sidebar.setId("sidebar");
 		
-		double topBar = scoreboard.groupNationMap.get(scoreboard.finalists.get(0)).getLayoutY();
-		double bottomBar = scoreboard.groupNationMap.get(scoreboard.finalists.get(13)).getLayoutY() + 60;;
+		int sizeDenom = ((scoreboard.participants.size() + 1) / 2) - 1;
+		
+		double topBar = scoreboard.groupNationMap.get(scoreboard.participants.get(0)).getLayoutY();
+		double bottomBar = scoreboard.groupNationMap.get(
+				scoreboard.participants.get(sizeDenom)).getLayoutY() + 60;;
 		
 		Rectangle underlay = RectangleBuilder.create()
 			.width(520)

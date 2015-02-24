@@ -15,7 +15,7 @@ public class Standings {
 	
 	public Standings (NSCUtilities utilities) throws FileNotFoundException, IOException {
 		setStandings(new ArrayList<Participant>());
-		String[] finalists = utilities.finalists;
+		String[] finalists = utilities.getListOfNames();
 		for (Participant nation : utilities.getListOfNations(finalists)) {
 			getStandings().add(nation);
 		}

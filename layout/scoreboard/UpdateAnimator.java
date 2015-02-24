@@ -34,7 +34,7 @@ public abstract class UpdateAnimator {
                		
         Text scoreTest = TextBuilder.create()
         		.text(new Integer(newNrOfPoints).toString())
-        		.font(Font.font("Coolvetica RG", FontWeight.MEDIUM, 38))
+        		.font(Font.font("Inconsolata", FontWeight.MEDIUM, 38))
         		.fill(Color.WHITE)
         		.build();
         
@@ -49,12 +49,11 @@ public abstract class UpdateAnimator {
         nationGroup.getChildren().add(3, scoreVBox);
     }
 	
-	double getXCoordByPos (int position) {
-		return 100 + 600*((position-1)/14);
+	double getXCoordByPos (int position, int parts) {
+		return 100 + 600*((position-1)/((parts+1) / 2));
 	}
 
-	double getYCoordByPos (int position) {
-		return 100 + 60*((position-1)%14);
+	double getYCoordByPos (int position, int parts) {
+		return 100 + (840/((parts+1) / 2)) * ((position-1) % ((parts+1) / 2));
 	}
-
 }

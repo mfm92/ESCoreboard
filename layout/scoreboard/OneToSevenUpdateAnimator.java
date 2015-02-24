@@ -48,8 +48,8 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 			nationGroup.getChildren().remove(pointView);
 			nationGroup.getChildren().add(pointView);
 	    	    	
-	        double newPosX = getXCoordByPos(overview.getPosition(oldStandings, receiver)) + 10;
-	        double newPosY = getYCoordByPos(overview.getPosition(oldStandings, receiver)) + 8;
+	        double newPosX = getXCoordByPos(overview.getPosition(oldStandings, receiver), standings.size()) + 10;
+	        double newPosY = getYCoordByPos(overview.getPosition(oldStandings, receiver), standings.size()) + 8;
 	        double oldPosX = pointView.getX();
 	        double oldPosY = pointView.getY(); 	
 	        
@@ -62,7 +62,7 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 	        			new KeyValue(pointView.xProperty(), newPosX - nationGroup.getLayoutX()),
 	        			new KeyValue(pointView.yProperty(), newPosY - nationGroup.getLayoutY())));
 	        
-	        scoreboard.groupNationMap.get(scoreboard.finalists.get(13)).toFront();
+	        scoreboard.groupNationMap.get(scoreboard.participants.get(13)).toFront();
 	        nationGroup.toFront();
 			timelines.add(timeline);
 		}
@@ -77,14 +77,14 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 						scoreboard.tileUpdater.updateTiles(scoreboard);
 						
 						//MOVE TILES 	
-						for (Participant participant : scoreboard.finalists) {    	
+						for (Participant participant : scoreboard.participants) {    	
 							int oldPos = overview.getPosition(oldStandings, participant);
 						   	int newPos = overview.getPosition(standings, participant);
 							   		
-						   	double oldX = getXCoordByPos(oldPos);
-						   	double oldY = getYCoordByPos(oldPos);
-						    double newX = getXCoordByPos(newPos);
-						    double newY = getYCoordByPos(newPos);   
+						   	double oldX = getXCoordByPos(oldPos, oldStandings.size());
+						   	double oldY = getYCoordByPos(oldPos, oldStandings.size());
+						    double newX = getXCoordByPos(newPos, oldStandings.size());
+						    double newY = getYCoordByPos(newPos, oldStandings.size());   
 							        	
 						    double xShift = newX - oldX;
 						    double yShift = newY - oldY;
@@ -111,7 +111,7 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 					   		if (tT == transTrans.get(transTrans.size()-1)) {
 					   			tT.setOnFinished(new EventHandler<ActionEvent>() {
 									@Override public void handle(ActionEvent arg0) {											
-										Collections.sort(scoreboard.finalists);
+										Collections.sort(scoreboard.participants);
 										scoreboard.tileUpdater.updateTiles(scoreboard);
 										for (int i = 0; i < 7; i++){
 											scoreboard.root.getChildren().remove
@@ -137,7 +137,7 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 	
 	void votesClear(Participant voter, Scoreboard scoreboard) {	
 		scoreboard.currentVoter = voter;
-	   	for (Participant finalist : scoreboard.finalists) {
+	   	for (Participant finalist : scoreboard.participants) {
 			finalist.setTmpScore(0);
 			finalist.setScoredFlag(false);
 			scoreboard.groupNationMap.get(finalist).getChildren().
@@ -145,9 +145,6 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 		}
 		
 	   	scoreboard.voteSideBarCreator.makeSideOfScoreboard(scoreboard.root, voter, scoreboard);
-		
-	   	//SLEEP THE THREAD?
-		try { Thread.sleep(2000); } catch (Exception e) {}
 	}
 	
     int indicesToPoints (int index) {
