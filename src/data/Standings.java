@@ -1,4 +1,5 @@
 package data;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,11 +10,12 @@ import nations.Votes;
 import utilities.NSCUtilities;
 
 public class Standings {
-	
+
 	private ArrayList<Participant> standings;
 	private ArrayList<Votes> votes;
-	
-	public Standings (NSCUtilities utilities) throws FileNotFoundException, IOException {
+
+	public Standings(NSCUtilities utilities) throws FileNotFoundException,
+			IOException {
 		setStandings(new ArrayList<Participant>());
 		String[] finalists = utilities.getListOfNames();
 		for (Participant nation : utilities.getListOfNations(finalists)) {
@@ -22,31 +24,34 @@ public class Standings {
 		Collections.sort(getStandings());
 		setVotes(utilities.allVotes);
 	}
-	
-	public void addVote(Votes votes, int nrOfPoints, int inCountryCounter){
+
+	public void addVote(Votes votes, int nrOfPoints, int inCountryCounter) {
 		Participant receiver = null;
-		
-		if (inCountryCounter >= 1) receiver = votes.getReceivers()[inCountryCounter-1];
-		else receiver = votes.getReceivers()[votes.getReceivers().length-1];
-		
+
+		if (inCountryCounter >= 1)
+			receiver = votes.getReceivers()[inCountryCounter - 1];
+		else
+			receiver = votes.getReceivers()[votes.getReceivers().length - 1];
+
 		receiver.addToScore(nrOfPoints);
 		Collections.sort(getStandings());
 	}
-	
-	public synchronized int getPosition 
-		(ArrayList<Participant> standings, Participant participant) {
+
+	public synchronized int getPosition(ArrayList<Participant> standings,
+			Participant participant) {
 
 		ArrayList<Participant> deepCopy = new ArrayList<>();
 		for (Participant part : standings) {
 			deepCopy.add(part.clone());
 		}
-		
+
 		int position = 1;
 		for (Participant part : deepCopy) {
-			if (part.getName().equals(participant.getName())) return position;
+			if (part.getName().equals(participant.getName()))
+				return position;
 			position++;
 		}
-		return -564508407; //#sign
+		return -564508407; // #sign
 	}
 
 	public ArrayList<Votes> getVotes() {

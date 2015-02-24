@@ -3,10 +3,10 @@ package nations;
 import utilities.NSCUtilities;
 
 public class Votes {
-	
+
 	private Participant voter;
 	private Participant[] receivers = new Participant[10];
-	
+
 	public Votes(String voter, String P1, String P2, String P3, String P4,
 			String P5, String P6, String P7, String P8, String P10, String P12,
 			NSCUtilities utilities) {
@@ -22,10 +22,10 @@ public class Votes {
 		receivers[8] = utilities.getRosterNationByShortName(P10);
 		receivers[9] = utilities.getRosterNationByShortName(P12);
 	}
-	
-	public Votes (Participant voter, Participant P1, Participant P2, Participant P3, 
-			Participant P4, Participant P5, Participant P6, Participant P7, 
-			Participant P8, Participant P10, Participant P12) {
+
+	public Votes(Participant voter, Participant P1, Participant P2,
+			Participant P3, Participant P4, Participant P5, Participant P6,
+			Participant P7, Participant P8, Participant P10, Participant P12) {
 		this.voter = voter;
 		receivers[0] = P1;
 		receivers[1] = P2;
@@ -38,11 +38,11 @@ public class Votes {
 		receivers[8] = P10;
 		receivers[9] = P12;
 	}
-	
+
 	public Participant getVoter() {
 		return voter;
 	}
-	
+
 	public Participant[] getReceivers() {
 		return receivers;
 	}
