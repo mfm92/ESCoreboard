@@ -73,29 +73,29 @@ public class NSCUtilities {
 		String resourcesFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\"
 				+ "Software Engineering\\ESCoreboard\\resources\\";
 
-		nationTileBackground = readImage(resourcesFile + "Laenderhalter.png");
+		nationTileBackground = readImage(resourcesFile + "Scoreboard Single Nation Backgrounds\\BG.png");
 		nationTileBackgroundScored = readImage(resourcesFile
-				+ "Laenderhalter Scored.png");
+				+ "Scoreboard Single Nation Backgrounds\\Scored_BG.png");
 		nationTileBackgroundPQ = readImage(resourcesFile
-				+ "Laenderhalter PQ.png");
+				+ "Scoreboard Single Nation Backgrounds\\PQ_BG.png");
 		nationTileBackgroundPQScored = readImage(resourcesFile
-				+ "Laenderhalter PQ Scored.png");
+				+ "Scoreboard Single Nation Backgrounds\\PQ_Scored_BG.png");
 		nationTileBackgroundVoter = readImage(resourcesFile
-				+ "Laenderhalter Voter.png");
+				+ "Scoreboard Single Nation Backgrounds\\Voter_BG.png");
 
-		pointsTileBackground = readImage(resourcesFile + "Punktehalter.png");
+		pointsTileBackground = readImage(resourcesFile + "Point Tokens\\BluePtsBG.png");
 		pointsTileBackgroundPQ = readImage(resourcesFile
-				+ "Punktehalter PQ.png");
+				+ "Point Tokens\\RedPtsBG.png");
 
-		backgroundWhite = readImage(resourcesFile + "scoreboard background.png");
+		backgroundWhite = readImage(resourcesFile + "Global Backgrounds\\Scoreboard BG BW.png");
 		backgroundBlue = readImage(resourcesFile
-				+ "scoreboard background 2.png");
-		backgroundRed = readImage(resourcesFile + "scoreboard background 3.png");
+				+ "Global Backgrounds\\Scoreboard BG Blue.png");
+		backgroundRed = readImage(resourcesFile + "Global Backgrounds\\Scoreboard BG Red.png");
 
-		pprais = readImage(resourcesFile + "12PPrais.png");
-		ppraisbg = readImage(resourcesFile + "ppraisbg.png");
+		pprais = readImage(resourcesFile + "Point Tokens\\12PPrais.png");
+		ppraisbg = readImage(resourcesFile + "Scoreboard Single Nation Backgrounds\\Praise_BG.png");
 
-		voterPointToken = readImage(resourcesFile + "XP.png");
+		voterPointToken = readImage(resourcesFile + "Point Tokens\\Calling.png");
 	}
 
 	private Image readImage(String fileName) throws IOException {
@@ -108,7 +108,7 @@ public class NSCUtilities {
 		ArrayList<Image> pToken = new ArrayList<>();
 
 		String baseLocation = "C:\\Users\\MM92\\Desktop\\Study Folder\\"
-				+ "Software Engineering\\ESCoreboard\\resources\\";
+				+ "Software Engineering\\ESCoreboard\\resources\\Point Tokens\\";
 
 		String P01l = baseLocation + "1P.png";
 		String P02l = baseLocation + "2P.png";
@@ -140,11 +140,11 @@ public class NSCUtilities {
 		nameMap = new HashMap<>();
 
 		String nationsFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\ParticipantsFile.txt";
+				+ "ESCoreboard\\resources\\Input Information\\ParticipantsFile.txt";
 		String flagFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\NSC flags\\";
+				+ "ESCoreboard\\resources\\Participant Flags\\";
 		String diamondFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\NSC diamonds\\";
+				+ "ESCoreboard\\resources\\Diamond Flags\\";
 
 		try (BufferedReader bReader = new BufferedReader(new FileReader(
 				new File(nationsFile)))) {
@@ -173,7 +173,7 @@ public class NSCUtilities {
 
 	public void createBanners() throws IOException {
 		String nationsFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\ParticipantsFile.txt";
+				+ "ESCoreboard\\resources\\Input Information\\ParticipantsFile.txt";
 
 		try (BufferedReader bReader = new BufferedReader(new FileReader(
 				new File(nationsFile)))) {
@@ -194,7 +194,7 @@ public class NSCUtilities {
 
 	public void readEntries() throws NumberFormatException, IOException {
 		String mediaFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\ParticipantsFile.txt";
+				+ "ESCoreboard\\resources\\Input Information\\ParticipantsFile.txt";
 		String mediaLocation = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
 				+ "ESCoreboard\\resources\\Entries Videos\\";
 
@@ -216,7 +216,7 @@ public class NSCUtilities {
 
 	private void readVotes() throws FileNotFoundException, IOException {
 		String votesFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\VotesFile.txt";
+				+ "ESCoreboard\\resources\\Input Information\\VotesFile.txt";
 		allVotes = new ArrayList<>();
 
 		try (BufferedReader bReader = new BufferedReader(new FileReader(

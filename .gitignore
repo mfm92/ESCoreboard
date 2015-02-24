@@ -13,3 +13,6 @@ banners/
 #Ignore Eclipse-related and other stuff
 .*
 !.gitignore
+
+#thumbs
+*/Thumbs.db
