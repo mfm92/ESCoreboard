@@ -1,0 +1,12 @@
+#Ignore compiled stuff
+bin/
+
+#Ignore giant-sized videos
+resources/Entries Videos
+
+#Do not upload scoreboards
+scoreboards/
+
+#Ignore Eclipse-related and other stuff
+.*
+!.gitignore
