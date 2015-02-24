@@ -214,9 +214,7 @@ public class Scoreboard extends Application {
 				new SnapshotParameters (), null);
 		BufferedImage scoreboard = SwingFXUtils.fromFXImage (scoreboardImage,
 				bufferedImage);
-		File destScoreboard = new File (
-				"C:\\Users\\MM92\\Desktop\\Study Folder\\"
-						+ "Software Engineering\\ESCoreboard\\scoreboards\\"
+		File destScoreboard = new File (System.getProperty ("user.dir") + "\\scoreboards\\"
 						+ voter.getName ().get () + ".png");
 		destScoreboard.getParentFile ().mkdirs ();
 
