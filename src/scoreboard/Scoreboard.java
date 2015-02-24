@@ -50,8 +50,12 @@ public class Scoreboard extends Application {
 	int specialBorder = 6;
 	
 	int globalXOffset = 100;
-	int globalYOffset = 100;
-
+	int globalYOffset = 10;
+	
+	int height = 1000;
+	int columnNameWidth = 500;
+	int columnWidth = 600;
+	
 	Participant currentVoter;
 
 	ArrayList<Rectangle> pointViews;
@@ -63,7 +67,7 @@ public class Scoreboard extends Application {
 	SideOverviewTableCreator sideTableCreator = new SideTableStyleOne ();
 	TwelvePairShower twelvePairShower = new TwelvePairShowOne ();
 	VoteSideBarCreator voteSideBarCreator = new ConcreteVoteSideBarCreator ();
-	TileUpdater tileUpdater;
+	TileUpdater tileUpdater = new TileUpdaterMidSizedPartField ();
 	OneToSevenScreenCreator to7ScreenMaker = new ConcreteOneToSevenScreenCreator ();
 
 	UpdateAnimator oneToSevenAnimator = new OneToSevenUpdateAnimator ();
@@ -94,10 +98,6 @@ public class Scoreboard extends Application {
 				.getListOfNations (finalists);
 		this.participants = new ArrayList<> (rosterNations);
 		Collections.sort (rosterNations);
-
-		if (rosterNations.size () > 10 && rosterNations.size () < 35) {
-			tileUpdater = new TileUpdaterMidSizedPartField ();
-		}
 
 		root = new Group ();
 		root.setId ("RootGroup");

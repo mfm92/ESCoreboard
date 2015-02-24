@@ -38,8 +38,8 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 
 			Rectangle base = RectangleBuilder
 					.create ()
-					.width (500)
-					.height (840 / sizeDenom)
+					.width (scoreboard.columnNameWidth)
+					.height (scoreboard.height / sizeDenom)
 					.layoutX (0)
 					.layoutY (0)
 					.id ("base")

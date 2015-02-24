@@ -17,9 +17,10 @@ public abstract class OneToSevenScreenCreator {
 		ArrayList<Rectangle> pointViews = new ArrayList<> ();
 		int pointCounter = 0;
 		for (Image image : scoreboard.utilities.getPointsTokens ()) {
-			Rectangle pointView = RectangleBuilder.create ().width (0.15*500)
-					.height (0.7 * (((840) / ((scoreboard.participants.size () + 1) / scoreboard.columnsNr)))).fill 
-						(new ImagePattern (image))
+			Rectangle pointView = RectangleBuilder.create ().width (0.15*scoreboard.columnNameWidth)
+					.height (0.7 * (((scoreboard.height) / 
+							((scoreboard.participants.size () + 1) / scoreboard.columnsNr))))
+					.fill (new ImagePattern (image))
 					.id ("P" + indicesToPoints ((pointCounter + 1) % 10))
 					.build ();
 

@@ -41,7 +41,7 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 		for (int i = 1; i <= 7; i++) {
 			// PLACE POINT NODE
 			Rectangle pointView = scoreboard.pointViews.get ((i - 1));
-			pointView.setHeight (0.7*(840/sizeDenom));
+			pointView.setHeight (0.7*(scoreboard.height/sizeDenom));
 			Participant receiver = votes.getReceivers ()[(i - 1)];
 			receiver.setTmpScore (indicesToPoints (i - 1));
 			receiver.setScoredFlag (true);
@@ -52,9 +52,9 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 			nationGroup.getChildren ().add (pointView);
 
 			double newPosX = getXCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*840/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.height/sizeDenom;
 			double newPosY = getYCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*840/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.height/sizeDenom;
 			double oldPosX = pointView.getX ();
 			double oldPosY = pointView.getY ();
 
@@ -171,14 +171,9 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 	int indicesToPoints(int index) {
 		if (index == 0)
 			return 12;
-		if (index >= 1 && index <= 8)
-			return index;
 		if (index == 9)
 			return 10;
 
-		System.out.println ("IndicesToPoints returns sth baaaad, index was: "
-				+ index);
-
-		return 103859; // absolutely pointless huehue
+		return index;
 	}
 }

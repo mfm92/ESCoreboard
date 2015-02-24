@@ -51,11 +51,12 @@ public abstract class UpdateAnimator {
 	}
 
 	double getXCoordByPos(int position, Scoreboard scoreboard) {
-		return scoreboard.globalXOffset + 600 * ((position - 1) / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)));
+		return scoreboard.globalXOffset + scoreboard.columnWidth * 
+				((position - 1) / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)));
 	}
 
 	double getYCoordByPos(int position, Scoreboard scoreboard) {
-		return scoreboard.globalYOffset + (840 / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)))
+		return scoreboard.globalYOffset + (scoreboard.height / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)))
 				* ((position - 1) % ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)));
 	}
 }
