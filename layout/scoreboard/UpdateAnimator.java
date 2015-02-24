@@ -50,12 +50,12 @@ public abstract class UpdateAnimator {
 		nationGroup.getChildren ().add (3, scoreVBox);
 	}
 
-	double getXCoordByPos(int position, int parts) {
-		return 100 + 600 * ((position - 1) / ((parts + 1) / 2));
+	double getXCoordByPos(int position, Scoreboard scoreboard) {
+		return scoreboard.globalXOffset + 600 * ((position - 1) / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)));
 	}
 
-	double getYCoordByPos(int position, int parts) {
-		return 100 + (840 / ((parts + 1) / 2))
-				* ((position - 1) % ((parts + 1) / 2));
+	double getYCoordByPos(int position, Scoreboard scoreboard) {
+		return scoreboard.globalYOffset + (840 / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)))
+				* ((position - 1) % ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)));
 	}
 }

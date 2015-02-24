@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.RectangleBuilder;
 
 public abstract class AbstractTileUpdater extends TileUpdater {
-
+	
 	@Override
 	public void updateTiles(Scoreboard scoreboard) {
 		int nrOfPart = scoreboard.participants.size ();
@@ -33,11 +33,13 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 
 			Group group = scoreboard.groupNationMap
 					.get (scoreboard.participants.get (position));
+			
+			int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr);
 
 			Rectangle base = RectangleBuilder
 					.create ()
 					.width (500)
-					.height (840 / ((scoreboard.participants.size () + 1) / 2))
+					.height (840 / sizeDenom)
 					.layoutX (0)
 					.layoutY (0)
 					.id ("base")

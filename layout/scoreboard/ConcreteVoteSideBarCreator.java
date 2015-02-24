@@ -25,7 +25,7 @@ public class ConcreteVoteSideBarCreator extends VoteSideBarCreator {
 		Group sidebar = new Group ();
 		sidebar.setId ("sidebar");
 
-		int sizeDenom = ((scoreboard.participants.size () + 1) / 2) - 1;
+		int sizeDenom = ((scoreboard.participants.size () + 1) / scoreboard.columnsNr) - 1;
 
 		double topBar = scoreboard.groupNationMap.get (
 				scoreboard.participants.get (0)).getLayoutY ();
@@ -41,10 +41,10 @@ public class ConcreteVoteSideBarCreator extends VoteSideBarCreator {
 				.text ("voting now: ")
 				.fill (Color.WHITE)
 				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
-						.getName ().get ().length () < 14 ? 82 : 58)).x (1450)
-				.y (0).build ();
+						.getName ().get ().length () < 14 ? 82 : 58)).x (underlay.getX () + 100)
+				.y (underlay.getY ()).build ();
 
-		VBox currentVoterVBox = VBoxBuilder.create ().layoutX (1350)
+		VBox currentVoterVBox = VBoxBuilder.create ().layoutX (underlay.getX ())
 				.layoutY (topBar + 20).prefHeight (100).prefWidth (520)
 				.alignment (Pos.CENTER).build ();
 
@@ -55,11 +55,11 @@ public class ConcreteVoteSideBarCreator extends VoteSideBarCreator {
 				.text (voter.getName ().get ())
 				.fill (Color.WHITE)
 				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
-						.getName ().get ().length () < 14 ? 82 : 58)).x (1460)
-				.y (800).build ();
+						.getName ().get ().length () < 14 ? 82 : 58)).x (underlay.getX () + 110)
+				.y (underlay.getY() + 700).build ();
 
-		VBox currentVoter2VBox = VBoxBuilder.create ().layoutX (1350)
-				.layoutY (770).prefHeight (200).prefWidth (520)
+		VBox currentVoter2VBox = VBoxBuilder.create ().layoutX (underlay.getX())
+				.layoutY (underlay.getY() + 670).prefHeight (200).prefWidth (520)
 				.alignment (Pos.CENTER).build ();
 
 		currentVoter2VBox.getChildren ().add (currentVoter2);
@@ -69,12 +69,12 @@ public class ConcreteVoteSideBarCreator extends VoteSideBarCreator {
 
 		ImageView voterFlag = ImageViewBuilder.create ()
 				.image (scoreboard.utilities.diamondMap.get (voter))
-				.layoutX (1370).layoutY (260).fitWidth (500).fitHeight (550)
+				.layoutX (underlay.getX() + 20).layoutY (underlay.getY() + 160).fitWidth (500).fitHeight (550)
 				.build ();
 
 		HBox diamondVBox = new HBox ();
-		diamondVBox.setLayoutX (1350);
-		diamondVBox.setLayoutY (260);
+		diamondVBox.setLayoutX (underlay.getX());
+		diamondVBox.setLayoutY (underlay.getY() + 160);
 		diamondVBox.setPrefHeight (550);
 		diamondVBox.setPrefWidth (520);
 		diamondVBox.setAlignment (Pos.CENTER);

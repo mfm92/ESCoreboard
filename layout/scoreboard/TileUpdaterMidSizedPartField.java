@@ -20,7 +20,7 @@ public class TileUpdaterMidSizedPartField extends AbstractTileUpdater {
 	@Override
 	public void prettyFormatting(Scoreboard scoreboard, int nrOfPart) {
 
-		int sizeDenom = (nrOfPart + 1) / 2;
+		int sizeDenom = (int) Math.ceil ((double) nrOfPart / (double) scoreboard.columnsNr);
 		Group newSuperNations = new Group ();
 
 		for (int position = 0; position < nrOfPart; position++) {
@@ -84,10 +84,10 @@ public class TileUpdaterMidSizedPartField extends AbstractTileUpdater {
 					.image (scoreboard.participants.get (position).getFlag ())
 					.layoutX (0.15*base.getHeight ()).layoutY (0.15*base.getHeight ()).id ("icon").build ();
 
-			nationTile.setLayoutX (100 + 600 * (position / sizeDenom));
-			nationTile.setLayoutY (100 + (840 / sizeDenom)
+			nationTile.setLayoutX (scoreboard.globalXOffset + 600 * (position / sizeDenom));
+			nationTile.setLayoutY (scoreboard.globalYOffset + (840 / sizeDenom)
 					* (position % sizeDenom));
-			nationIcon.setFitWidth (0.15 * 500);
+			nationIcon.setFitWidth (0.15 * base.getWidth ());
 			nationIcon.setFitHeight (0.7*base.getHeight ());
 
 			nationTile.getChildren ().clear ();

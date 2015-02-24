@@ -30,7 +30,7 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 		scoreboard.root.getChildren ().remove (
 				scoreboard.root.lookup ("#media"));
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
-		int sizeDenom = (scoreboard.participants.size () + 1) / 2;
+		int sizeDenom = (scoreboard.participants.size () + 1) / scoreboard.columnsNr;
 
 		// CLEAR AFTER FULL VOTE
 		votesClear (voter, scoreboard);
@@ -52,11 +52,9 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 			nationGroup.getChildren ().add (pointView);
 
 			double newPosX = getXCoordByPos (
-					overview.getPosition (oldStandings, receiver),
-					standings.size ()) + 0.15*840/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*840/sizeDenom;
 			double newPosY = getYCoordByPos (
-					overview.getPosition (oldStandings, receiver),
-					standings.size ()) + 0.15*840/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*840/sizeDenom;
 			double oldPosX = pointView.getX ();
 			double oldPosY = pointView.getY ();
 
@@ -95,14 +93,10 @@ public class OneToSevenUpdateAnimator extends UpdateAnimator {
 							int newPos = overview.getPosition (standings,
 									participant);
 
-							double oldX = getXCoordByPos (oldPos,
-									oldStandings.size ());
-							double oldY = getYCoordByPos (oldPos,
-									oldStandings.size ());
-							double newX = getXCoordByPos (newPos,
-									oldStandings.size ());
-							double newY = getYCoordByPos (newPos,
-									oldStandings.size ());
+							double oldX = getXCoordByPos (oldPos, scoreboard);
+							double oldY = getYCoordByPos (oldPos, scoreboard);
+							double newX = getXCoordByPos (newPos, scoreboard);
+							double newY = getYCoordByPos (newPos, scoreboard);
 
 							double xShift = newX - oldX;
 							double yShift = newY - oldY;

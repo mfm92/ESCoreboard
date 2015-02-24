@@ -51,6 +51,8 @@ public class NSCUtilities {
 
 	private ArrayList<Image> pointsTokens;
 	public ArrayList<Votes> allVotes;
+	
+	String resourcesFile = System.getProperty ("user.dir") + "\\";
 
 	public NSCUtilities() throws IOException {
 		initialize ();
@@ -70,8 +72,7 @@ public class NSCUtilities {
 	}
 
 	public void readUtilImages() throws IOException {
-		String resourcesFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\"
-				+ "Software Engineering\\ESCoreboard\\resources\\";
+		String resourcesFile = this.resourcesFile + "resources\\";
 
 		nationTileBackground = readImage (resourcesFile
 				+ "Scoreboard Single Nation Backgrounds\\BG.png");
@@ -113,8 +114,7 @@ public class NSCUtilities {
 	public void readPtsTokens() throws IOException {
 		ArrayList<Image> pToken = new ArrayList<> ();
 
-		String baseLocation = "C:\\Users\\MM92\\Desktop\\Study Folder\\"
-				+ "Software Engineering\\ESCoreboard\\resources\\Point Tokens\\";
+		String baseLocation = resourcesFile + "resources\\Point Tokens\\";
 
 		String P01l = baseLocation + "1P.png";
 		String P02l = baseLocation + "2P.png";
@@ -155,12 +155,9 @@ public class NSCUtilities {
 		ArrayList<Participant> nations = new ArrayList<> ();
 		nameMap = new HashMap<> ();
 
-		String nationsFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\Input Information\\ParticipantsFile.txt";
-		String flagFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\Participant Flags\\";
-		String diamondFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\Diamond Flags\\";
+		String nationsFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
+		String flagFile = resourcesFile + "resources\\Participant Flags\\";
+		String diamondFile = resourcesFile + "resources\\Diamond Flags\\";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (nationsFile)))) {
@@ -188,8 +185,7 @@ public class NSCUtilities {
 	}
 
 	public void createBanners() throws IOException {
-		String nationsFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\Input Information\\ParticipantsFile.txt";
+		String nationsFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (nationsFile)))) {
@@ -209,10 +205,8 @@ public class NSCUtilities {
 	}
 
 	public void readEntries() throws NumberFormatException, IOException {
-		String mediaFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\Input Information\\ParticipantsFile.txt";
-		String mediaLocation = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\Entries Videos\\";
+		String mediaFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
+		String mediaLocation = resourcesFile + "resources\\Entries Videos\\";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (mediaFile)))) {
@@ -231,8 +225,7 @@ public class NSCUtilities {
 	}
 
 	private void readVotes() throws FileNotFoundException, IOException {
-		String votesFile = "C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\"
-				+ "ESCoreboard\\resources\\Input Information\\VotesFile.txt";
+		String votesFile = resourcesFile + "resources\\Input Information\\VotesFile.txt";
 		allVotes = new ArrayList<> ();
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (

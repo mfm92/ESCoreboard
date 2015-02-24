@@ -46,7 +46,11 @@ public class Scoreboard extends Application {
 	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
 	ArrayList<Participant> participants;
 
+	int columnsNr = 3;
 	int specialBorder = 6;
+	
+	int globalXOffset = 100;
+	int globalYOffset = 100;
 
 	Participant currentVoter;
 

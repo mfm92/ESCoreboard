@@ -28,7 +28,7 @@ public class TopThreeAnimator extends UpdateAnimator {
 			final ArrayList<Participant> standings) {
 		
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
-		int sizeDenom = (scoreboard.participants.size () + 1) / 2;
+		int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr);
 		
 		// PLACE POINT NODE
 		Rectangle pointView = scoreboard.pointViews
@@ -46,11 +46,9 @@ public class TopThreeAnimator extends UpdateAnimator {
 		nationGroup.getChildren ().add (pointView);
 
 		double newPosX = getXCoordByPos (
-				overview.getPosition (oldStandings, receiver),
-				oldStandings.size ()) + 0.15*840/sizeDenom;
+				overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*840/sizeDenom;
 		double newPosY = getYCoordByPos (
-				overview.getPosition (oldStandings, receiver),
-				oldStandings.size ()) + 0.15*840/sizeDenom;
+				overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*840/sizeDenom;
 		double oldPosX = pointView.getX ();
 		double oldPosY = pointView.getY ();
 
@@ -84,10 +82,10 @@ public class TopThreeAnimator extends UpdateAnimator {
 							participant);
 					int newPos = overview.getPosition (standings, participant);
 
-					double oldX = getXCoordByPos (oldPos, oldStandings.size ());
-					double oldY = getYCoordByPos (oldPos, oldStandings.size ());
-					double newX = getXCoordByPos (newPos, oldStandings.size ());
-					double newY = getYCoordByPos (newPos, oldStandings.size ());
+					double oldX = getXCoordByPos (oldPos, scoreboard);
+					double oldY = getYCoordByPos (oldPos, scoreboard);
+					double newX = getXCoordByPos (newPos, scoreboard);
+					double newY = getYCoordByPos (newPos, scoreboard);
 
 					double xShift = newX - oldX;
 					double yShift = newY - oldY;
