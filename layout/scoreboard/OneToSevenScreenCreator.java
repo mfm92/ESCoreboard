@@ -14,22 +14,24 @@ public abstract class OneToSevenScreenCreator {
 			Standings standings);
 
 	void createPointsArray(Scoreboard scoreboard) {
-		ArrayList<Rectangle> pointViews = new ArrayList<>();
+		ArrayList<Rectangle> pointViews = new ArrayList<> ();
 		int pointCounter = 0;
-		for (Image image : scoreboard.utilities.getPointsTokens()) {
-			Rectangle pointView = RectangleBuilder.create().width(73)
-					.height(45).fill(new ImagePattern(image))
-					.id("P" + indicesToPoints((pointCounter + 1) % 10)).build();
+		for (Image image : scoreboard.utilities.getPointsTokens ()) {
+			Rectangle pointView = RectangleBuilder.create ().width (0.15*500)
+					.height (0.7 * (((840) / ((scoreboard.participants.size () + 1) / 2)))).fill 
+						(new ImagePattern (image))
+					.id ("P" + indicesToPoints ((pointCounter + 1) % 10))
+					.build ();
 
-			pointView.setX(100 + 73 * pointCounter++);
-			pointView.setY(1000);
-			pointViews.add(pointView);
+			pointView.setX (100 + 73 * pointCounter++);
+			pointView.setY (1000);
+			pointViews.add (pointView);
 		}
 
 		scoreboard.pointViews = pointViews;
 
 		for (Rectangle rect : pointViews) {
-			scoreboard.root.getChildren().add(rect);
+			scoreboard.root.getChildren ().add (rect);
 		}
 	}
 
@@ -41,7 +43,7 @@ public abstract class OneToSevenScreenCreator {
 		if (index == 9)
 			return 10;
 
-		System.out.println("IndicesToPoints returns sth baaaad, index was: "
+		System.out.println ("IndicesToPoints returns sth baaaad, index was: "
 				+ index);
 
 		return 103859; // absolutely pointless huehue

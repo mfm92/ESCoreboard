@@ -28,7 +28,7 @@ public class VoteAdder implements Runnable {
 		this.nrOfCountryToVote = (inCountryCounter - 1) / 10;
 	}
 
-	public synchronized void addVotes() throws InterruptedException {
+	public void addVotes() throws InterruptedException {
 		int nrOfPoints = 0;
 
 		if (inCountryCounter % 10 == 0)
@@ -38,37 +38,37 @@ public class VoteAdder implements Runnable {
 		else if (inCountryCounter % 10 == 9)
 			nrOfPoints = 10;
 
-		Votes vote = allVotes.get(nrOfCountryToVote);
-		ArrayList<Participant> oldStanding = new ArrayList<>(standings
-				.getStandings().size());
+		Votes vote = allVotes.get (nrOfCountryToVote);
+		ArrayList<Participant> oldStanding = new ArrayList<> (standings
+				.getStandings ().size ());
 
-		for (Participant standing : standings.getStandings()) {
-			oldStanding.add(standing.clone());
+		for (Participant standing : standings.getStandings ()) {
+			oldStanding.add (standing.clone ());
 		}
-		Collections.sort(oldStanding);
+		Collections.sort (oldStanding);
 
-		Participant voter = vote.getVoter();
+		Participant voter = vote.getVoter ();
 
 		if (inCountryCounter % 10 == 7) {
 			for (int i = 1; i <= 7; i++) {
-				standings.addVote(vote, i, i);
+				standings.addVote (vote, i, i);
 			}
 		} else
-			standings.addVote(vote, nrOfPoints, inCountryCounter % 10);
+			standings.addVote (vote, nrOfPoints, inCountryCounter % 10);
 
-		ArrayList<Participant> newStanding = new ArrayList<>();
-		newStanding = standings.getStandings();
+		ArrayList<Participant> newStanding = new ArrayList<> ();
+		newStanding = standings.getStandings ();
 
-		scoreboard.update(newStanding, voter, oldStanding, standings);
+		scoreboard.update (newStanding, voter, oldStanding, standings);
 	}
 
 	@Override
-	public synchronized void run() {
+	public void run() {
 		try {
-			addVotes();
+			addVotes ();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace ();
 		}
 	}
 }

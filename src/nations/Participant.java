@@ -23,18 +23,18 @@ public class Participant implements Comparable<Participant>, Cloneable {
 	private boolean scoredFlag;
 
 	public Participant(String name, String shortName, Image flag) {
-		this.name = new SimpleStringProperty(name);
+		this.name = new SimpleStringProperty (name);
 		this.shortName = shortName;
 		this.flag = flag;
-		this.score = new SimpleIntegerProperty(0);
+		this.score = new SimpleIntegerProperty (0);
 		receiveHistory = new short[10];
 	}
 
 	public Participant(Participant p) {
-		name = p.getName();
-		shortName = p.shortName();
-		flag = p.getFlag();
-		score = p.getScore();
+		name = p.getName ();
+		shortName = p.shortName ();
+		flag = p.getFlag ();
+		score = p.getScore ();
 	}
 
 	public SimpleStringProperty getName() {
@@ -74,9 +74,9 @@ public class Participant implements Comparable<Participant>, Cloneable {
 		for (Participant p : standings) {
 			i++;
 			if (p == this)
-				return standings.get(i - 1).getScore();
+				return standings.get (i - 1).getScore ();
 		}
-		return new SimpleIntegerProperty(-1);
+		return new SimpleIntegerProperty (-1);
 	}
 
 	public short getTotalVoters() {
@@ -104,7 +104,7 @@ public class Participant implements Comparable<Participant>, Cloneable {
 	}
 
 	public void addToScore(int nrOfPointsReceived) {
-		score = new SimpleIntegerProperty(score.get() + nrOfPointsReceived);
+		score = new SimpleIntegerProperty (score.get () + nrOfPointsReceived);
 		totalVoters++;
 
 		switch (nrOfPointsReceived) {
@@ -143,20 +143,20 @@ public class Participant implements Comparable<Participant>, Cloneable {
 
 	@Override
 	public int compareTo(Participant o) {
-		if (o.getScore().get() > score.get())
+		if (o.getScore ().get () > score.get ())
 			return 1;
-		else if (o.getScore().get() < score.get())
+		else if (o.getScore ().get () < score.get ())
 			return -1;
 
-		if (o.getTotalVoters() > totalVoters)
+		if (o.getTotalVoters () > totalVoters)
 			return 1;
-		else if (o.getTotalVoters() < totalVoters)
+		else if (o.getTotalVoters () < totalVoters)
 			return -1;
 
 		for (int i = 0; i < 10; i++) {
-			if (o.getReceiveHistory()[i] > receiveHistory[i])
+			if (o.getReceiveHistory ()[i] > receiveHistory[i])
 				return 1;
-			else if (o.getReceiveHistory()[i] < receiveHistory[i])
+			else if (o.getReceiveHistory ()[i] < receiveHistory[i])
 				return -1;
 		}
 
@@ -167,9 +167,9 @@ public class Participant implements Comparable<Participant>, Cloneable {
 	public Participant clone() {
 		Participant clone = null;
 		try {
-			clone = (Participant) super.clone();
+			clone = (Participant) super.clone ();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace ();
 		}
 		return clone;
 	}

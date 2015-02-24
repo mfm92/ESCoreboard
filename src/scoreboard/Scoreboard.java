@@ -43,7 +43,7 @@ public class Scoreboard extends Application {
 
 	Group root;
 	Group superNations;
-	HashMap<Participant, Group> groupNationMap = new HashMap<>();
+	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
 	ArrayList<Participant> participants;
 
 	int specialBorder = 6;
@@ -56,82 +56,88 @@ public class Scoreboard extends Application {
 	Rectangle background;
 	int inCountryCounter;
 
-	SideOverviewTableCreator sideTableCreator = new SideTableStyleOne();
-	TwelvePairShower twelvePairShower = new TwelvePairShowOne();
-	VoteSideBarCreator voteSideBarCreator = new ConcreteVoteSideBarCreator();
-	TileUpdater tileUpdater = new ConcreteTileUpdater();
-	OneToSevenScreenCreator to7ScreenMaker = new ConcreteOneToSevenScreenCreator();
+	SideOverviewTableCreator sideTableCreator = new SideTableStyleOne ();
+	TwelvePairShower twelvePairShower = new TwelvePairShowOne ();
+	VoteSideBarCreator voteSideBarCreator = new ConcreteVoteSideBarCreator ();
+	TileUpdater tileUpdater;
+	OneToSevenScreenCreator to7ScreenMaker = new ConcreteOneToSevenScreenCreator ();
 
-	UpdateAnimator oneToSevenAnimator = new OneToSevenUpdateAnimator();
-	UpdateAnimator topThreeAnimator = new TopThreeAnimator();
+	UpdateAnimator oneToSevenAnimator = new OneToSevenUpdateAnimator ();
+	UpdateAnimator topThreeAnimator = new TopThreeAnimator ();
 
-	public synchronized static void main(String[] args) {
-		launch(args);
+	public static void main(String[] args) {
+		launch (args);
 	}
 
 	@Override
-	public synchronized void start(Stage primaryStage) {
+	public void start(Stage primaryStage) {
 		Standings standings = null;
 		try {
-			utilities = new NSCUtilities();
-			standings = new Standings(utilities);
+			utilities = new NSCUtilities ();
+			standings = new Standings (utilities);
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.printStackTrace ();
 		}
 
 		inCountryCounter = 1;
-		Rectangle background = RectangleBuilder.create().width(1920)
-				.id("background").height(1080)
-				.fill(new ImagePattern(utilities.backgroundWhite)).build();
+		Rectangle background = RectangleBuilder.create ().width (1920)
+				.id ("background").height (1080)
+				.fill (new ImagePattern (utilities.backgroundWhite)).build ();
 
 		this.background = background;
-		String[] finalists = utilities.getListOfNames();
+		String[] finalists = utilities.getListOfNames ();
 		ArrayList<Participant> rosterNations = utilities
-				.getListOfNations(finalists);
-		this.participants = new ArrayList<>(rosterNations);
-		Collections.sort(rosterNations);
-		root = new Group();
-		root.setId("RootGroup");
+				.getListOfNations (finalists);
+		this.participants = new ArrayList<> (rosterNations);
+		Collections.sort (rosterNations);
 
-		System.out.println(rosterNations.size());
-		drawScoreboard(rosterNations, standings, primaryStage);
+		if (rosterNations.size () > 10 && rosterNations.size () < 33) {
+			tileUpdater = new TileUpdaterMidSizedPartField ();
+		}
 
-		Platform.runLater(showOneToSeven(standings, this));
+		root = new Group ();
+		root.setId ("RootGroup");
+
+		System.out.println (rosterNations.size ());
+		drawScoreboard (rosterNations, standings, primaryStage);
+
+		Platform.runLater (showOneToSeven (standings, this));
 	}
 
-	private synchronized void drawScoreboard(
+	private void drawScoreboard(
 			ArrayList<Participant> rosterNations, Standings standings,
 			Stage primaryStage) {
 
-		tileUpdater.updateTiles(this);
-		root.getChildren().add(background);
-		root.getChildren().add(superNations);
-		root.getChildren().add(
-				RectangleBuilder.create().width(1920).id("backgroundDummy")
-						.height(1080)
-						.fill(new ImagePattern(utilities.backgroundWhite))
-						.build());
+		tileUpdater.updateTiles (this);
+		root.getChildren ().add (background);
+		root.getChildren ().add (superNations);
+		root.getChildren ().add (
+				RectangleBuilder.create ().width (1920).id ("backgroundDummy")
+						.height (1080)
+						.fill (new ImagePattern (utilities.backgroundWhite))
+						.build ());
 
-		Scene scene = SceneBuilder.create().root(root).build();
+		Scene scene = SceneBuilder.create ().root (root).build ();
 
 		// MAKE IT FULL SCREEN
-		primaryStage.setX(Screen.getPrimary().getVisualBounds().getMinX());
-		primaryStage.setY(Screen.getPrimary().getVisualBounds().getMinY());
-		primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
-		primaryStage.setHeight(Screen.getPrimary().getVisualBounds()
-				.getHeight());
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("NSC 121 Results");
-		primaryStage.setFullScreen(true);
-		primaryStage.show();
+		primaryStage.setX (Screen.getPrimary ().getVisualBounds ().getMinX ());
+		primaryStage.setY (Screen.getPrimary ().getVisualBounds ().getMinY ());
+		primaryStage.setWidth (Screen.getPrimary ().getVisualBounds ()
+				.getWidth ());
+		primaryStage.setHeight (Screen.getPrimary ().getVisualBounds ()
+				.getHeight ());
+		primaryStage.setScene (scene);
+		primaryStage.setTitle ("NSC 121 Results");
+		primaryStage.setFullScreen (true);
+		primaryStage.show ();
 	}
 
 	void update(final ArrayList<Participant> standings,
 			final Participant voter, final ArrayList<Participant> oldStandings,
 			Standings overview) {
-
+		
 		((inCountryCounter % 10 == 7) ? oneToSevenAnimator : topThreeAnimator)
-				.updateAnimate(this, voter, overview, oldStandings, standings);
+				.updateAnimate (this, voter, overview, oldStandings, standings);
 	}
 
 	// NEED A DEEP COPY
@@ -139,83 +145,85 @@ public class Scoreboard extends Application {
 			final Participant voter, final Standings standings, final int save,
 			final Scoreboard scoreboard) {
 
-		return new Thread(new Runnable() {
+		return new Thread (new Runnable () {
 
 			@Override
 			public void run() {
 
 				// GENERATE SCOREBOARD
-				generateImageScoreboard(root, voter);
+				generateImageScoreboard (root, voter);
 
 				// SHOW 12 PAIR
-				twelvePairShower.addTwelvePair(scoreboard, voter, receiver);
+				twelvePairShower.addTwelvePair (scoreboard, voter, receiver);
 
 				// CREATE TABLE
-				root.getChildren().add(
-						sideTableCreator.createSideTable(participants));
+				root.getChildren ().add (
+						sideTableCreator.createSideTable (participants));
 
 				// GET THE VIDEO
-				showVideoAndDirect(receiver, standings, scoreboard);
+				showVideoAndDirect (receiver, standings, scoreboard);
 			}
 		});
 	}
 
 	private void showVideoAndDirect(Participant receiver,
 			final Standings standings, final Scoreboard scoreboard) {
-		Entry recEntry = receiver.getEntry();
-		Media entry = recEntry.getMedia();
-		MediaPlayer entryPlayer = new MediaPlayer(entry);
-		entryPlayer.setStartTime(Duration.seconds(recEntry.getStartDuration()));
-		entryPlayer.setStopTime(Duration.seconds(recEntry.getStopDuration()));
-		entryPlayer.setAutoPlay(true);
-		entryPlayer.setVolume(0.5);
-		entryPlayer.setCycleCount(1);
+		Entry recEntry = receiver.getEntry ();
+		Media entry = recEntry.getMedia ();
+		MediaPlayer entryPlayer = new MediaPlayer (entry);
+		entryPlayer.setStartTime (Duration.seconds (recEntry
+				.getStartDuration ()));
+		entryPlayer
+				.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
+		entryPlayer.setAutoPlay (true);
+		entryPlayer.setVolume (0.5);
+		entryPlayer.setCycleCount (1);
 
-		MediaView entryView = MediaViewBuilder.create()
-				.mediaPlayer(entryPlayer).x(100).y(50).id("media")
-				.fitHeight(2000).fitWidth(1200).build();
+		MediaView entryView = MediaViewBuilder.create ()
+				.mediaPlayer (entryPlayer).x (100).y (50).id ("media")
+				.fitHeight (2000).fitWidth (1200).build ();
 
-		root.getChildren().add(entryView);
-		entryPlayer.play();
-		entryPlayer.setOnEndOfMedia(new Runnable() {
+		root.getChildren ().add (entryView);
+		entryPlayer.play ();
+		entryPlayer.setOnEndOfMedia (new Runnable () {
 			@Override
 			public void run() {
-				root.getChildren().add(0, background);
-				Platform.runLater(showOneToSeven(standings, scoreboard));
+				root.getChildren ().add (0, background);
+				Platform.runLater (showOneToSeven (standings, scoreboard));
 			}
 		});
 	}
 
 	private Thread showOneToSeven(final Standings standings,
 			final Scoreboard scoreboard) {
-		return new Thread(new Runnable() {
+		return new Thread (new Runnable () {
 			@Override
 			public void run() {
-				to7ScreenMaker.showSplitScreen(scoreboard, standings);
+				to7ScreenMaker.showSplitScreen (scoreboard, standings);
 			}
 		});
 	}
 
 	void generateImageScoreboard(Node rootNode, Participant voter) {
-		BufferedImage bufferedImage = new BufferedImage(1920, 1080,
+		BufferedImage bufferedImage = new BufferedImage (1920, 1080,
 				BufferedImage.TYPE_INT_ARGB);
-		WritableImage scoreboardImage = rootNode.snapshot(
-				new SnapshotParameters(), null);
-		BufferedImage scoreboard = SwingFXUtils.fromFXImage(scoreboardImage,
+		WritableImage scoreboardImage = rootNode.snapshot (
+				new SnapshotParameters (), null);
+		BufferedImage scoreboard = SwingFXUtils.fromFXImage (scoreboardImage,
 				bufferedImage);
-		File destScoreboard = new File(
+		File destScoreboard = new File (
 				"C:\\Users\\MM92\\Desktop\\Study Folder\\"
 						+ "Software Engineering\\ESCoreboard\\scoreboards\\"
-						+ voter.getName().get() + ".png");
-		destScoreboard.getParentFile().mkdirs();
+						+ voter.getName ().get () + ".png");
+		destScoreboard.getParentFile ().mkdirs ();
 
 		try {
-			Graphics2D g2d = (Graphics2D) scoreboard.getGraphics();
-			g2d.translate(1920, 1080);
-			ImageIO.write(scoreboard, "png", destScoreboard);
+			Graphics2D g2d = (Graphics2D) scoreboard.getGraphics ();
+			g2d.translate (1920, 1080);
+			ImageIO.write (scoreboard, "png", destScoreboard);
 		} catch (IOException ioex) {
-			Logger.getLogger(Scoreboard.class).log(Level.SEVERE,
-					ioex.getMessage());
+			Logger.getLogger (Scoreboard.class).log (Level.SEVERE,
+					ioex.getMessage ());
 		}
 	}
 }

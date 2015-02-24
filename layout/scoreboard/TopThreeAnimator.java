@@ -26,110 +26,116 @@ public class TopThreeAnimator extends UpdateAnimator {
 			final Participant voter, final Standings overview,
 			final ArrayList<Participant> oldStandings,
 			final ArrayList<Participant> standings) {
-
-		final ArrayList<TranslateTransition> transTrans = new ArrayList<>();
-
+		
+		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
+		int sizeDenom = (scoreboard.participants.size () + 1) / 2;
+		
 		// PLACE POINT NODE
 		Rectangle pointView = scoreboard.pointViews
-				.get((scoreboard.inCountryCounter - 1) % 10);
-		Votes votes = scoreboard.utilities.voteMap.get(voter);
-		Participant receiver = votes.getReceivers()[(scoreboard.inCountryCounter - 1) % 10];
-		receiver.setTmpScore(indicesToPoints((scoreboard.inCountryCounter - 1) % 10));
-		receiver.setScoredFlag(true);
-		Group nationGroup = scoreboard.groupNationMap.get(receiver);
-		pointView.setId("tmpPts");
-		scoreboard.root.getChildren().remove(pointView);
-		nationGroup.getChildren().remove(pointView);
-		nationGroup.getChildren().add(pointView);
+				.get ((scoreboard.inCountryCounter - 1) % 10);
+		
+		pointView.setHeight (0.7 * (840/sizeDenom));
+		Votes votes = scoreboard.utilities.voteMap.get (voter);
+		Participant receiver = votes.getReceivers ()[(scoreboard.inCountryCounter - 1) % 10];
+		receiver.setTmpScore (indicesToPoints ((scoreboard.inCountryCounter - 1) % 10));
+		receiver.setScoredFlag (true);
+		Group nationGroup = scoreboard.groupNationMap.get (receiver);
+		pointView.setId ("tmpPts");
+		scoreboard.root.getChildren ().remove (pointView);
+		nationGroup.getChildren ().remove (pointView);
+		nationGroup.getChildren ().add (pointView);
 
-		double newPosX = getXCoordByPos(
-				overview.getPosition(oldStandings, receiver),
-				oldStandings.size()) + 10;
-		double newPosY = getYCoordByPos(
-				overview.getPosition(oldStandings, receiver),
-				oldStandings.size()) + 8;
-		double oldPosX = pointView.getX();
-		double oldPosY = pointView.getY();
+		double newPosX = getXCoordByPos (
+				overview.getPosition (oldStandings, receiver),
+				oldStandings.size ()) + 0.15*840/sizeDenom;
+		double newPosY = getYCoordByPos (
+				overview.getPosition (oldStandings, receiver),
+				oldStandings.size ()) + 0.15*840/sizeDenom;
+		double oldPosX = pointView.getX ();
+		double oldPosY = pointView.getY ();
 
-		Timeline timeline = new Timeline();
-		timeline.getKeyFrames().addAll(
-				new KeyFrame(Duration.ZERO, new KeyValue(pointView.xProperty(),
-						oldPosX - nationGroup.getLayoutX()), new KeyValue(
-						pointView.yProperty(), oldPosY
-								- nationGroup.getLayoutY())),
-				new KeyFrame(new Duration(1500), new KeyValue(pointView
-						.xProperty(), newPosX - nationGroup.getLayoutX()),
-						new KeyValue(pointView.yProperty(), newPosY
-								- nationGroup.getLayoutY())));
+		Timeline timeline = new Timeline ();
+		timeline.getKeyFrames ().addAll (
+				new KeyFrame (Duration.ZERO, new KeyValue (
+						pointView.xProperty (), oldPosX
+								- nationGroup.getLayoutX ()), new KeyValue (
+						pointView.yProperty (), oldPosY
+								- nationGroup.getLayoutY ())),
+				new KeyFrame (new Duration (1500), new KeyValue (pointView
+						.xProperty (), newPosX - nationGroup.getLayoutX ()),
+						new KeyValue (pointView.yProperty (), newPosY
+								- nationGroup.getLayoutY ())));
 
-		scoreboard.groupNationMap.get(scoreboard.participants.get(13))
-				.toFront();
-		nationGroup.toFront();
-		timeline.play();
+		scoreboard.groupNationMap.get (scoreboard.participants.get (sizeDenom - 1))
+				.toFront ();
+		nationGroup.toFront ();
+		timeline.play ();
 
 		final Participant rece = receiver;
-		timeline.setOnFinished(new EventHandler<ActionEvent>() {
+		timeline.setOnFinished (new EventHandler<ActionEvent> () {
 			@Override
 			public void handle(ActionEvent event) {
 				// COUNT UP SCORE
-				countUpScore(scoreboard, rece);
+				countUpScore (scoreboard, rece);
 
 				// MOVE TILES
 				for (Participant participant : scoreboard.participants) {
-					int oldPos = overview
-							.getPosition(oldStandings, participant);
-					int newPos = overview.getPosition(standings, participant);
+					int oldPos = overview.getPosition (oldStandings,
+							participant);
+					int newPos = overview.getPosition (standings, participant);
 
-					double oldX = getXCoordByPos(oldPos, oldStandings.size());
-					double oldY = getYCoordByPos(oldPos, oldStandings.size());
-					double newX = getXCoordByPos(newPos, oldStandings.size());
-					double newY = getYCoordByPos(newPos, oldStandings.size());
+					double oldX = getXCoordByPos (oldPos, oldStandings.size ());
+					double oldY = getYCoordByPos (oldPos, oldStandings.size ());
+					double newX = getXCoordByPos (newPos, oldStandings.size ());
+					double newY = getYCoordByPos (newPos, oldStandings.size ());
 
 					double xShift = newX - oldX;
 					double yShift = newY - oldY;
 
 					Group nationGroup = scoreboard.groupNationMap
-							.get(participant);
+							.get (participant);
 
 					TranslateTransition tTrans = TranslateTransitionBuilder
-							.create().node(nationGroup)
-							.duration(new Duration(1500)).byX(xShift)
-							.byY(yShift).autoReverse(false)
-							.interpolator(Interpolator.EASE_BOTH).cycleCount(1)
-							.build();
+							.create ().node (nationGroup)
+							.duration (new Duration (1500)).byX (xShift)
+							.byY (yShift).autoReverse (false)
+							.interpolator (Interpolator.EASE_BOTH)
+							.cycleCount (1).build ();
 
-					transTrans.add(tTrans);
+					transTrans.add (tTrans);
 				}
 				final int save = ++scoreboard.inCountryCounter;
 
 				for (TranslateTransition tT : transTrans) {
-					tT.play();
-					if (tT == transTrans.get(transTrans.size() - 1)) {
-						tT.setOnFinished(new EventHandler<ActionEvent>() {
+					tT.play ();
+					if (tT == transTrans.get (transTrans.size () - 1)) {
+						tT.setOnFinished (new EventHandler<ActionEvent> () {
 							@Override
 							public void handle(ActionEvent event) {
-								Collections.sort(scoreboard.participants);
-								scoreboard.tileUpdater.updateTiles(scoreboard);
+								Collections.sort (scoreboard.participants);
+								scoreboard.tileUpdater.updateTiles (scoreboard);
 
 								// GET RID OF THAT
 								scoreboard.groupNationMap
-										.get(rece)
-										.getChildren()
-										.remove(scoreboard.groupNationMap.get(
-												rece).lookup("#tmpPts"));
+										.get (rece)
+										.getChildren ()
+										.remove (
+												scoreboard.groupNationMap.get (
+														rece)
+														.lookup ("#tmpPts"));
 
 								// SHOW 12 POINTER MEZZO
 								if (scoreboard.inCountryCounter % 10 == 1
 										&& scoreboard.inCountryCounter != 1) {
-									Platform.runLater(scoreboard
-											.showAndPraise12Pointer(rece,
+									Platform.runLater (scoreboard
+											.showAndPraise12Pointer (rece,
 													voter, overview, save,
 													scoreboard));
 									return;
 								}
 
 								// NEXT VOTES, PLEASE...
-								Platform.runLater(new VoteAdder(overview,
+								Platform.runLater (new VoteAdder (overview,
 										scoreboard, scoreboard.utilities, save));
 							}
 						});
@@ -147,7 +153,7 @@ public class TopThreeAnimator extends UpdateAnimator {
 		if (index == 9)
 			return 10;
 
-		System.out.println("IndicesToPoints returns sth baaaad, index was: "
+		System.out.println ("IndicesToPoints returns sth baaaad, index was: "
 				+ index);
 
 		return 103859; // absolutely pointless huehue

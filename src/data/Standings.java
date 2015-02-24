@@ -16,38 +16,38 @@ public class Standings {
 
 	public Standings(NSCUtilities utilities) throws FileNotFoundException,
 			IOException {
-		setStandings(new ArrayList<Participant>());
-		String[] finalists = utilities.getListOfNames();
-		for (Participant nation : utilities.getListOfNations(finalists)) {
-			getStandings().add(nation);
+		setStandings (new ArrayList<Participant> ());
+		String[] finalists = utilities.getListOfNames ();
+		for (Participant nation : utilities.getListOfNations (finalists)) {
+			getStandings ().add (nation);
 		}
-		Collections.sort(getStandings());
-		setVotes(utilities.allVotes);
+		Collections.sort (getStandings ());
+		setVotes (utilities.allVotes);
 	}
 
 	public void addVote(Votes votes, int nrOfPoints, int inCountryCounter) {
 		Participant receiver = null;
 
 		if (inCountryCounter >= 1)
-			receiver = votes.getReceivers()[inCountryCounter - 1];
+			receiver = votes.getReceivers ()[inCountryCounter - 1];
 		else
-			receiver = votes.getReceivers()[votes.getReceivers().length - 1];
+			receiver = votes.getReceivers ()[votes.getReceivers ().length - 1];
 
-		receiver.addToScore(nrOfPoints);
-		Collections.sort(getStandings());
+		receiver.addToScore (nrOfPoints);
+		Collections.sort (getStandings ());
 	}
 
-	public synchronized int getPosition(ArrayList<Participant> standings,
+	public int getPosition(ArrayList<Participant> standings,
 			Participant participant) {
 
-		ArrayList<Participant> deepCopy = new ArrayList<>();
+		ArrayList<Participant> deepCopy = new ArrayList<> ();
 		for (Participant part : standings) {
-			deepCopy.add(part.clone());
+			deepCopy.add (part.clone ());
 		}
 
 		int position = 1;
 		for (Participant part : deepCopy) {
-			if (part.getName().equals(participant.getName()))
+			if (part.getName ().equals (participant.getName ()))
 				return position;
 			position++;
 		}
