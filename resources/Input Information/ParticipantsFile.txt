@@ -34,9 +34,9 @@ Perryfornia$PER$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
 Pigeon Island$PII$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
 Prasia$PRA$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
 QuiénDQ$QDQ$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
-Reignland$RGN$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
-Reym-L-Dneurb$RLD$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
-Roseland$ROS$Belle & Sebastian$Nobody's Empire$53$73$06$SF2$V
+Reignland$RGN$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Reym-L-Dneurb$RLD$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$P
+Roseland$ROS$Belle & Sebastian$Nobody's Empire$53$73$06$SF2$P
 Rumia$RUM$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
 SmileyLand & Folegandria$SLF$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V
 SR Indiria$SRI$Belle & Sebastian$Nobody's Empire$53$73$13$SF1$V

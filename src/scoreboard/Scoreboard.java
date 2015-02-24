@@ -91,14 +91,13 @@ public class Scoreboard extends Application {
 		this.participants = new ArrayList<> (rosterNations);
 		Collections.sort (rosterNations);
 
-		if (rosterNations.size () > 10 && rosterNations.size () < 33) {
+		if (rosterNations.size () > 10 && rosterNations.size () < 35) {
 			tileUpdater = new TileUpdaterMidSizedPartField ();
 		}
 
 		root = new Group ();
 		root.setId ("RootGroup");
 
-		System.out.println (rosterNations.size ());
 		drawScoreboard (rosterNations, standings, primaryStage);
 
 		Platform.runLater (showOneToSeven (standings, this));
