@@ -51,8 +51,11 @@ public class ConcreteOneToSevenScreenCreator extends IntermediatePreparator {
 					.create ().width (1920).id ("background").height (1080).id ("redBack")
 					.fill (new ImagePattern (scoreboard.utilities.backgroundBlue)).build ());
 
+		int entryX = 100;
+		int entryY = 100;
+		
 		scoreboard.voteSideBarCreator.makeSideOfScoreboard (to7Group,
-				currentVoterCopy, scoreboard);
+				currentVoterCopy, scoreboard, 900, entryX);
 
 		if (!tradVP) {
 			final ArrayList<Rectangle> rects = new ArrayList<> ();
@@ -69,7 +72,7 @@ public class ConcreteOneToSevenScreenCreator extends IntermediatePreparator {
 			entryPlayer.setCycleCount (1);
 
 			MediaView entryView = MediaViewBuilder.create ()
-					.mediaPlayer (entryPlayer).x (100).y (100).id ("media")
+					.mediaPlayer (entryPlayer).x (entryX).y (entryY).id ("media")
 					.fitHeight (2000).fitWidth (1200).build ();
 
 			scoreboard.root.getChildren ().add (entryView);

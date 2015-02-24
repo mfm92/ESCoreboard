@@ -69,7 +69,7 @@ public class Scoreboard extends Application {
 	SideOverviewTableCreator sideTableCreator = new SideTableStyleOne ();
 	TwelvePairShower twelvePairShower = new TwelvePairShowOne ();
 	VoteSideBarCreator voteSideBarCreator = new ConcreteVoteSideBarCreator ();
-	TileUpdater tileUpdater = new TileUpdaterMidSizedPartField ();
+	TileUpdater tileUpdater = new ConcreteTileUpdater ();
 	IntermediatePreparator to7ScreenMaker = new ConcreteOneToSevenScreenCreator ();
 
 	UpdateAnimator oneToSevenAnimator = new OneToSevenUpdateAnimator ();

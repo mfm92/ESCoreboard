@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextBuilder;
 
-public class TileUpdaterMidSizedPartField extends AbstractTileUpdater {
+public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 	@Override
 	public void prettyFormatting(Scoreboard scoreboard, int nrOfPart) {

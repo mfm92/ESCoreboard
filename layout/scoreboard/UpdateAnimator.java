@@ -63,8 +63,9 @@ public abstract class UpdateAnimator {
 									"#ptsProof"));
 		}
 
-		scoreboard.voteSideBarCreator.makeSideOfScoreboard (scoreboard.root,
-				voter, scoreboard);
+		scoreboard.voteSideBarCreator.makeSideOfScoreboard (
+				scoreboard.root, voter, scoreboard, scoreboard.height,
+				(int) scoreboard.groupNationMap.get (scoreboard.participants.get (0)).getLayoutY ());
 	}
 
 	double getXCoordByPos(int position, Scoreboard scoreboard) {

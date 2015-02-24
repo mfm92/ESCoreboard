@@ -1,6 +1,9 @@
 #Ignore compiled stuff
 bin/
 
+#no docs?
+doc/
+
 #Ignore giant-sized videos
 resources/Entries Videos
 

@@ -20,17 +20,13 @@ public class ConcreteVoteSideBarCreator extends VoteSideBarCreator {
 
 	@Override
 	public void makeSideOfScoreboard(Group group, Participant voter,
-			Scoreboard scoreboard) {
+			Scoreboard scoreboard, int underlayHeight, int underlayY) {
 		group.getChildren ().remove (group.lookup ("#sidebar"));
 		Group sidebar = new Group ();
 		sidebar.setId ("sidebar");
 
-		int sizeDenom = ((scoreboard.participants.size () + 1) / scoreboard.columnsNr) - 1;
-
-		double topBar = scoreboard.groupNationMap.get (
-				scoreboard.participants.get (0)).getLayoutY ();
-		double bottomBar = scoreboard.groupNationMap.get (
-				scoreboard.participants.get (sizeDenom)).getLayoutY () + 60;
+		double topBar = underlayY;
+		double bottomBar = underlayY + underlayHeight;
 
 		Rectangle underlay = RectangleBuilder.create ().width (520)
 				.height (bottomBar - topBar).x (1350).y (topBar)

@@ -6,6 +6,6 @@ import nations.Participant;
 public abstract class VoteSideBarCreator {
 
 	public abstract void makeSideOfScoreboard(Group group, Participant voter,
-			Scoreboard scoreboard);
+			Scoreboard scoreboard, int underlayHeight, int underlayY);
 
 }
