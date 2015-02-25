@@ -46,23 +46,23 @@ public class Scoreboard extends Application {
 	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
 	ArrayList<Participant> participants;
 
-	int columnsNr = 1;
+	int columnsNr = 3;
 	int columnsNrTransition = 2;
 	
 	int specialBorder = 10;
 	int transParts = 7;
 	
 	int globalXOffset = 100;
-	int globalYOffset = 50;
+	int globalYOffset = 100;
 	
 	int transitionXOffset = 690;
 	int transitionYOffset = 980;
 	
-	int height = 1000;
+	int height = 900;
 	int heightTransition = 240;
 	
-	int columnNameWidth = 680;
-	int columnWidth = 800;
+	int columnNameWidth = 500;
+	int columnWidth = 600;
 	int columnWidthTransition = 590;
 	
 	int flagHeight = 40;

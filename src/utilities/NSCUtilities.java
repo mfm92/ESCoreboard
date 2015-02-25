@@ -40,6 +40,12 @@ public class NSCUtilities {
 
 	public Image pprais;
 	public Image ppraisbg;
+	
+	public Image voteUnderlay;
+	public Image voteFlagUnderlay;
+	public Image voteNameUnderlay;
+	public Image voteCounterUL;
+	public Image voteCounterULSmall;
 
 	public HashMap<String, Participant> nameMap;
 	public HashMap<Participant, Votes> voteMap;
@@ -106,6 +112,12 @@ public class NSCUtilities {
 
 		voterPointToken = readImage (resourcesFile
 				+ "Graphics\\Point Tokens\\Calling.png");
+		
+		voteUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGVoter.png");
+		voteFlagUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGFlag.png");
+		voteNameUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGName.png");
+		voteCounterUL = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounter.png");
+		voteCounterULSmall = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounterSmall.png");
 	}
 
 	private Image readImage(String fileName) throws IOException {
