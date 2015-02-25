@@ -46,17 +46,29 @@ public class Scoreboard extends Application {
 	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
 	ArrayList<Participant> participants;
 
-	int columnsNr = 2;
-	int specialBorder = 6;
+	int columnsNr = 1;
+	int specialBorder = 10;
 	
 	int globalXOffset = 100;
-	int globalYOffset = 10;
+	int globalYOffset = 50;
 	
 	int height = 1000;
-	int columnNameWidth = 500;
-	int columnWidth = 600;
+	int columnNameWidth = 680;
+	int columnWidth = 800;
 	
-	boolean tradVP = false;
+	int flagHeight = 40;
+	int flagWidth = (int) (1.5 * flagHeight);
+	
+	int pointTokenXOffset = 100;
+	int pointTokenYOffset = 1000;
+	
+	int pointTokenXOffsetTransition = 100;
+	int pointTokenYOffsetTransition = 1000;
+	
+	int nameFromFlagOffset = 25;
+	
+	boolean tradVP = true;
+	boolean useSpecialFlags = false;
 	
 	Participant currentVoter;
 
@@ -83,7 +95,7 @@ public class Scoreboard extends Application {
 	public void start(Stage primaryStage) {
 		Standings standings = null;
 		try {
-			utilities = new NSCUtilities ();
+			utilities = new NSCUtilities (useSpecialFlags);
 			standings = new Standings (utilities);
 		} catch (IOException e) {
 			e.printStackTrace ();

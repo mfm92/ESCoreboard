@@ -17,15 +17,15 @@ public abstract class IntermediatePreparator {
 		ArrayList<Rectangle> pointViews = new ArrayList<> ();
 		int pointCounter = 0;
 		for (Image image : scoreboard.utilities.getPointsTokens ()) {
-			Rectangle pointView = RectangleBuilder.create ().width (0.15*scoreboard.columnNameWidth)
-					.height (0.7 * (((scoreboard.height) / 
-							((scoreboard.participants.size () + 1) / scoreboard.columnsNr))))
+			Rectangle pointView = RectangleBuilder.create ()
+					.width (scoreboard.flagWidth)
+					.height (scoreboard.flagHeight)
 					.fill (new ImagePattern (image))
 					.id ("P" + indicesToPoints ((pointCounter + 1) % 10))
 					.build ();
 
-			pointView.setX (100 + 73 * pointCounter++);
-			pointView.setY (1000);
+			pointView.setX (scoreboard.pointTokenXOffset + pointView.getWidth () * pointCounter++);
+			pointView.setY (scoreboard.pointTokenYOffset);
 			pointViews.add (pointView);
 		}
 
@@ -37,16 +37,9 @@ public abstract class IntermediatePreparator {
 	}
 
 	int indicesToPoints(int index) {
-		if (index == 0)
-			return 12;
-		if (index >= 1 && index <= 8)
-			return index;
-		if (index == 9)
-			return 10;
-
-		System.out.println ("IndicesToPoints returns sth baaaad, index was: "
-				+ index);
-
-		return 103859; // absolutely pointless huehue
+		if (index == 0) return 12;
+		if (index == 9) return 10;
+		
+		return index;
 	}
 }

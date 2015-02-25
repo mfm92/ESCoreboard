@@ -55,7 +55,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 					.create ()
 					.text (scoreboard.participants.get (position).getName ()
 							.get ())
-					.layoutX (0.15 * base.getWidth () + 25)
+					.layoutX (scoreboard.flagWidth + scoreboard.nameFromFlagOffset)
 					.layoutY (0.65 * pointsBase.getHeight ())
 					.id ("nationName")
 					.textAlignment (TextAlignment.CENTER)
@@ -66,7 +66,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			Text scoreTest = TextBuilder
 					.create ()
 					.text (new Integer (scoreboard.participants.get (position)
-							.getScore ().get ()).toString ()).layoutX (546)
+							.getScore ().get ()).toString ()).layoutX (base.getWidth () + 46)
 					.layoutY (40).textAlignment (TextAlignment.CENTER)
 					.font (Font.font ("Inconsolata", FontWeight.MEDIUM, 41))
 					.fill (Color.WHITE).build ();
@@ -82,13 +82,17 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			ImageView nationIcon = ImageViewBuilder.create ()
 					.image (scoreboard.participants.get (position).getFlag ())
-					.layoutX (0.15*base.getHeight ()).layoutY (0.15*base.getHeight ()).id ("icon").build ();
+					.layoutX ((base.getHeight () - scoreboard.flagHeight) / 2)
+					.layoutY ((base.getHeight () - scoreboard.flagHeight) / 2)
+					.id ("icon")
+					.build ();
 
 			nationTile.setLayoutX (scoreboard.globalXOffset + scoreboard.columnWidth * (position / sizeDenom));
 			nationTile.setLayoutY (scoreboard.globalYOffset + (scoreboard.height / sizeDenom)
 					* (position % sizeDenom));
-			nationIcon.setFitWidth (0.15 * base.getWidth ());
-			nationIcon.setFitHeight (0.7*base.getHeight ());
+			
+			nationIcon.setFitWidth (scoreboard.flagWidth);
+			nationIcon.setFitHeight (scoreboard.flagHeight);
 
 			nationTile.getChildren ().clear ();
 			nationTile.getChildren ().addAll (base, pointsBase, nationName,
@@ -111,10 +115,12 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 						.image (scoreboard.utilities.getPointsTokens ().get (
 								pointsToIndices (scoreboard.participants.get (
 										position).getTmpScore ())))
-						.layoutX (0.15*base.getHeight ()).layoutY (0.15*base.getHeight ()).id ("ptsProof").build ();
+						.layoutX (nationIcon.getLayoutX ())
+						.layoutY (nationIcon.getLayoutY ())
+						.id ("ptsProof").build ();
 
-				ptsView.setFitHeight (0.7 * base.getHeight ());
-				ptsView.setFitWidth (0.15 * base.getWidth ());
+				ptsView.setFitHeight (nationIcon.getFitHeight ());
+				ptsView.setFitWidth (nationIcon.getFitWidth ());
 
 				if (scoreboard.participants.get (position).getScoredFlag ()
 						&& !(nationName.getText ().endsWith (" has SCORED!") && !(nationName

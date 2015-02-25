@@ -21,62 +21,76 @@ public class ConcreteVoteSideBarCreator extends VoteSideBarCreator {
 	@Override
 	public void makeSideOfScoreboard(Group group, Participant voter,
 			Scoreboard scoreboard, int underlayHeight, int underlayY) {
-		group.getChildren ().remove (group.lookup ("#sidebar"));
-		Group sidebar = new Group ();
-		sidebar.setId ("sidebar");
+		
+		if (scoreboard.columnsNr < 3) {
+			group.getChildren ().remove (group.lookup ("#sidebar"));
+			Group sidebar = new Group ();
+			sidebar.setId ("sidebar");
 
-		double topBar = underlayY;
-		double bottomBar = underlayY + underlayHeight;
+			Rectangle underlay = RectangleBuilder.create ().width (520)
+					.height (underlayHeight).x (1350).y (underlayY)
+					.fill (new Color (0.5, 0.5, 0.5, 0.5)).build ();
 
-		Rectangle underlay = RectangleBuilder.create ().width (520)
-				.height (bottomBar - topBar).x (1350).y (topBar)
-				.fill (new Color (0.5, 0.5, 0.5, 0.5)).build ();
+			Text currentVoter = TextBuilder
+					.create ()
+					.text ("voting now: ")
+					.fill (Color.WHITE)
+					.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
+							.getName ().get ().length () < 14 ? 82 : 58)).x (underlay.getX () + 100)
+					.y (underlay.getY ()).build ();
 
-		Text currentVoter = TextBuilder
-				.create ()
-				.text ("voting now: ")
-				.fill (Color.WHITE)
-				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
-						.getName ().get ().length () < 14 ? 82 : 58)).x (underlay.getX () + 100)
-				.y (underlay.getY ()).build ();
+			VBox currentVoterVBox = VBoxBuilder.create ().layoutX (underlay.getX ())
+					.layoutY (underlayY + 20).prefHeight (100).prefWidth (520)
+					.alignment (Pos.CENTER).build ();
 
-		VBox currentVoterVBox = VBoxBuilder.create ().layoutX (underlay.getX ())
-				.layoutY (topBar + 20).prefHeight (100).prefWidth (520)
-				.alignment (Pos.CENTER).build ();
+			currentVoterVBox.getChildren ().add (currentVoter);
 
-		currentVoterVBox.getChildren ().add (currentVoter);
+			Text currentVoter2 = TextBuilder
+					.create ()
+					.text (voter.getName ().get ())
+					.fill (Color.WHITE)
+					.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
+							.getName ().get ().length () < 14 ? 82 : 58)).x (underlay.getX () + 110)
+					.y (underlay.getY() + 0.75 * underlayHeight).build ();
 
-		Text currentVoter2 = TextBuilder
-				.create ()
-				.text (voter.getName ().get ())
-				.fill (Color.WHITE)
-				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
-						.getName ().get ().length () < 14 ? 82 : 58)).x (underlay.getX () + 110)
-				.y (underlay.getY() + 700).build ();
+			VBox currentVoter2VBox = VBoxBuilder.create ().layoutX (underlay.getX())
+					.layoutY (underlay.getY() + 0.7 * underlayHeight).prefHeight (0.25 * underlayHeight).prefWidth (520)
+					.alignment (Pos.CENTER).build ();
 
-		VBox currentVoter2VBox = VBoxBuilder.create ().layoutX (underlay.getX())
-				.layoutY (underlay.getY() + 670).prefHeight (200).prefWidth (520)
-				.alignment (Pos.CENTER).build ();
+			currentVoter2VBox.getChildren ().add (currentVoter2);
 
-		currentVoter2VBox.getChildren ().add (currentVoter2);
+			sidebar.getChildren ().addAll (underlay, currentVoterVBox,
+					currentVoter2VBox);
 
-		sidebar.getChildren ().addAll (underlay, currentVoterVBox,
-				currentVoter2VBox);
+			int specialFlagWidth = (int) (0.45 * underlayHeight);
+			int specialFlagHeight = (int) (0.55 * underlayHeight);
+			int specialOffset = (int) (0.2 * underlayHeight);
+			
+			int normalFlagWidth = (int) (0.45 * underlayHeight);
+			int normalFlagHeight = (int) (0.35 * underlayHeight);
+			int normalOffset = (int) (0.3 * underlayHeight);
+			
+			ImageView voterFlag = ImageViewBuilder.create ()
+					.image (scoreboard.useSpecialFlags ? scoreboard.utilities.diamondMap.get (voter) : voter.getFlag ())
+					.layoutX (underlay.getX() + 20).layoutY (underlay.getY() + (scoreboard.useSpecialFlags ?
+							specialOffset : normalOffset))
+					.fitWidth (scoreboard.useSpecialFlags ? specialFlagWidth : normalFlagWidth)
+					.fitHeight (scoreboard.useSpecialFlags ? specialFlagHeight : normalFlagHeight)
+					.build ();
 
-		ImageView voterFlag = ImageViewBuilder.create ()
-				.image (scoreboard.utilities.diamondMap.get (voter))
-				.layoutX (underlay.getX() + 20).layoutY (underlay.getY() + 160).fitWidth (500).fitHeight (550)
-				.build ();
+			HBox diamondVBox = new HBox ();
+			diamondVBox.setLayoutX (underlay.getX());
+			diamondVBox.setLayoutY (underlay.getY() + (scoreboard.useSpecialFlags ? specialOffset : normalOffset));
+			diamondVBox.setPrefHeight (scoreboard.useSpecialFlags ? specialFlagHeight : normalFlagHeight);
+			diamondVBox.setPrefWidth (520);
+			diamondVBox.setAlignment (Pos.CENTER);
+			diamondVBox.getChildren ().add (voterFlag);
 
-		HBox diamondVBox = new HBox ();
-		diamondVBox.setLayoutX (underlay.getX());
-		diamondVBox.setLayoutY (underlay.getY() + 160);
-		diamondVBox.setPrefHeight (550);
-		diamondVBox.setPrefWidth (520);
-		diamondVBox.setAlignment (Pos.CENTER);
-		diamondVBox.getChildren ().add (voterFlag);
-
-		sidebar.getChildren ().add (diamondVBox);
-		group.getChildren ().add (sidebar);
+			sidebar.getChildren ().add (diamondVBox);
+			group.getChildren ().add (sidebar);	
+			
+		} else {
+			//TODO: Create a vote bar in the bottom instead.
+		}
 	}
 }

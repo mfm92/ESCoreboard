@@ -46,6 +46,8 @@ public class NSCUtilities {
 	public HashMap<Participant, Image> diamondMap;
 
 	public ArrayList<Participant> participants = new ArrayList<Participant> ();
+	
+	boolean readDiamonds;
 
 	BannerCreator bannerCreator = new SimpleBannerCreator (130, 810);
 
@@ -54,8 +56,9 @@ public class NSCUtilities {
 	
 	String resourcesFile = System.getProperty ("user.dir") + "\\";
 
-	public NSCUtilities() throws IOException {
+	public NSCUtilities(boolean readDiamonds) throws IOException {
 		initialize ();
+		this.readDiamonds = readDiamonds;
 	}
 
 	public void initialize() throws IOException {
@@ -165,13 +168,17 @@ public class NSCUtilities {
 
 			while ((nation = bReader.readLine ()) != null) {
 				String[] tokens = nation.split ("\\$");
+				System.out.println (flagFile + tokens[0] + ".png");
 				Participant newNation = new Participant (tokens[0], tokens[1],
 						readImage (flagFile + tokens[0] + ".png"));
 				nations.add (newNation);
 				newNation.setVotes (voteMap.get (newNation));
 
-				diamondMap.put (newNation, readImage (diamondFile + "Diamond "
-						+ newNation.shortName () + ".png"));
+				if (readDiamonds) {
+					diamondMap.put (newNation, readImage (diamondFile + "Diamond "
+							+ newNation.shortName () + ".png"));	
+				}
+				
 				nameMap.put (tokens[0], newNation);
 
 				boolean shouldBeCreated = tokens[8].equals ("P");

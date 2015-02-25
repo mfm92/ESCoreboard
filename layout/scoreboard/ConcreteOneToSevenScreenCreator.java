@@ -121,9 +121,10 @@ public class ConcreteOneToSevenScreenCreator extends IntermediatePreparator {
 						ImageView pointView = ImageViewBuilder
 								.create ()
 								.fitHeight (45)
-								.fitWidth (73)
-								.image (scoreboard.utilities.getPointsTokens ()
-										.get (i)).x (300 + i * 73).y (850).build ();
+								.fitWidth (0.15 * scoreboard.columnNameWidth)
+								.image (scoreboard.utilities.getPointsTokens ().get (i))
+								.x (scoreboard.pointTokenXOffsetTransition + i * 73)
+								.y (scoreboard.pointTokenYOffsetTransition).build ();
 
 						pointViews.add (pointView);
 						double shiftPVX = rects.get (i).getX () - pointView.getX ()

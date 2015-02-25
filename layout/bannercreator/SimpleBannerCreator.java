@@ -43,9 +43,7 @@ public class SimpleBannerCreator extends BannerCreator {
 				null);
 		BufferedImage bannerNextStep = SwingFXUtils.fromFXImage (bannerImage,
 				image);
-		File bannerDestination = new File (
-				"C:\\Users\\MM92\\Desktop\\Study Folder\\"
-						+ "Software Engineering\\ESCoreboard\\banners\\"
+		File bannerDestination = new File (System.getProperty ("user.dir") + "\\banners\\"
 						+ p.getName ().get () + ".png");
 		bannerDestination.getParentFile ().mkdirs ();
 

@@ -50,9 +50,12 @@ public class TopThreeAnimator extends UpdateAnimator {
 		nationGroup.getChildren ().add (pointView);
 
 		double newPosX = getXCoordByPos (
-				overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.height/sizeDenom;
+				overview.getPosition (oldStandings, receiver), scoreboard) + 
+				(((scoreboard.height / sizeDenom) - scoreboard.flagHeight) / 2);
 		double newPosY = getYCoordByPos (
-				overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.height/sizeDenom;
+				overview.getPosition (oldStandings, receiver), scoreboard) + 
+				(((scoreboard.height / sizeDenom) - scoreboard.flagHeight) / 2);
+		
 		double oldPosX = pointView.getX ();
 		double oldPosY = pointView.getY ();
 
