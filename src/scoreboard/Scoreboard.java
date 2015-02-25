@@ -47,17 +47,29 @@ public class Scoreboard extends Application {
 	ArrayList<Participant> participants;
 
 	int columnsNr = 1;
+	int columnsNrTransition = 2;
+	
 	int specialBorder = 10;
+	int transParts = 7;
 	
 	int globalXOffset = 100;
 	int globalYOffset = 50;
 	
+	int transitionXOffset = 690;
+	int transitionYOffset = 980;
+	
 	int height = 1000;
+	int heightTransition = 240;
+	
 	int columnNameWidth = 680;
 	int columnWidth = 800;
+	int columnWidthTransition = 590;
 	
 	int flagHeight = 40;
 	int flagWidth = (int) (1.5 * flagHeight);
+	
+	int flagHeightTransition = 50;
+	int flagWidthTransition = (int) (1.5 * flagHeightTransition);
 	
 	int pointTokenXOffset = 100;
 	int pointTokenYOffset = 1000;
@@ -65,9 +77,16 @@ public class Scoreboard extends Application {
 	int pointTokenXOffsetTransition = 100;
 	int pointTokenYOffsetTransition = 1000;
 	
+	int ptfromEdgeOffsetTrans = 20;
+	int flagFromPTOffsetTrans = 20;
+	int textFromFlagOffsetTrans = 20;
+	
+	int pointTokenWidthTransition = 75;
+	int pointTokenHeightTransition = 50;
+	
 	int nameFromFlagOffset = 25;
 	
-	boolean tradVP = true;
+	boolean tradVP = false;
 	boolean useSpecialFlags = false;
 	
 	Participant currentVoter;
@@ -78,14 +97,14 @@ public class Scoreboard extends Application {
 	Rectangle background;
 	int inCountryCounter;
 
-	SideOverviewTableCreator sideTableCreator = new SideTableStyleOne ();
-	TwelvePairShower twelvePairShower = new TwelvePairShowOne ();
+	SideOverviewTableCreator sideTableCreator = new SimpleSideTableStyle ();
+	TwelvePairShower twelvePairShower = new ConcreteTwelvePairShower ();
 	VoteSideBarCreator voteSideBarCreator = new ConcreteVoteSideBarCreator ();
 	TileUpdater tileUpdater = new ConcreteTileUpdater ();
-	IntermediatePreparator to7ScreenMaker = new ConcreteOneToSevenScreenCreator ();
+	IntermediatePreparator to7ScreenMaker = new ConcreteQuickStepCreator ();
 
-	UpdateAnimator oneToSevenAnimator = new OneToSevenUpdateAnimator ();
-	UpdateAnimator topThreeAnimator = new TopThreeAnimator ();
+	UpdateAnimator oneToSevenAnimator = new QuickUpdater ();
+	UpdateAnimator topThreeAnimator = new StepByStepAnimator ();
 
 	public static void main(String[] args) {
 		launch (args);
@@ -154,7 +173,7 @@ public class Scoreboard extends Application {
 			Standings overview) {
 		
 		if (!tradVP) {
-			((inCountryCounter % 10 == 7) ? oneToSevenAnimator : topThreeAnimator)
+			((inCountryCounter % 10 == transParts) ? oneToSevenAnimator : topThreeAnimator)
 			.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);	
 		} else {
 			topThreeAnimator.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);
@@ -241,5 +260,28 @@ public class Scoreboard extends Application {
 			Logger.getLogger (Scoreboard.class).log (Level.SEVERE,
 					ioex.getMessage ());
 		}
+	}
+	
+	public int indicesToPoints(int index) {
+		if (index == 0)
+			return 12;
+		if (index == 9)
+			return 10;
+
+		return index;
+	}
+	
+	public int pointsToIndices(int pts) {
+		if (pts <= 8)
+			return pts;
+		if (pts == 10)
+			return 9;
+		if (pts == 12)
+			return 0;
+
+		System.out.println ("pointsToIndices returns sth baaaad, pts was: "
+				+ pts);
+
+		return 103859; // absolutely pointless huehue
 	}
 }

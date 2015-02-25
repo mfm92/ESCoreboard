@@ -13,20 +13,6 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 		prettyFormatting (scoreboard, nrOfPart);
 	}
 
-	protected int pointsToIndices(int pts) {
-		if (pts <= 8)
-			return pts;
-		if (pts == 10)
-			return 9;
-		if (pts == 12)
-			return 0;
-
-		System.out.println ("pointsToIndices returns sth baaaad, pts was: "
-				+ pts);
-
-		return 103859; // absolutely pointless huehue
-	}
-
 	@Override
 	public void updateBackgroundOnly(Scoreboard scoreboard) {
 		for (int position = 0; position < scoreboard.participants.size (); position++) {

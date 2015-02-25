@@ -113,7 +113,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 				ImageView ptsView = ImageViewBuilder
 						.create ()
 						.image (scoreboard.utilities.getPointsTokens ().get (
-								pointsToIndices (scoreboard.participants.get (
+								scoreboard.pointsToIndices (scoreboard.participants.get (
 										position).getTmpScore ())))
 						.layoutX (nationIcon.getLayoutX ())
 						.layoutY (nationIcon.getLayoutY ())

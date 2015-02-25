@@ -42,8 +42,7 @@ public class VoteAdder implements Runnable {
 			nrOfPoints = 10;
 
 		Votes vote = allVotes.get (nrOfCountryToVote);
-		ArrayList<Participant> oldStanding = new ArrayList<> (standings
-				.getStandings ().size ());
+		ArrayList<Participant> oldStanding = new ArrayList<> (standings.getStandings ().size ());
 
 		for (Participant standing : standings.getStandings ()) {
 			oldStanding.add (standing.clone ());
@@ -53,9 +52,9 @@ public class VoteAdder implements Runnable {
 		Participant voter = vote.getVoter ();
 
 		if (!tradVP) {
-			if (inCountryCounter % 10 == 7) {
-				for (int i = 1; i <= 7; i++) {
-					standings.addVote (vote, i, i);
+			if (inCountryCounter % 10 == scoreboard.transParts) {
+				for (int i = 1; i <= scoreboard.transParts; i++) {
+					standings.addVote (vote, scoreboard.indicesToPoints (i), i);
 				}
 			} else
 				standings.addVote (vote, nrOfPoints, inCountryCounter % 10);	
@@ -74,7 +73,6 @@ public class VoteAdder implements Runnable {
 		try {
 			addVotes ();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace ();
 		}
 	}

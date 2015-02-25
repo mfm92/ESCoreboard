@@ -51,7 +51,8 @@ public class Standings {
 				return position;
 			position++;
 		}
-		return -564508407; // #sign
+
+		return -1;
 	}
 
 	public ArrayList<Votes> getVotes() {

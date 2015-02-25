@@ -78,34 +78,34 @@ public class NSCUtilities {
 		String resourcesFile = this.resourcesFile + "resources\\";
 
 		nationTileBackground = readImage (resourcesFile
-				+ "Scoreboard Single Nation Backgrounds\\BG.png");
+				+ "Graphics\\Scoreboard Single Nation Backgrounds\\BG.png");
 		nationTileBackgroundScored = readImage (resourcesFile
-				+ "Scoreboard Single Nation Backgrounds\\Scored_BG.png");
+				+ "Graphics\\Scoreboard Single Nation Backgrounds\\Scored_BG.png");
 		nationTileBackgroundPQ = readImage (resourcesFile
-				+ "Scoreboard Single Nation Backgrounds\\PQ_BG.png");
+				+ "Graphics\\Scoreboard Single Nation Backgrounds\\PQ_BG.png");
 		nationTileBackgroundPQScored = readImage (resourcesFile
-				+ "Scoreboard Single Nation Backgrounds\\PQ_Scored_BG.png");
+				+ "Graphics\\Scoreboard Single Nation Backgrounds\\PQ_Scored_BG.png");
 		nationTileBackgroundVoter = readImage (resourcesFile
-				+ "Scoreboard Single Nation Backgrounds\\Voter_BG.png");
+				+ "Graphics\\Scoreboard Single Nation Backgrounds\\Voter_BG.png");
 
 		pointsTileBackground = readImage (resourcesFile
-				+ "Point Tokens\\BluePtsBG.png");
+				+ "Graphics\\Point Tokens\\BluePtsBG.png");
 		pointsTileBackgroundPQ = readImage (resourcesFile
-				+ "Point Tokens\\RedPtsBG.png");
+				+ "Graphics\\Point Tokens\\RedPtsBG.png");
 
 		backgroundWhite = readImage (resourcesFile
-				+ "Global Backgrounds\\Scoreboard BG BW.png");
+				+ "Graphics\\Global Backgrounds\\Scoreboard BG BW.png");
 		backgroundBlue = readImage (resourcesFile
-				+ "Global Backgrounds\\Scoreboard BG Blue.png");
+				+ "Graphics\\Global Backgrounds\\Scoreboard BG Blue.png");
 		backgroundRed = readImage (resourcesFile
-				+ "Global Backgrounds\\Scoreboard BG Red.png");
+				+ "Graphics\\Global Backgrounds\\Scoreboard BG Red.png");
 
-		pprais = readImage (resourcesFile + "Point Tokens\\12PPrais.png");
+		pprais = readImage (resourcesFile + "Graphics\\Point Tokens\\12PPrais.png");
 		ppraisbg = readImage (resourcesFile
-				+ "Scoreboard Single Nation Backgrounds\\Praise_BG.png");
+				+ "Graphics\\Scoreboard Single Nation Backgrounds\\Praise_BG.png");
 
 		voterPointToken = readImage (resourcesFile
-				+ "Point Tokens\\Calling.png");
+				+ "Graphics\\Point Tokens\\Calling.png");
 	}
 
 	private Image readImage(String fileName) throws IOException {
@@ -117,7 +117,7 @@ public class NSCUtilities {
 	public void readPtsTokens() throws IOException {
 		ArrayList<Image> pToken = new ArrayList<> ();
 
-		String baseLocation = resourcesFile + "resources\\Point Tokens\\";
+		String baseLocation = resourcesFile + "resources\\Graphics\\Point Tokens\\";
 
 		String P01l = baseLocation + "1P.png";
 		String P02l = baseLocation + "2P.png";
@@ -159,8 +159,8 @@ public class NSCUtilities {
 		nameMap = new HashMap<> ();
 
 		String nationsFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
-		String flagFile = resourcesFile + "resources\\Participant Flags\\";
-		String diamondFile = resourcesFile + "resources\\Diamond Flags\\";
+		String flagFile = resourcesFile + "resources\\Nation Info\\Participant Flags\\";
+		String diamondFile = resourcesFile + "resources\\Nation Info\\Diamond Flags\\";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (nationsFile)))) {
@@ -168,7 +168,6 @@ public class NSCUtilities {
 
 			while ((nation = bReader.readLine ()) != null) {
 				String[] tokens = nation.split ("\\$");
-				System.out.println (flagFile + tokens[0] + ".png");
 				Participant newNation = new Participant (tokens[0], tokens[1],
 						readImage (flagFile + tokens[0] + ".png"));
 				nations.add (newNation);
@@ -213,7 +212,7 @@ public class NSCUtilities {
 
 	public void readEntries() throws NumberFormatException, IOException {
 		String mediaFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
-		String mediaLocation = resourcesFile + "resources\\Entries Videos\\";
+		String mediaLocation = resourcesFile + "resources\\Nation Info\\Entries Videos\\";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (mediaFile)))) {

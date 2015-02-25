@@ -5,7 +5,7 @@ bin/
 doc/
 
 #Ignore giant-sized videos
-resources/Entries Videos
+resources/Nation Info/Entries Videos
 
 #Do not upload scoreboards
 scoreboards/
