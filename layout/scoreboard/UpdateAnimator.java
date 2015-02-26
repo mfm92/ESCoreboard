@@ -58,14 +58,16 @@ public abstract class UpdateAnimator {
 			scoreboard.groupNationMap
 					.get (finalist)
 					.getChildren ()
-					.remove (
-							scoreboard.groupNationMap.get (finalist).lookup (
-									"#ptsProof"));
+					.remove (scoreboard.groupNationMap.get (finalist).lookup ("#ptsProof"));
 		}
-
-		scoreboard.voteSideBarCreator.makeSideOfScoreboard (
-				scoreboard.root, voter, scoreboard, scoreboard.height,
-				(int) scoreboard.groupNationMap.get (scoreboard.participants.get (0)).getLayoutY ());
+		
+		if (scoreboard.columnsNr > 2) {
+			scoreboard.bottomSideBar.makeSideOfScoreboard (scoreboard.root,
+					voter, scoreboard, scoreboard.bottomBarWidth, scoreboard.bottomBarX);
+		} else {
+			scoreboard.rightSideBar.makeSideOfScoreboard (scoreboard.root, voter, scoreboard, 
+					scoreboard.height, scoreboard.globalYOffset);
+		}
 	}
 
 	double getXCoordByPos(int position, Scoreboard scoreboard) {

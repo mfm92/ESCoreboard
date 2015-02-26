@@ -72,7 +72,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 								- nationGroup.getLayoutY ())));
 
 		scoreboard.groupNationMap.get (scoreboard.participants.get (sizeDenom - 1)).toFront ();
-		nationGroup.toFront ();
+		pointView.toFront ();
 		timeline.play ();
 
 		final Participant rece = receiver;

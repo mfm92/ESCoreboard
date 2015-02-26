@@ -57,8 +57,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		int entryX = 100;
 		int entryY = 100;
 		
-		scoreboard.voteSideBarCreator.makeSideOfScoreboard (to7Group,
-				currentVoterCopy, scoreboard, 900, entryX);
+		scoreboard.rightSideBar.makeSideOfScoreboard (to7Group, currentVoterCopy, scoreboard, 900, entryX);
 
 		if (!tradVP) {
 			final ArrayList<Rectangle> rects = new ArrayList<> ();

@@ -14,23 +14,33 @@ public abstract class IntermediatePreparator {
 			Standings standings, boolean tradVP);
 
 	void createPointsArray(Scoreboard scoreboard) {
+		Rectangle ptRect = RectangleBuilder.create ()
+			.x (scoreboard.globalXOffset)
+			.y (scoreboard.globalYOffset + scoreboard.height + scoreboard.bottomScoreboardOffset)
+			.id ("ptHolder")
+			.width (scoreboard.ptUnderLayWidth)
+			.height (scoreboard.ptUnderLayHeight)
+			.fill (new ImagePattern (scoreboard.utilities.ptHolder))
+			.build ();
+		
 		ArrayList<Rectangle> pointViews = new ArrayList<> ();
 		int pointCounter = 0;
 		for (Image image : scoreboard.utilities.getPointsTokens ()) {
 			Rectangle pointView = RectangleBuilder.create ()
-					.width (scoreboard.flagWidth)
-					.height (scoreboard.flagHeight)
-					.fill (new ImagePattern (image))
-					.id ("P" + indicesToPoints ((pointCounter + 1) % 10))
-					.build ();
+				.width (scoreboard.flagWidth)
+				.height (scoreboard.flagHeight)
+				.fill (new ImagePattern (image))
+				.id ("P" + indicesToPoints ((pointCounter + 1) % 10))
+				.build ();
 
-			pointView.setX (scoreboard.pointTokenXOffset + pointView.getWidth () * pointCounter++);
-			pointView.setY (scoreboard.pointTokenYOffset);
+			pointView.setX (15 + scoreboard.pointTokenXOffset + pointView.getWidth () * pointCounter++);
+			pointView.setY (3 + scoreboard.pointTokenYOffset);
 			pointViews.add (pointView);
 		}
 
 		scoreboard.pointViews = pointViews;
 
+		scoreboard.root.getChildren().add(ptRect);
 		for (Rectangle rect : pointViews) {
 			scoreboard.root.getChildren ().add (rect);
 		}

@@ -46,6 +46,8 @@ public class NSCUtilities {
 	public Image voteNameUnderlay;
 	public Image voteCounterUL;
 	public Image voteCounterULSmall;
+	
+	public Image ptHolder;
 
 	public HashMap<String, Participant> nameMap;
 	public HashMap<Participant, Votes> voteMap;
@@ -63,8 +65,8 @@ public class NSCUtilities {
 	String resourcesFile = System.getProperty ("user.dir") + "\\";
 
 	public NSCUtilities(boolean readDiamonds) throws IOException {
-		initialize ();
 		this.readDiamonds = readDiamonds;
+		initialize ();
 	}
 
 	public void initialize() throws IOException {
@@ -118,6 +120,7 @@ public class NSCUtilities {
 		voteNameUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGName.png");
 		voteCounterUL = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounter.png");
 		voteCounterULSmall = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounterSmall.png");
+		ptHolder = readImage (resourcesFile + "Graphics\\SideBarTokens\\PTHolder.png");
 	}
 
 	private Image readImage(String fileName) throws IOException {
@@ -184,7 +187,7 @@ public class NSCUtilities {
 						readImage (flagFile + tokens[0] + ".png"));
 				nations.add (newNation);
 				newNation.setVotes (voteMap.get (newNation));
-
+				
 				if (readDiamonds) {
 					diamondMap.put (newNation, readImage (diamondFile + "Diamond "
 							+ newNation.shortName () + ".png"));	

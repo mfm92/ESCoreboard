@@ -52,8 +52,8 @@ public class Scoreboard extends Application {
 	int specialBorder = 10;
 	int transParts = 7;
 	
-	int globalXOffset = 100;
-	int globalYOffset = 100;
+	int globalXOffset = 50;
+	int globalYOffset = 50;
 	
 	int transitionXOffset = 690;
 	int transitionYOffset = 980;
@@ -65,7 +65,7 @@ public class Scoreboard extends Application {
 	int columnWidth = 600;
 	int columnWidthTransition = 590;
 	
-	int flagHeight = 40;
+	int flagHeight = 53;
 	int flagWidth = (int) (1.5 * flagHeight);
 	
 	int flagHeightTransition = 50;
@@ -84,10 +84,23 @@ public class Scoreboard extends Application {
 	int pointTokenWidthTransition = 75;
 	int pointTokenHeightTransition = 50;
 	
+	int rightBarWidth = 520;
+	int rightBarX = 1350;
+	
+	int bottomScoreboardOffset = 40;
+	
+	int bottomBarHeight = 75;
+	int bottomBarWidth = 700;
+	int bottomBarX = globalXOffset + columnsNr*columnWidth - bottomBarWidth;
+	int bottomBarY = globalYOffset + height + bottomScoreboardOffset;
+	
+	int ptUnderLayHeight = 75;
+	int ptUnderLayWidth = 10 * flagWidth + 100;
+	
 	int nameFromFlagOffset = 25;
 	
 	boolean tradVP = false;
-	boolean useSpecialFlags = false;
+	boolean useSpecialFlags = true;
 	
 	Participant currentVoter;
 
@@ -99,7 +112,8 @@ public class Scoreboard extends Application {
 
 	SideOverviewTableCreator sideTableCreator = new SimpleSideTableStyle ();
 	TwelvePairShower twelvePairShower = new ConcreteTwelvePairShower ();
-	VoteSideBarCreator voteSideBarCreator = new ConcreteVoteSideBarCreator ();
+	VoteSideBarCreator rightSideBar = new RightSideVoteBarCreator ();
+	VoteSideBarCreator bottomSideBar = new BottomSideVoteBarCreator ();
 	TileUpdater tileUpdater = new ConcreteTileUpdater ();
 	IntermediatePreparator to7ScreenMaker = new ConcreteQuickStepCreator ();
 
