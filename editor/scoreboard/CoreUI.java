@@ -150,8 +150,7 @@ public class CoreUI extends Application implements Initializable {
 	
 	private class CellCentralizer <T> implements Callback<TableColumn<ParticipantSave, T>, TableCell<ParticipantSave, T>> {
 
-		@Override
-		public TableCell<ParticipantSave, T> call (TableColumn<ParticipantSave, T> tc) {
+		@Override public TableCell<ParticipantSave, T> call (TableColumn<ParticipantSave, T> tc) {
 			TableCell<ParticipantSave, T> cell = new TableCell<ParticipantSave, T>() {
 				
 				@Override public void updateItem (T item, boolean empty) {
@@ -163,11 +162,10 @@ public class CoreUI extends Application implements Initializable {
 				private String getString() {
 					return getItem() == null ? "" : getItem().toString();
 				}
-            };
+			};
 
             cell.setStyle("-fx-alignment: CENTER;");
             return cell;
 		}
-		
 	}
 }
