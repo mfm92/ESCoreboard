@@ -240,7 +240,7 @@ public class NSCUtilities {
 				int start = Integer.parseInt (tokens[4]);
 				int stop = Integer.parseInt (tokens[5]);
 				p.setEntry (new Entry (tokens[2], tokens[3], entryVid, start,
-						stop));
+						stop, tokens[8]));
 			}
 		}
 	}
@@ -300,7 +300,7 @@ public class NSCUtilities {
 	public String[] getListOfNames() {
 		String[] namesArray = new String[participants.size ()];
 		for (int i = 0; i < participants.size (); i++)
-			namesArray[i] = participants.get (i).getName ().get ();
+			namesArray[i] = participants.get (i).getName ();
 		return namesArray;
 	}
 

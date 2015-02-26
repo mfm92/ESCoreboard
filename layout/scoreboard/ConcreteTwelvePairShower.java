@@ -48,7 +48,7 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 						.build ());
 
 		Text receiveNation = TextBuilder.create ().x (500).y (795)
-				.text (receiver.getName ().get ())
+				.text (receiver.getName ())
 				.font (Font.font ("Coolvetica RG", FontWeight.BOLD, 81))
 				.fill (Color.WHITE).build ();
 
@@ -58,7 +58,7 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 				.fill (Color.WHITE).build ();
 
 		Text giverNation = TextBuilder.create ().x (500).y (900)
-				.text (voter.getName ().get ())
+				.text (voter.getName ())
 				.font (Font.font ("Coolvetica RG", FontWeight.BOLD, 81))
 				.fill (Color.WHITE).build ();
 

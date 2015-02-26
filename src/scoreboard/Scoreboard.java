@@ -99,7 +99,7 @@ public class Scoreboard extends Application {
 	
 	int nameFromFlagOffset = 25;
 	
-	boolean tradVP = false;
+	boolean tradVP = true;
 	boolean useSpecialFlags = true;
 	
 	Participant currentVoter;
@@ -119,6 +119,8 @@ public class Scoreboard extends Application {
 
 	UpdateAnimator oneToSevenAnimator = new QuickUpdater ();
 	UpdateAnimator topThreeAnimator = new StepByStepAnimator ();
+	
+	CoreUI coreUI = new CoreUI();
 
 	public static void main(String[] args) {
 		launch (args);
@@ -158,7 +160,7 @@ public class Scoreboard extends Application {
 			ArrayList<Participant> rosterNations, Standings standings,
 			Stage primaryStage) {
 
-		tileUpdater.updateTiles (this);
+		tileUpdater.updateTiles (this, null);
 		root.getChildren ().add (background);
 		root.getChildren ().add (superNations);
 		root.getChildren ().add (
@@ -263,7 +265,7 @@ public class Scoreboard extends Application {
 		BufferedImage scoreboard = SwingFXUtils.fromFXImage (scoreboardImage,
 				bufferedImage);
 		File destScoreboard = new File (System.getProperty ("user.dir") + "\\scoreboards\\"
-						+ voter.getName ().get () + ".png");
+						+ voter.getName () + ".png");
 		destScoreboard.getParentFile ().mkdirs ();
 
 		try {

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="1432.0" type="Pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scoreboard.CoreUI">
+   <children>
+      <MenuBar prefHeight="32.0" prefWidth="1433.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Options">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label alignment="CENTER_RIGHT" layoutX="535.0" layoutY="385.0" prefHeight="51.0" prefWidth="82.0" text="Name:   ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField layoutX="629.0" layoutY="395.0" prefHeight="31.0" prefWidth="581.0" />
+      <TextField layoutX="1333.0" layoutY="395.0" prefHeight="31.0" prefWidth="79.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="1171.0" layoutY="385.0" prefHeight="51.0" prefWidth="152.0" text="Edition:   ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TableView fx:id="table" editable="true" layoutX="20.0" layoutY="51.0" prefHeight="326.0" prefWidth="1392.0">
+        <columns>
+          <TableColumn fx:id="nationNameCol" prefWidth="287.0" text="Nation Name" />
+            <TableColumn fx:id="shortnameCol" prefWidth="97.0" text="Shortname" />
+            <TableColumn fx:id="artistCol" prefWidth="299.0" text="Artist" />
+            <TableColumn fx:id="titleCol" prefWidth="296.0" text="Title" />
+          <TableColumn fx:id="startCol" prefWidth="109.0" text="Start" />
+            <TableColumn fx:id="stopCol" prefWidth="102.0" text="Stop" />
+            <TableColumn fx:id="gridCol" prefWidth="114.0" text="StartGrid" />
+            <TableColumn id="statusCol" fx:id="statusCol" prefWidth="87.0" text="Status" />
+        </columns>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </TableView>
+      <Button fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Add Entry" />
+      <Button layoutX="1122.0" layoutY="508.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="290.0" text="Start Show">
+         <font>
+            <Font name="Inconsolata" size="25.0" />
+         </font>
+      </Button>
+      <CheckBox layoutX="270.0" layoutY="533.0" mnemonicParsing="false" text="traditional vote presentation">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox layoutX="22.0" layoutY="533.0" mnemonicParsing="false" text="create banners">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox layoutX="898.0" layoutY="533.0" mnemonicParsing="false" text="use pretty flags">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox layoutX="648.0" layoutY="533.0" mnemonicParsing="false" text="fullscreen">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <Button fx:id="flagDirButton" layoutX="22.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="497.0" text="Flag Directory" />
+      <Button fx:id="entryDirButton" layoutX="539.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="436.0" text="Entry Directory" />
+      <Button fx:id="prettyFlagDirButton" layoutX="995.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="417.0" text="Pretty Flag Directory" />
+      <Button fx:id="setVotesButton" layoutX="280.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Set Votes" />
+   </children>
+</fx:root>

@@ -71,8 +71,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 						new KeyValue (pointView.yProperty (), newPosY
 								- nationGroup.getLayoutY ())));
 
-		scoreboard.groupNationMap.get (scoreboard.participants.get (sizeDenom - 1)).toFront ();
-		pointView.toFront ();
+		scoreboard.groupNationMap.get (scoreboard.participants.get (sizeDenom - 1)).toFront ();		
 		timeline.play ();
 
 		final Participant rece = receiver;
@@ -115,8 +114,8 @@ public class StepByStepAnimator extends UpdateAnimator {
 						tT.setOnFinished (new EventHandler<ActionEvent> () {
 							@Override
 							public void handle(ActionEvent event) {
-								Collections.sort (scoreboard.participants);
-								scoreboard.tileUpdater.updateTiles (scoreboard);
+								Collections.sort (scoreboard.participants);								
+								scoreboard.tileUpdater.updateTiles (scoreboard, rece);
 
 								// GET RID OF THAT
 								scoreboard.groupNationMap
@@ -127,10 +126,8 @@ public class StepByStepAnimator extends UpdateAnimator {
 								// SHOW 12 POINTER MEZZO
 								if (scoreboard.inCountryCounter % 10 == 1
 										&& scoreboard.inCountryCounter != 1) {
-									Platform.runLater (scoreboard
-											.showAndPraise12Pointer (rece,
-													voter, overview, save,
-													scoreboard));
+									Platform.runLater (scoreboard.showAndPraise12Pointer (rece,
+													voter, overview, save, scoreboard));
 									return;
 								}
 

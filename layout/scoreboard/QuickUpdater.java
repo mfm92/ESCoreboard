@@ -84,7 +84,7 @@ public class QuickUpdater extends UpdateAnimator {
 					@Override
 					public void handle(ActionEvent event) {
 						// UPDATE
-						scoreboard.tileUpdater.updateTiles (scoreboard);
+						scoreboard.tileUpdater.updateTiles (scoreboard, null);
 
 						// MOVE TILES
 						for (Participant participant : scoreboard.participants) {
@@ -122,7 +122,7 @@ public class QuickUpdater extends UpdateAnimator {
 									@Override
 									public void handle(ActionEvent arg0) {
 										Collections.sort (scoreboard.participants);
-										scoreboard.tileUpdater.updateTiles (scoreboard);
+										scoreboard.tileUpdater.updateTiles (scoreboard, null);
 										
 										for (int i = 0; i < scoreboard.transParts; i++) {
 											scoreboard.root

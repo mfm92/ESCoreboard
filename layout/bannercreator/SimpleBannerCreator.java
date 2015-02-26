@@ -44,7 +44,7 @@ public class SimpleBannerCreator extends BannerCreator {
 		BufferedImage bannerNextStep = SwingFXUtils.fromFXImage (bannerImage,
 				image);
 		File bannerDestination = new File (System.getProperty ("user.dir") + "\\banners\\"
-						+ p.getName ().get () + ".png");
+						+ p.getName () + ".png");
 		bannerDestination.getParentFile ().mkdirs ();
 
 		try {
@@ -99,7 +99,7 @@ public class SimpleBannerCreator extends BannerCreator {
 
 		bannerRoot.getChildren ().add (flag);
 
-		Text partName = new Text (p.getName ().get ());
+		Text partName = new Text (p.getName ());
 		partName.setLayoutX (220);
 		partName.setLayoutY (40);
 		partName.setFill (textColor);

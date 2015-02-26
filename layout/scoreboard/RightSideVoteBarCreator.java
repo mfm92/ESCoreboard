@@ -54,7 +54,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.width (voteUnderlay.getWidth ())
 				.height (0.5 * underlayHeight)
 				.x (voteUnderlay.getX ())
-				.y (underlayY + voteUnderlay.getHeight ())
+				.y (underlayY + 0.2 * underlayHeight)
 				.fill (new ImagePattern (scoreboard.utilities.voteFlagUnderlay))
 				.build ();
 
@@ -68,12 +68,8 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.create ()
 				.image (scoreboard.useSpecialFlags ? scoreboard.utilities.diamondMap
 						.get (voter) : voter.getFlag ())
-				.fitWidth (
-						scoreboard.useSpecialFlags ? specialFlagWidth
-								: normalFlagWidth)
-				.fitHeight (
-						scoreboard.useSpecialFlags ? specialFlagHeight
-								: normalFlagHeight).build ();
+				.fitWidth (scoreboard.useSpecialFlags ? specialFlagWidth : normalFlagWidth)
+				.fitHeight (scoreboard.useSpecialFlags ? specialFlagHeight : normalFlagHeight).build ();
 
 		HBox diamondVBox = new HBox ();
 		diamondVBox.setLayoutX (voteUnderlay.getX ());
@@ -96,10 +92,10 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 		Text currentVoter = TextBuilder
 				.create ()
-				.text (voter.getName ().get ())
+				.text (voter.getName ())
 				.fill (Color.WHITE)
 				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
-						.getName ().get ().length () < 14 ? 82 : 58)).build ();
+						.getName ().length () < 14 ? 82 : 58)).build ();
 
 		VBox currentVoterVBox = VBoxBuilder.create ()
 				.layoutX (voteUnderlay.getX ())

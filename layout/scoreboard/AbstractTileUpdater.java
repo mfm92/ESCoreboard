@@ -1,5 +1,6 @@
 package scoreboard;
 
+import nations.Participant;
 import javafx.scene.Group;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -8,9 +9,9 @@ import javafx.scene.shape.RectangleBuilder;
 public abstract class AbstractTileUpdater extends TileUpdater {
 	
 	@Override
-	public void updateTiles(Scoreboard scoreboard) {
+	public void updateTiles(Scoreboard scoreboard, Participant receiver) {
 		int nrOfPart = scoreboard.participants.size ();
-		prettyFormatting (scoreboard, nrOfPart);
+		prettyFormatting (scoreboard, nrOfPart, receiver);
 	}
 
 	@Override
@@ -39,5 +40,5 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 		}
 	}
 
-	public abstract void prettyFormatting(Scoreboard scoreboard, int nrOfPart);
+	public abstract void prettyFormatting(Scoreboard scoreboard, int nrOfPart, Participant receiver);
 }

@@ -124,7 +124,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 
 						Text recText = TextBuilder
 								.create ()
-								.text (currentVoterCopy.getVotes ().getReceivers ()[i].getName ().get ())
+								.text (currentVoterCopy.getVotes ().getReceivers ()[i].getName ())
 								.font (Font.font ("Coolvetica RG", FontWeight.MEDIUM, 33)).fill (Color.WHITE)
 								.build ();
 						

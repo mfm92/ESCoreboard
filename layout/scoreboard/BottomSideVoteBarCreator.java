@@ -57,7 +57,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.build ();
 
 		Text currentVoter = TextBuilder.create ()
-				.text (voter.getName ().get ()).fill (Color.WHITE)
+				.text (voter.getName ()).fill (Color.WHITE)
 				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, 45))
 				.build ();
 

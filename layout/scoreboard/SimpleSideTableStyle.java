@@ -46,7 +46,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 					.y (124 + i * textHeight).width (120).height (textHeight)
 					.fill (i % 2 == 0 ? bgColorLight : bgColorRed).build ();
 
-			Text textScore = new Text (finalists.get (i).getScore ().get ()
+			Text textScore = new Text (finalists.get (i).getScore ()
 					+ "");
 			textScore.setFont (Font.font ("Inconsolata", textScore.getText ()
 					.length () > 15 ? 26 : 38));
@@ -79,7 +79,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			entryVBox.setAlignment (Pos.CENTER_LEFT);
 			entryVBox.getChildren ().add (textEntry);
 
-			Text textNation = new Text (finalists.get (i).getName ().get ());
+			Text textNation = new Text (finalists.get (i).getName ());
 			textNation.setFont (Font
 					.font ("Coolvetica RG", FontWeight.BOLD, 46));
 			textNation.setFill (Color.WHITE);

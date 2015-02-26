@@ -14,18 +14,20 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextBuilder;
+import nations.Participant;
 
 public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 	@Override
-	public void prettyFormatting(Scoreboard scoreboard, int nrOfPart) {
+	public void prettyFormatting (final Scoreboard scoreboard, int nrOfPart, Participant receiver) {
 
-		int sizeDenom = (int) Math.ceil ((double) nrOfPart / (double) scoreboard.columnsNr);
+		final int sizeDenom = (int) Math.ceil ((double) nrOfPart
+				/ (double) scoreboard.columnsNr);
 		Group newSuperNations = new Group ();
 
 		for (int position = 0; position < nrOfPart; position++) {
 
-			Group nationTile = new Group ();
+			final Group nationTile = new Group ();
 
 			Rectangle base = RectangleBuilder
 					.create ()
@@ -53,9 +55,10 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			Text nationName = TextBuilder
 					.create ()
-					.text (scoreboard.participants.get (position).getName ()
-							.get ())
-					.layoutX (scoreboard.flagWidth + scoreboard.nameFromFlagOffset)
+					.text (scoreboard.participants.get (position).getName ())
+					.layoutX (
+							scoreboard.flagWidth
+									+ scoreboard.nameFromFlagOffset)
 					.layoutY (0.65 * pointsBase.getHeight ())
 					.id ("nationName")
 					.textAlignment (TextAlignment.CENTER)
@@ -66,8 +69,9 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			Text scoreTest = TextBuilder
 					.create ()
 					.text (new Integer (scoreboard.participants.get (position)
-							.getScore ().get ()).toString ()).layoutX (base.getWidth () + 46)
-					.layoutY (40).textAlignment (TextAlignment.CENTER)
+							.getScore ()).toString ())
+					.layoutX (base.getWidth () + 46).layoutY (40)
+					.textAlignment (TextAlignment.CENTER)
 					.font (Font.font ("Inconsolata", FontWeight.MEDIUM, 41))
 					.fill (Color.WHITE).build ();
 
@@ -84,13 +88,13 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 					.image (scoreboard.participants.get (position).getFlag ())
 					.layoutX ((base.getHeight () - scoreboard.flagHeight) / 2)
 					.layoutY ((base.getHeight () - scoreboard.flagHeight) / 2)
-					.id ("icon")
-					.build ();
+					.id ("icon").build ();
 
-			nationTile.setLayoutX (scoreboard.globalXOffset + scoreboard.columnWidth * (position / sizeDenom));
-			nationTile.setLayoutY (scoreboard.globalYOffset + (scoreboard.height / sizeDenom)
-					* (position % sizeDenom));
-			
+			nationTile.setLayoutX (scoreboard.globalXOffset
+					+ scoreboard.columnWidth * (position / sizeDenom));
+			nationTile.setLayoutY (scoreboard.globalYOffset
+					+ (scoreboard.height / sizeDenom) * (position % sizeDenom));
+
 			nationIcon.setFitWidth (scoreboard.flagWidth);
 			nationIcon.setFitHeight (scoreboard.flagHeight);
 
@@ -112,12 +116,14 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			if (scoreboard.participants.get (position).getTmpScore () != 0) {
 				ImageView ptsView = ImageViewBuilder
 						.create ()
-						.image (scoreboard.utilities.getPointsTokens ().get (
-								scoreboard.pointsToIndices (scoreboard.participants.get (
-										position).getTmpScore ())))
+						.image (scoreboard.utilities
+								.getPointsTokens ()
+								.get (scoreboard
+										.pointsToIndices (scoreboard.participants
+												.get (position).getTmpScore ())))
 						.layoutX (nationIcon.getLayoutX ())
-						.layoutY (nationIcon.getLayoutY ())
-						.id ("ptsProof").build ();
+						.layoutY (nationIcon.getLayoutY ()).id ("ptsProof")
+						.build ();
 
 				ptsView.setFitHeight (nationIcon.getFitHeight ());
 				ptsView.setFitWidth (nationIcon.getFitWidth ());
@@ -132,6 +138,11 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 								scoreboard.utilities.nationTileBackgroundPQScored));
 					}
 				}
+				
+				if (scoreboard.participants.get (position) == receiver) {
+					// do some effects here...
+				}
+
 				nationTile.getChildren ().add (ptsView);
 			}
 

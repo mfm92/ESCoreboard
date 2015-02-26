@@ -1,34 +1,48 @@
 package nations;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.media.Media;
 
 public class Entry {
 
-	private String artist;
-	private String title;
+	private SimpleStringProperty artist;
+	private SimpleStringProperty title;
 	private Media media;
-	private int start;
-	private int stop;
+	private SimpleIntegerProperty start;
+	private SimpleIntegerProperty stop;
+	
+	private SimpleStringProperty status;
 
-	public Entry(String artist, String title) {
-		this.artist = artist;
-		this.title = title;
+	public Entry(String artist, String title, String status) {
+		this.artist = new SimpleStringProperty (artist);
+		this.title = new SimpleStringProperty (title);
+		this.status = new SimpleStringProperty (status);
 	}
 
-	public Entry(String artist, String title, Media media, int start, int stop) {
-		this.artist = artist;
-		this.title = title;
+	public Entry(String artist, String title, Media media, int start, int stop, String status) {
+		this.artist = new SimpleStringProperty (artist);
+		this.title = new SimpleStringProperty (title);
 		this.media = media;
-		this.start = start;
-		this.stop = stop;
+		this.start = new SimpleIntegerProperty (start);
+		this.stop = new SimpleIntegerProperty (stop);
+		this.status = new SimpleStringProperty (status);
 	}
 
 	public String getArtist() {
-		return artist;
+		return artist.get ();
+	}
+	
+	public void setArtist (String artist) {
+		this.artist = new SimpleStringProperty(artist);
 	}
 
 	public String getTitle() {
-		return title;
+		return title.get ();
+	}
+	
+	public void setTitle (String title) {
+		this.title = new SimpleStringProperty(title);
 	}
 
 	public Media getMedia() {
@@ -36,10 +50,18 @@ public class Entry {
 	}
 
 	public int getStartDuration() {
-		return start;
+		return start.get ();
 	}
 
 	public int getStopDuration() {
-		return stop;
+		return stop.get ();
+	}
+	
+	public String getStatus () {
+		return status.get ();
+	}
+	
+	public void setStatus (String status) {
+		this.status = new SimpleStringProperty (status);
 	}
 }

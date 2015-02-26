@@ -22,7 +22,7 @@ public abstract class UpdateAnimator {
 
 	void countUpScore(Scoreboard scoreboard, Participant receiver) {
 		// SET CORRECT SCORE
-		int newNrOfPoints = receiver.getScore ().get ();
+		int newNrOfPoints = receiver.getScore ();
 		Group nationGroup = scoreboard.groupNationMap.get (receiver);
 		double xProperty = nationGroup.getChildren ().get (3).getLayoutX ();
 		double yProperty = nationGroup.getChildren ().get (3).getLayoutY ();

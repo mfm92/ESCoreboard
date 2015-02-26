@@ -31,14 +31,14 @@ public class Participant implements Comparable<Participant>, Cloneable {
 	}
 
 	public Participant(Participant p) {
-		name = p.getName ();
+		name = new SimpleStringProperty (p.getName ());
 		shortName = p.shortName ();
 		flag = p.getFlag ();
-		score = p.getScore ();
+		score = new SimpleIntegerProperty (p.getScore ());
 	}
 
-	public SimpleStringProperty getName() {
-		return name;
+	public String getName() {
+		return name.get ();
 	}
 
 	public String shortName() {
@@ -65,18 +65,18 @@ public class Participant implements Comparable<Participant>, Cloneable {
 		return flag;
 	}
 
-	public SimpleIntegerProperty getScore() {
-		return score;
+	public int getScore() {
+		return score.get ();
 	}
 
-	public SimpleIntegerProperty getScore(ArrayList<Participant> standings) {
+	public int getScore(ArrayList<Participant> standings) {
 		int i = 0;
 		for (Participant p : standings) {
 			i++;
 			if (p == this)
 				return standings.get (i - 1).getScore ();
 		}
-		return new SimpleIntegerProperty (-1);
+		return -1;
 	}
 
 	public short getTotalVoters() {
@@ -143,9 +143,9 @@ public class Participant implements Comparable<Participant>, Cloneable {
 
 	@Override
 	public int compareTo(Participant o) {
-		if (o.getScore ().get () > score.get ())
+		if (o.getScore () > score.get ())
 			return 1;
-		else if (o.getScore ().get () < score.get ())
+		else if (o.getScore () < score.get ())
 			return -1;
 
 		if (o.getTotalVoters () > totalVoters)
