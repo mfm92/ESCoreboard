@@ -18,9 +18,9 @@ public class ParticipantSave {
 			String title, int start, int stop, int grid, String status) {
 
 		this.name = new SimpleStringProperty(name);
-		this.shortName = new SimpleStringProperty(name);
-		this.artist = new SimpleStringProperty(name);
-		this.title = new SimpleStringProperty(name);
+		this.shortName = new SimpleStringProperty(shortName);
+		this.artist = new SimpleStringProperty(artist);
+		this.title = new SimpleStringProperty(title);
 		this.start = new SimpleIntegerProperty (start);
 		this.stop = new SimpleIntegerProperty (stop);
 		this.grid = new SimpleIntegerProperty (grid);

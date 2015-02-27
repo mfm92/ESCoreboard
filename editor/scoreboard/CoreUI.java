@@ -10,10 +10,12 @@ import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -23,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -111,8 +114,11 @@ public class CoreUI extends Application implements Initializable {
 		flagDirButton.setOnMouseClicked (dirChooser);
 		entryDirButton.setOnMouseClicked (dirChooser);
 		prettyFlagDirButton.setOnMouseClicked (dirChooser);
+		
+		setVotesButton.setOnAction (new VoteRegistrator ());
 	}
 
+	@SuppressWarnings("unused") 
 	private ObservableList<ParticipantSave> readConfigFile () throws IOException {
 		
 		String line;
@@ -143,7 +149,7 @@ public class CoreUI extends Application implements Initializable {
 			
 			File selected = dirChooser.showDialog (null);
 			
-			System.out.println ("You've selected :" + selected.getAbsolutePath ());
+			System.out.println ("You've selected: " + selected.getAbsolutePath ());
 		}
 		
 	}
