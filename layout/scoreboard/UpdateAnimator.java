@@ -9,7 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBuilder;
 import nations.Participant;
 import data.Standings;
 
@@ -34,10 +33,11 @@ public abstract class UpdateAnimator {
 		// COUNT IT UP
 		nationGroup.getChildren ().remove (nationGroup.lookup ("#score"));
 
-		Text scoreTest = TextBuilder.create ()
-				.text (new Integer (newNrOfPoints).toString ())
-				.font (Font.font ("Inconsolata", FontWeight.MEDIUM, 38))
-				.fill (Color.WHITE).build ();
+		Text scoreTest = new Text();
+		
+		scoreTest.setText (new Integer (newNrOfPoints).toString ());
+		scoreTest.setFont (Font.font ("Inconsolata", FontWeight.MEDIUM, 38));
+		scoreTest.setFill (Color.WHITE);
 
 		VBox scoreVBox = new VBox ();
 		scoreVBox.setLayoutX (xProperty);

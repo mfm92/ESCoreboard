@@ -8,7 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -32,9 +31,13 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 		for (int i = 0; i < 6; i++) {
 			Group textGroup = new Group ();
 			textGroup.setId ("Table " + i);
-			Rectangle rectangle = RectangleBuilder.create ().x (900)
-					.y (124 + i * textHeight).fill (bgColor).width (500)
-					.height (60).build ();
+			
+			Rectangle rectangle = new Rectangle();
+			rectangle.setX (900);
+			rectangle.setY (124 + i * textHeight);
+			rectangle.setFill (bgColor);
+			rectangle.setWidth (500);
+			rectangle.setHeight (60);
 
 			ImageView flag = new ImageView (finalists.get (i).getFlag ());
 			flag.setLayoutX (rectangle.getX () + 5);
@@ -42,9 +45,12 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			flag.setFitHeight (50);
 			flag.setFitWidth (80);
 
-			Rectangle pointsBase = RectangleBuilder.create ().x (1380)
-					.y (124 + i * textHeight).width (120).height (textHeight)
-					.fill (i % 2 == 0 ? bgColorLight : bgColorRed).build ();
+			Rectangle pointsBase = new Rectangle();
+			pointsBase.setX (1380);
+			pointsBase.setY (124 + i * textHeight);
+			pointsBase.setWidth (120);
+			pointsBase.setHeight (textHeight);
+			pointsBase.setFill (i % 2 == 0 ? bgColorLight : bgColorRed);
 
 			Text textScore = new Text (finalists.get (i).getScore ()
 					+ "");
@@ -60,9 +66,13 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			ptsVBox.setAlignment (Pos.CENTER);
 			ptsVBox.getChildren ().add (textScore);
 
-			Rectangle rectangleEntry = RectangleBuilder.create ().x (900)
-					.y (124 + i * textHeight + 60).width (480).height (40)
-					.fill (bgColorLighter).build ();
+			Rectangle rectangleEntry = new Rectangle();
+			
+			rectangleEntry.setX (900);
+			rectangleEntry.setY (124 + i * textHeight + 60);
+			rectangleEntry.setWidth (480);
+			rectangleEntry.setHeight (40);
+			rectangleEntry.setFill (bgColorLighter);
 
 			Text textEntry = new Text (finalists.get (i).getEntry ()
 					.getArtist ()
@@ -96,11 +106,16 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 					rectangleEntry, ptsVBox, entryVBox, nationVBox);
 			superText.getChildren ().add (textGroup);
 		}
-
-		superText.getChildren ().add (
-				RectangleBuilder.create ().x (900).y (50).id ("Top6Rect")
-						.width (600).height (74).fill (Color.ALICEBLUE)
-						.build ());
+		
+		Rectangle r = new Rectangle();
+		r.setX (900);
+		r.setY (50);
+		r.setId ("Top6Rect");
+		r.setWidth (600);
+		r.setHeight (74);
+		r.setFill (Color.ALICEBLUE);
+		
+		superText.getChildren ().add (r);
 
 		Text top6Text = new Text ("Top 6");
 		top6Text.setFill (Color.DARKGRAY);
