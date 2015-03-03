@@ -30,7 +30,7 @@ public class QuickUpdater extends UpdateAnimator {
 		scoreboard.root.getChildren ().remove (
 				scoreboard.root.lookup ("#media"));
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
-		int sizeDenom = (scoreboard.participants.size () + 1) / scoreboard.columnsNr;
+		int sizeDenom = (scoreboard.participants.size () + 1) / scoreboard.getColumnsNr();
 
 		// CLEAR AFTER FULL VOTE
 		votesClear (voter, scoreboard);
@@ -38,10 +38,10 @@ public class QuickUpdater extends UpdateAnimator {
 		final Votes votes = scoreboard.utilities.voteMap.get (voter);
 		ArrayList<Timeline> timelines = new ArrayList<> ();
 
-		for (int i = 1; i <= scoreboard.transParts; i++) {
+		for (int i = 1; i <= scoreboard.getTransParts(); i++) {
 			// PLACE POINT NODE
 			Rectangle pointView = scoreboard.pointViews.get ((i - 1));
-			pointView.setHeight (0.7*(scoreboard.height/sizeDenom));
+			pointView.setHeight (0.7*(scoreboard.getHeight()/sizeDenom));
 			Participant receiver = votes.getReceivers ()[(i - 1)];
 			receiver.setTmpScore (scoreboard.indicesToPoints (i - 1));
 			receiver.setScoredFlag (true);
@@ -52,9 +52,9 @@ public class QuickUpdater extends UpdateAnimator {
 			nationGroup.getChildren ().add (pointView);
 
 			double newPosX = getXCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.height/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getHeight()/sizeDenom;
 			double newPosY = getYCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.height/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getHeight()/sizeDenom;
 			double oldPosX = pointView.getX ();
 			double oldPosY = pointView.getY ();
 
@@ -113,7 +113,7 @@ public class QuickUpdater extends UpdateAnimator {
 							transTrans.add (tTrans);
 						}
 						for (TranslateTransition tT : transTrans) {
-							for (int i = 0; i < scoreboard.transParts; i++) {
+							for (int i = 0; i < scoreboard.getTransParts(); i++) {
 								scoreboard.pointViews.get (i).toFront ();
 							}
 							tT.play ();
@@ -124,7 +124,7 @@ public class QuickUpdater extends UpdateAnimator {
 										Collections.sort (scoreboard.participants);
 										scoreboard.tileUpdater.updateTiles (scoreboard, null);
 										
-										for (int i = 0; i < scoreboard.transParts; i++) {
+										for (int i = 0; i < scoreboard.getTransParts(); i++) {
 											scoreboard.root
 													.getChildren ()
 													.remove (scoreboard.pointViews.get (i));

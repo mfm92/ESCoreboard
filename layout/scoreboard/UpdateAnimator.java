@@ -61,22 +61,22 @@ public abstract class UpdateAnimator {
 					.remove (scoreboard.groupNationMap.get (finalist).lookup ("#ptsProof"));
 		}
 		
-		if (scoreboard.columnsNr > 2) {
+		if (scoreboard.getColumnsNr() > 2) {
 			scoreboard.bottomSideBar.makeSideOfScoreboard (scoreboard.root,
-					voter, scoreboard, scoreboard.bottomBarWidth, scoreboard.bottomBarX);
+					voter, scoreboard, scoreboard.getBottomBarWidth(), scoreboard.getBottomBarX());
 		} else {
 			scoreboard.rightSideBar.makeSideOfScoreboard (scoreboard.root, voter, scoreboard, 
-					scoreboard.height, scoreboard.globalYOffset);
+					scoreboard.getHeight(), scoreboard.getGlobalYOffset());
 		}
 	}
 
 	double getXCoordByPos(int position, Scoreboard scoreboard) {
-		return scoreboard.globalXOffset + scoreboard.columnWidth * 
-				((position - 1) / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)));
+		return scoreboard.getGlobalXOffset() + scoreboard.getColumnWidth() * 
+				((position - 1) / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr())));
 	}
 
 	double getYCoordByPos(int position, Scoreboard scoreboard) {
-		return scoreboard.globalYOffset + (scoreboard.height / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)))
-				* ((position - 1) % ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr)));
+		return scoreboard.getGlobalYOffset() + (scoreboard.getHeight() / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr())))
+				* ((position - 1) % ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr())));
 	}
 }

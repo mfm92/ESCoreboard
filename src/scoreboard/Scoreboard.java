@@ -55,58 +55,58 @@ public class Scoreboard extends Application {
 			(minDuration.toSeconds () + (1 - (CoreUI.inputData.getShowSpeed () / 100.0)) * 
 					(maxDuration.toSeconds () - minDuration.toSeconds ()));
 
-	int columnsNr = 3;
-	int columnsNrTransition = 2;
+	private int columnsNr = 3;
+	private int columnsNrTransition = 2;
 	
-	int specialBorder = 10;
-	int transParts = 7;
+	private int specialBorder = 10;
+	private int transParts = 7;
 	
-	int globalXOffset = 50;
-	int globalYOffset = 50;
+	private int globalXOffset = 50;
+	private int globalYOffset = 50;
 	
-	int transitionXOffset = 690;
-	int transitionYOffset = 980;
+	private int transitionXOffset = 690;
+	private int transitionYOffset = 980;
 	
-	int height = 900;
-	int heightTransition = 240;
+	private int height = 900;
+	private int heightTransition = 240;
 	
-	int columnNameWidth = 500;
-	int columnWidth = 600;
-	int columnWidthTransition = 590;
+	private int columnNameWidth = 500;
+	private int columnWidth = 600;
+	private int columnWidthTransition = 590;
 	
-	int flagHeight = 53;
-	int flagWidth = (int) (1.5 * flagHeight);
+	private int flagHeight = 53;
+	private int flagWidth = (int) (1.5 * getFlagHeight());
 	
-	int flagHeightTransition = 50;
-	int flagWidthTransition = (int) (1.5 * flagHeightTransition);
+	private int flagHeightTransition = 50;
+	private int flagWidthTransition = (int) (1.5 * getFlagHeightTransition());
 	
-	int pointTokenXOffset = 100;
-	int pointTokenYOffset = 1000;
+	private int pointTokenXOffset = 100;
+	private int pointTokenYOffset = 1000;
 	
-	int pointTokenXOffsetTransition = 100;
-	int pointTokenYOffsetTransition = 1000;
+	private int pointTokenXOffsetTransition = 100;
+	private int pointTokenYOffsetTransition = 1000;
 	
-	int ptfromEdgeOffsetTrans = 20;
-	int flagFromPTOffsetTrans = 20;
-	int textFromFlagOffsetTrans = 20;
+	private int ptfromEdgeOffsetTrans = 20;
+	private int flagFromPTOffsetTrans = 20;
+	private int textFromFlagOffsetTrans = 20;
 	
-	int pointTokenWidthTransition = 75;
-	int pointTokenHeightTransition = 50;
+	private int pointTokenWidthTransition = 75;
+	private int pointTokenHeightTransition = 50;
 	
-	int rightBarWidth = 520;
-	int rightBarX = 1350;
+	private int rightBarWidth = 520;
+	private int rightBarX = 1350;
 	
-	int bottomScoreboardOffset = 40;
+	private int bottomScoreboardOffset = 40;
 	
-	int bottomBarHeight = 75;
-	int bottomBarWidth = 700;
-	int bottomBarX = globalXOffset + columnsNr*columnWidth - bottomBarWidth;
-	int bottomBarY = globalYOffset + height + bottomScoreboardOffset;
+	private int bottomBarHeight = 75;
+	private int bottomBarWidth = 700;
+	private int bottomBarX = getGlobalXOffset() + getColumnsNr()*getColumnWidth() - getBottomBarWidth();
+	private int bottomBarY = getGlobalYOffset() + getHeight() + getBottomScoreboardOffset();
 	
-	int ptUnderLayHeight = 75;
-	int ptUnderLayWidth = 10 * flagWidth + 100;
+	private int ptUnderLayHeight = 75;
+	private int ptUnderLayWidth = 10 * getFlagWidth() + 100;
 	
-	int nameFromFlagOffset = 25;
+	private int nameFromFlagOffset = 25;
 
 	SideOverviewTableCreator sideTableCreator = new SimpleSideTableStyle ();
 	TwelvePairShower twelvePairShower = new ConcreteTwelvePairShower ();
@@ -197,7 +197,7 @@ public class Scoreboard extends Application {
 			Standings overview) {
 		
 		if (!tradVP) {
-			((inCountryCounter % 10 == transParts) ? oneToSevenAnimator : topThreeAnimator)
+			((inCountryCounter % 10 == getTransParts()) ? oneToSevenAnimator : topThreeAnimator)
 			.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);	
 		} else {
 			topThreeAnimator.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);
@@ -296,16 +296,299 @@ public class Scoreboard extends Application {
 	}
 	
 	public int pointsToIndices(int pts) {
-		if (pts <= 8)
-			return pts;
 		if (pts == 10)
 			return 9;
 		if (pts == 12)
 			return 0;
 
-		System.out.println ("pointsToIndices returns sth baaaad, pts was: "
-				+ pts);
+		return pts;
+	}
+	
+	int getColumnsNr() {
+		return columnsNr;
+	}
 
-		return 103859; // absolutely pointless huehue
+	void setColumnsNr(int columnsNr) {
+		this.columnsNr = columnsNr;
+	}
+
+	public int getColumnsNrTransition() {
+		return columnsNrTransition;
+	}
+
+	public void setColumnsNrTransition(int columnsNrTransition) {
+		this.columnsNrTransition = columnsNrTransition;
+	}
+
+	public int getSpecialBorder() {
+		return specialBorder;
+	}
+
+	public void setSpecialBorder(int specialBorder) {
+		this.specialBorder = specialBorder;
+	}
+
+	public int getTransParts() {
+		return transParts;
+	}
+
+	public void setTransParts(int transParts) {
+		this.transParts = transParts;
+	}
+
+	public int getGlobalXOffset() {
+		return globalXOffset;
+	}
+
+	public void setGlobalXOffset(int globalXOffset) {
+		this.globalXOffset = globalXOffset;
+	}
+
+	public int getGlobalYOffset() {
+		return globalYOffset;
+	}
+
+	public void setGlobalYOffset(int globalYOffset) {
+		this.globalYOffset = globalYOffset;
+	}
+
+	public int getTransitionXOffset() {
+		return transitionXOffset;
+	}
+
+	public void setTransitionXOffset(int transitionXOffset) {
+		this.transitionXOffset = transitionXOffset;
+	}
+
+	public int getTransitionYOffset() {
+		return transitionYOffset;
+	}
+
+	public void setTransitionYOffset(int transitionYOffset) {
+		this.transitionYOffset = transitionYOffset;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getHeightTransition() {
+		return heightTransition;
+	}
+
+	public void setHeightTransition(int heightTransition) {
+		this.heightTransition = heightTransition;
+	}
+
+	public int getColumnNameWidth() {
+		return columnNameWidth;
+	}
+
+	public void setColumnNameWidth(int columnNameWidth) {
+		this.columnNameWidth = columnNameWidth;
+	}
+
+	public int getColumnWidth() {
+		return columnWidth;
+	}
+
+	public void setColumnWidth(int columnWidth) {
+		this.columnWidth = columnWidth;
+	}
+
+	public int getColumnWidthTransition() {
+		return columnWidthTransition;
+	}
+
+	public void setColumnWidthTransition(int columnWidthTransition) {
+		this.columnWidthTransition = columnWidthTransition;
+	}
+
+	public int getFlagHeight() {
+		return flagHeight;
+	}
+
+	public void setFlagHeight(int flagHeight) {
+		this.flagHeight = flagHeight;
+	}
+
+	public int getFlagWidth() {
+		return flagWidth;
+	}
+
+	public void setFlagWidth(int flagWidth) {
+		this.flagWidth = flagWidth;
+	}
+
+	public int getFlagHeightTransition() {
+		return flagHeightTransition;
+	}
+
+	public void setFlagHeightTransition(int flagHeightTransition) {
+		this.flagHeightTransition = flagHeightTransition;
+	}
+
+	public int getFlagWidthTransition() {
+		return flagWidthTransition;
+	}
+
+	public void setFlagWidthTransition(int flagWidthTransition) {
+		this.flagWidthTransition = flagWidthTransition;
+	}
+
+	public int getPointTokenXOffset() {
+		return pointTokenXOffset;
+	}
+
+	public void setPointTokenXOffset(int pointTokenXOffset) {
+		this.pointTokenXOffset = pointTokenXOffset;
+	}
+
+	public int getPointTokenYOffset() {
+		return pointTokenYOffset;
+	}
+
+	public void setPointTokenYOffset(int pointTokenYOffset) {
+		this.pointTokenYOffset = pointTokenYOffset;
+	}
+
+	public int getPointTokenXOffsetTransition() {
+		return pointTokenXOffsetTransition;
+	}
+
+	public void setPointTokenXOffsetTransition(int pointTokenXOffsetTransition) {
+		this.pointTokenXOffsetTransition = pointTokenXOffsetTransition;
+	}
+
+	public int getPointTokenYOffsetTransition() {
+		return pointTokenYOffsetTransition;
+	}
+
+	public void setPointTokenYOffsetTransition(int pointTokenYOffsetTransition) {
+		this.pointTokenYOffsetTransition = pointTokenYOffsetTransition;
+	}
+
+	public int getPtfromEdgeOffsetTrans() {
+		return ptfromEdgeOffsetTrans;
+	}
+
+	public void setPtfromEdgeOffsetTrans(int ptfromEdgeOffsetTrans) {
+		this.ptfromEdgeOffsetTrans = ptfromEdgeOffsetTrans;
+	}
+
+	public int getFlagFromPTOffsetTrans() {
+		return flagFromPTOffsetTrans;
+	}
+
+	public void setFlagFromPTOffsetTrans(int flagFromPTOffsetTrans) {
+		this.flagFromPTOffsetTrans = flagFromPTOffsetTrans;
+	}
+
+	public int getTextFromFlagOffsetTrans() {
+		return textFromFlagOffsetTrans;
+	}
+
+	public void setTextFromFlagOffsetTrans(int textFromFlagOffsetTrans) {
+		this.textFromFlagOffsetTrans = textFromFlagOffsetTrans;
+	}
+
+	public int getPointTokenWidthTransition() {
+		return pointTokenWidthTransition;
+	}
+
+	public void setPointTokenWidthTransition(int pointTokenWidthTransition) {
+		this.pointTokenWidthTransition = pointTokenWidthTransition;
+	}
+
+	public int getPointTokenHeightTransition() {
+		return pointTokenHeightTransition;
+	}
+
+	public void setPointTokenHeightTransition(int pointTokenHeightTransition) {
+		this.pointTokenHeightTransition = pointTokenHeightTransition;
+	}
+
+	public int getRightBarWidth() {
+		return rightBarWidth;
+	}
+
+	public void setRightBarWidth(int rightBarWidth) {
+		this.rightBarWidth = rightBarWidth;
+	}
+
+	public int getRightBarX() {
+		return rightBarX;
+	}
+
+	public void setRightBarX(int rightBarX) {
+		this.rightBarX = rightBarX;
+	}
+
+	public int getBottomScoreboardOffset() {
+		return bottomScoreboardOffset;
+	}
+
+	public void setBottomScoreboardOffset(int bottomScoreboardOffset) {
+		this.bottomScoreboardOffset = bottomScoreboardOffset;
+	}
+
+	public int getBottomBarHeight() {
+		return bottomBarHeight;
+	}
+
+	public void setBottomBarHeight(int bottomBarHeight) {
+		this.bottomBarHeight = bottomBarHeight;
+	}
+
+	public int getBottomBarWidth() {
+		return bottomBarWidth;
+	}
+
+	public void setBottomBarWidth(int bottomBarWidth) {
+		this.bottomBarWidth = bottomBarWidth;
+	}
+
+	public int getBottomBarX() {
+		return bottomBarX;
+	}
+
+	public void setBottomBarX(int bottomBarX) {
+		this.bottomBarX = bottomBarX;
+	}
+
+	public int getBottomBarY() {
+		return bottomBarY;
+	}
+
+	public void setBottomBarY(int bottomBarY) {
+		this.bottomBarY = bottomBarY;
+	}
+
+	public int getPtUnderLayHeight() {
+		return ptUnderLayHeight;
+	}
+
+	public void setPtUnderLayHeight(int ptUnderLayHeight) {
+		this.ptUnderLayHeight = ptUnderLayHeight;
+	}
+
+	public int getPtUnderLayWidth() {
+		return ptUnderLayWidth;
+	}
+
+	public void setPtUnderLayWidth(int ptUnderLayWidth) {
+		this.ptUnderLayWidth = ptUnderLayWidth;
+	}
+
+	public int getNameFromFlagOffset() {
+		return nameFromFlagOffset;
+	}
+
+	public void setNameFromFlagOffset(int nameFromFlagOffset) {
+		this.nameFromFlagOffset = nameFromFlagOffset;
 	}
 }

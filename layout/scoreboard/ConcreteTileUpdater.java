@@ -22,7 +22,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 	public void prettyFormatting (final Scoreboard scoreboard, int nrOfPart, Participant receiver) {
 
 		final int sizeDenom = (int) Math.ceil ((double) nrOfPart
-				/ (double) scoreboard.columnsNr);
+				/ (double) scoreboard.getColumnsNr());
 		Group newSuperNations = new Group ();
 
 		for (int position = 0; position < nrOfPart; position++) {
@@ -31,25 +31,25 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			Rectangle base = RectangleBuilder
 					.create ()
-					.width (scoreboard.columnNameWidth)
-					.height (scoreboard.height / sizeDenom)
+					.width (scoreboard.getColumnNameWidth())
+					.height (scoreboard.getHeight() / sizeDenom)
 					.layoutX (0)
 					.layoutY (0)
 					.id ("base")
 					.fill (new ImagePattern (
-							(position < scoreboard.specialBorder ? scoreboard.utilities.nationTileBackgroundPQ
+							(position < scoreboard.getSpecialBorder() ? scoreboard.utilities.nationTileBackgroundPQ
 									: scoreboard.utilities.nationTileBackground)))
 					.build ();
 
 			Rectangle pointsBase = RectangleBuilder
 					.create ()
-					.width (scoreboard.columnWidth - scoreboard.columnNameWidth)
-					.height (scoreboard.height / sizeDenom)
-					.layoutX (scoreboard.columnNameWidth)
+					.width (scoreboard.getColumnWidth() - scoreboard.getColumnNameWidth())
+					.height (scoreboard.getHeight() / sizeDenom)
+					.layoutX (scoreboard.getColumnNameWidth())
 					.layoutY (0)
 					.id ("pointBase")
 					.fill (new ImagePattern (
-							position < scoreboard.specialBorder ? scoreboard.utilities.pointsTileBackgroundPQ
+							position < scoreboard.getSpecialBorder() ? scoreboard.utilities.pointsTileBackgroundPQ
 									: scoreboard.utilities.pointsTileBackground))
 					.build ();
 
@@ -57,13 +57,13 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 					.create ()
 					.text (scoreboard.participants.get (position).getName ())
 					.layoutX (
-							scoreboard.flagWidth
-									+ scoreboard.nameFromFlagOffset)
+							scoreboard.getFlagWidth()
+									+ scoreboard.getNameFromFlagOffset())
 					.layoutY (0.65 * pointsBase.getHeight ())
 					.id ("nationName")
 					.textAlignment (TextAlignment.CENTER)
 					.font (Font.font ("Harabara Mais", FontWeight.MEDIUM, 33))
-					.fill (position < scoreboard.specialBorder ? Color.RED
+					.fill (position < scoreboard.getSpecialBorder() ? Color.RED
 							: Color.WHITE).build ();
 
 			Text scoreTest = TextBuilder
@@ -86,17 +86,17 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			ImageView nationIcon = ImageViewBuilder.create ()
 					.image (scoreboard.participants.get (position).getFlag ())
-					.layoutX ((base.getHeight () - scoreboard.flagHeight) / 2)
-					.layoutY ((base.getHeight () - scoreboard.flagHeight) / 2)
+					.layoutX ((base.getHeight () - scoreboard.getFlagHeight()) / 2)
+					.layoutY ((base.getHeight () - scoreboard.getFlagHeight()) / 2)
 					.id ("icon").build ();
 
-			nationTile.setLayoutX (scoreboard.globalXOffset
-					+ scoreboard.columnWidth * (position / sizeDenom));
-			nationTile.setLayoutY (scoreboard.globalYOffset
-					+ (scoreboard.height / sizeDenom) * (position % sizeDenom));
+			nationTile.setLayoutX (scoreboard.getGlobalXOffset()
+					+ scoreboard.getColumnWidth() * (position / sizeDenom));
+			nationTile.setLayoutY (scoreboard.getGlobalYOffset()
+					+ (scoreboard.getHeight() / sizeDenom) * (position % sizeDenom));
 
-			nationIcon.setFitWidth (scoreboard.flagWidth);
-			nationIcon.setFitHeight (scoreboard.flagHeight);
+			nationIcon.setFitWidth (scoreboard.getFlagWidth());
+			nationIcon.setFitHeight (scoreboard.getFlagHeight());
 
 			nationTile.getChildren ().clear ();
 			nationTile.getChildren ().addAll (base, pointsBase, nationName,
@@ -133,7 +133,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 								.getText ().endsWith (" PQ!")))) {
 					base.setFill (new ImagePattern (
 							scoreboard.utilities.nationTileBackgroundScored));
-					if (position < scoreboard.specialBorder) {
+					if (position < scoreboard.getSpecialBorder()) {
 						base.setFill (new ImagePattern (
 								scoreboard.utilities.nationTileBackgroundPQScored));
 					}

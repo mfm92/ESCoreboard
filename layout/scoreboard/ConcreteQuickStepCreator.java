@@ -84,41 +84,41 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 				@Override
 				public void run() {
 
-					int transSNum = scoreboard.transParts / scoreboard.columnsNrTransition + 1;
-					int transSDen = (int) ((double) scoreboard.heightTransition / (double) transSNum);
+					int transSNum = scoreboard.getTransParts() / scoreboard.getColumnsNrTransition() + 1;
+					int transSDen = (int) ((double) scoreboard.getHeightTransition() / (double) transSNum);
 					
-					for (int i = 0; i < scoreboard.transParts; i++) {
+					for (int i = 0; i < scoreboard.getTransParts(); i++) {
 						Rectangle rect = RectangleBuilder
 								.create ()
 								.height (transSDen)
-								.width (scoreboard.columnWidthTransition)
-								.x (scoreboard.transitionXOffset - scoreboard.columnWidthTransition * ((i+1) / transSNum))
-								.y (scoreboard.transitionYOffset - transSDen * ((i+1) % transSNum))
+								.width (scoreboard.getColumnWidthTransition())
+								.x (scoreboard.getTransitionXOffset() - scoreboard.getColumnWidthTransition() * ((i+1) / transSNum))
+								.y (scoreboard.getTransitionYOffset() - transSDen * ((i+1) % transSNum))
 								.fill (new ImagePattern (scoreboard.utilities.nationTileBackground))
 								.build ();
 						rects.add (rect);
 
 						ImageView viewFlag = ImageViewBuilder
 								.create ()
-								.fitHeight (scoreboard.flagHeightTransition)
-								.fitWidth (scoreboard.flagWidthTransition)
+								.fitHeight (scoreboard.getFlagHeightTransition())
+								.fitWidth (scoreboard.getFlagWidthTransition())
 								.image (currentVoterCopy.getVotes ().getReceivers ()[i].getFlag ())
-								.x (rect.getX () + scoreboard.pointTokenWidthTransition + scoreboard.flagFromPTOffsetTrans +
-										scoreboard.ptfromEdgeOffsetTrans)
-								.y (rect.getY () + (rect.getHeight () - scoreboard.flagHeightTransition) / 2)
+								.x (rect.getX () + scoreboard.getPointTokenWidthTransition() + scoreboard.getFlagFromPTOffsetTrans() +
+										scoreboard.getPtfromEdgeOffsetTrans())
+								.y (rect.getY () + (rect.getHeight () - scoreboard.getFlagHeightTransition()) / 2)
 								.build ();
 						
 						flags.add (viewFlag);
 						
 						VBox rectVBox = VBoxBuilder.create ()
-								.layoutX (viewFlag.getX () + viewFlag.getFitWidth () + scoreboard.textFromFlagOffsetTrans)
+								.layoutX (viewFlag.getX () + viewFlag.getFitWidth () + scoreboard.getTextFromFlagOffsetTrans())
 								.layoutY (rect.getY ())
 								.prefHeight (transSDen)
-								.prefWidth (rect.getWidth () - (scoreboard.pointTokenWidthTransition + 
-										scoreboard.ptfromEdgeOffsetTrans +
-										scoreboard.flagFromPTOffsetTrans +
-										scoreboard.flagWidthTransition +
-										scoreboard.textFromFlagOffsetTrans))
+								.prefWidth (rect.getWidth () - (scoreboard.getPointTokenWidthTransition() + 
+										scoreboard.getPtfromEdgeOffsetTrans() +
+										scoreboard.getFlagFromPTOffsetTrans() +
+										scoreboard.getFlagWidthTransition() +
+										scoreboard.getTextFromFlagOffsetTrans()))
 								.alignment (Pos.CENTER_LEFT)
 								.build ();
 
@@ -135,19 +135,19 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					final ArrayList<Timeline> timelines = new ArrayList<> ();
 					final ArrayList<ImageView> pointViews = new ArrayList<> ();
 					
-					for (int i = 0; i < scoreboard.transParts; i++) {
+					for (int i = 0; i < scoreboard.getTransParts(); i++) {
 						ImageView pointView = ImageViewBuilder
 								.create ()
-								.fitHeight (scoreboard.pointTokenHeightTransition)
-								.fitWidth (scoreboard.pointTokenWidthTransition)
+								.fitHeight (scoreboard.getPointTokenHeightTransition())
+								.fitWidth (scoreboard.getPointTokenWidthTransition())
 								.image (scoreboard.utilities.getPointsTokens ().get (i))
-								.x (scoreboard.pointTokenXOffsetTransition + i *
-										scoreboard.pointTokenWidthTransition)
-								.y (scoreboard.pointTokenYOffsetTransition).build ();
+								.x (scoreboard.getPointTokenXOffsetTransition() + i *
+										scoreboard.getPointTokenWidthTransition())
+								.y (scoreboard.getPointTokenYOffsetTransition()).build ();
 
 						pointViews.add (pointView);
-						double shiftPVX = rects.get (i).getX () - pointView.getX () + scoreboard.ptfromEdgeOffsetTrans;
-						double shiftPVY = rects.get (i).getY () - pointView.getY () + (transSDen - scoreboard.pointTokenHeightTransition) / 2;
+						double shiftPVX = rects.get (i).getX () - pointView.getX () + scoreboard.getPtfromEdgeOffsetTrans();
+						double shiftPVY = rects.get (i).getY () - pointView.getY () + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2;
 						
 						to7Group.getChildren ().add (pointView);
 						Timeline timeline = new Timeline ();
@@ -179,7 +179,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			entryPlayer.setOnEndOfMedia (new Runnable () {
 				@Override
 				public void run() {
-					final int save = scoreboard.inCountryCounter += (scoreboard.transParts - 1);
+					final int save = scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
 					Platform.runLater (new VoteAdder (standings, scoreboard,
 							scoreboard.utilities, save, tradVP));
 				}

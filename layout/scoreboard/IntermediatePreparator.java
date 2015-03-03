@@ -15,11 +15,11 @@ public abstract class IntermediatePreparator {
 
 	void createPointsArray(Scoreboard scoreboard) {
 		Rectangle ptRect = RectangleBuilder.create ()
-			.x (scoreboard.globalXOffset)
-			.y (scoreboard.globalYOffset + scoreboard.height + scoreboard.bottomScoreboardOffset)
+			.x (scoreboard.getGlobalXOffset())
+			.y (scoreboard.getGlobalYOffset() + scoreboard.getHeight() + scoreboard.getBottomScoreboardOffset())
 			.id ("ptHolder")
-			.width (scoreboard.ptUnderLayWidth)
-			.height (scoreboard.ptUnderLayHeight)
+			.width (scoreboard.getPtUnderLayWidth())
+			.height (scoreboard.getPtUnderLayHeight())
 			.fill (new ImagePattern (scoreboard.utilities.ptHolder))
 			.build ();
 		
@@ -27,14 +27,14 @@ public abstract class IntermediatePreparator {
 		int pointCounter = 0;
 		for (Image image : scoreboard.utilities.getPointsTokens ()) {
 			Rectangle pointView = RectangleBuilder.create ()
-				.width (scoreboard.flagWidth)
-				.height (scoreboard.flagHeight)
+				.width (scoreboard.getFlagWidth())
+				.height (scoreboard.getFlagHeight())
 				.fill (new ImagePattern (image))
 				.id ("P" + indicesToPoints ((pointCounter + 1) % 10))
 				.build ();
 
-			pointView.setX (15 + scoreboard.pointTokenXOffset + pointView.getWidth () * pointCounter++);
-			pointView.setY (3 + scoreboard.pointTokenYOffset);
+			pointView.setX (15 + scoreboard.getPointTokenXOffset() + pointView.getWidth () * pointCounter++);
+			pointView.setY (3 + scoreboard.getPointTokenYOffset());
 			pointViews.add (pointView);
 		}
 

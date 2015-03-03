@@ -21,17 +21,17 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 			Group group = scoreboard.groupNationMap
 					.get (scoreboard.participants.get (position));
 			
-			int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr);
+			int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr());
 
 			Rectangle base = RectangleBuilder
 					.create ()
-					.width (scoreboard.columnNameWidth)
-					.height (scoreboard.height / sizeDenom)
+					.width (scoreboard.getColumnNameWidth())
+					.height (scoreboard.getHeight() / sizeDenom)
 					.layoutX (0)
 					.layoutY (0)
 					.id ("base")
 					.fill (new ImagePattern (
-							(position < scoreboard.specialBorder ? scoreboard.utilities.nationTileBackgroundPQ
+							(position < scoreboard.getSpecialBorder() ? scoreboard.utilities.nationTileBackgroundPQ
 									: scoreboard.utilities.nationTileBackground)))
 					.build ();
 

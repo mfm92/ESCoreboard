@@ -34,9 +34,9 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 		Rectangle voteFlagUnderlay = RectangleBuilder
 				.create ()
 				.width (0.2 * underlayWidth)
-				.height (scoreboard.bottomBarHeight)
+				.height (scoreboard.getBottomBarHeight())
 				.x (underlayX)
-				.y (scoreboard.bottomBarY)
+				.y (scoreboard.getBottomBarY())
 				.fill (new ImagePattern (scoreboard.utilities.voteFlagUnderlay))
 				.build ();
 

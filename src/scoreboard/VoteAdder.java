@@ -52,8 +52,8 @@ public class VoteAdder implements Runnable {
 		Participant voter = vote.getVoter ();
 
 		if (!tradVP) {
-			if (inCountryCounter % 10 == scoreboard.transParts) {
-				for (int i = 1; i <= scoreboard.transParts; i++) {
+			if (inCountryCounter % 10 == scoreboard.getTransParts()) {
+				for (int i = 1; i <= scoreboard.getTransParts(); i++) {
 					standings.addVote (vote, scoreboard.indicesToPoints (i), i);
 				}
 			} else

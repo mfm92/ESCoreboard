@@ -34,11 +34,11 @@ public class StepByStepAnimator extends UpdateAnimator {
 		}
 		
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
-		int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.columnsNr);
+		int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr());
 		
 		// PLACE POINT NODE
 		Rectangle pointView = scoreboard.pointViews.get ((scoreboard.inCountryCounter - 1) % 10);
-		pointView.setHeight (0.7 * (scoreboard.height/sizeDenom));
+		pointView.setHeight (0.7 * (scoreboard.getHeight()/sizeDenom));
 		Votes votes = scoreboard.utilities.voteMap.get (voter);
 		Participant receiver = votes.getReceivers ()[(scoreboard.inCountryCounter - 1) % 10];
 		receiver.setTmpScore (scoreboard.indicesToPoints ((scoreboard.inCountryCounter - 1) % 10));
@@ -51,10 +51,10 @@ public class StepByStepAnimator extends UpdateAnimator {
 
 		double newPosX = getXCoordByPos (
 				overview.getPosition (oldStandings, receiver), scoreboard) + 
-				(((scoreboard.height / sizeDenom) - scoreboard.flagHeight) / 2);
+				(((scoreboard.getHeight() / sizeDenom) - scoreboard.getFlagHeight()) / 2);
 		double newPosY = getYCoordByPos (
 				overview.getPosition (oldStandings, receiver), scoreboard) + 
-				(((scoreboard.height / sizeDenom) - scoreboard.flagHeight) / 2);
+				(((scoreboard.getHeight() / sizeDenom) - scoreboard.getFlagHeight()) / 2);
 		
 		double oldPosX = pointView.getX ();
 		double oldPosY = pointView.getY ();
