@@ -87,7 +87,8 @@ public class CoreUI extends Application implements Initializable {
 	
 	@FXML Slider speedSlider;
 	
-	static InputDataModel inputData = new InputDataModel();
+	public static InputDataModel inputData = new InputDataModel();
+	
 	static HashMap<Integer, Pair<Command, ParticipantData>> commandLog = new HashMap<>();
 	
 	VoteRegistrator voteRegistrator = new VoteRegistrator ();
@@ -217,7 +218,8 @@ public class CoreUI extends Application implements Initializable {
 			@Override
 			public void handle(Event event) {
 				DirectoryChooser dirChooser = new DirectoryChooser ();
-				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				dirChooser.setInitialDirectory (new File (inputData.getFlagDirectory ().equals("null") ?
+						System.getProperty("user.dir") : inputData.getFlagDirectory ()));
 				dirChooser.setTitle ("Folder that contains the flags...");
 				
 				File selected = dirChooser.showDialog (null);
@@ -231,7 +233,9 @@ public class CoreUI extends Application implements Initializable {
 			@Override
 			public void handle(Event event) {
 				DirectoryChooser dirChooser = new DirectoryChooser ();
-				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				dirChooser.setInitialDirectory (new File 
+						(inputData.getEntriesDirectory ().equals("null") ? System.getProperty("user.dir") :
+							inputData.getEntriesDirectory ()));
 				dirChooser.setTitle ("Folder that contains the entries...");
 				
 				File selectedFile = dirChooser.showDialog (null);
@@ -245,7 +249,9 @@ public class CoreUI extends Application implements Initializable {
 			@Override
 			public void handle(Event event) {
 				DirectoryChooser dirChooser = new DirectoryChooser ();
-				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				dirChooser.setInitialDirectory (new File 
+						(inputData.getPrettyFlagDirectory ().equals("null") ? 
+						System.getProperty("user.dir") : inputData.getPrettyFlagDirectory ()));
 				dirChooser.setTitle ("Folder that contains the pretty flags...");
 				
 				File selectedFile = dirChooser.showDialog (null);
@@ -491,11 +497,15 @@ public class CoreUI extends Application implements Initializable {
 					+ STRING_SEPARATOR);
 		}
 		
+		String flagsDirectory = inputData.getFlagDirectory ().replace ("\\", "\\\\");
+		String prettyFlagDirectory = inputData.getPrettyFlagDirectory ().replace ("\\", "\\\\");
+		String entriesDirectory = inputData.getEntriesDirectory ().replace ("\\", "\\\\");
+		
 		paramsOut.append ("NAME_EDITION = " + inputData.getNameOfEdition () + STRING_SEPARATOR);
 		paramsOut.append ("EDITION_NR = " + inputData.getEditionNr () + STRING_SEPARATOR + STRING_SEPARATOR);
-		paramsOut.append ("FLAGS_DIR = " + inputData.getFlagDirectory () + STRING_SEPARATOR);
-		paramsOut.append ("PRETTY_FLAGS_DIR = " + inputData.getPrettyFlagDirectory () + STRING_SEPARATOR);
-		paramsOut.append ("ENTRIES_DIR = " + inputData.getEntriesDirectory () + STRING_SEPARATOR + STRING_SEPARATOR);
+		paramsOut.append ("FLAGS_DIR = " + flagsDirectory + STRING_SEPARATOR);
+		paramsOut.append ("PRETTY_FLAGS_DIR = " + prettyFlagDirectory + STRING_SEPARATOR);
+		paramsOut.append ("ENTRIES_DIR = " + entriesDirectory + STRING_SEPARATOR + STRING_SEPARATOR);
 		paramsOut.append ("CREATE_BANNERS = " + inputData.getBannerCreatorActivated () + STRING_SEPARATOR);
 		paramsOut.append ("USE_FULLSCREEN = " + inputData.getUseFullScreen () + STRING_SEPARATOR);
 		paramsOut.append ("USE_PRETTY_FLAGS = " + inputData.getUsePrettyFlags () + STRING_SEPARATOR);
