@@ -1,4 +1,4 @@
-package scoreboard;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,33 +19,35 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.Participant;
-import model.ParticipantModel;
+import model.ParticipantData;
+import model.InputDataModel;
 
 public class CoreUI extends Application implements Initializable {
 	
 	@FXML Pane content;
 	
-	@FXML TableView<Participant> table;
+	@FXML TableView<ParticipantData> table;
 	
-	@FXML TableColumn<Participant, String> nationNameCol;
-	@FXML TableColumn<Participant, String> shortnameCol;
-	@FXML TableColumn<Participant, String> artistCol;
-	@FXML TableColumn<Participant, String> titleCol;
-	@FXML TableColumn<Participant, Integer> startCol;
-	@FXML TableColumn<Participant, Integer> stopCol;
-	@FXML TableColumn<Participant, Integer> gridCol;
-	@FXML TableColumn<Participant, String> statusCol;
+	@FXML TableColumn<ParticipantData, String> nationNameCol;
+	@FXML TableColumn<ParticipantData, String> shortnameCol;
+	@FXML TableColumn<ParticipantData, String> artistCol;
+	@FXML TableColumn<ParticipantData, String> titleCol;
+	@FXML TableColumn<ParticipantData, Integer> startCol;
+	@FXML TableColumn<ParticipantData, Integer> stopCol;
+	@FXML TableColumn<ParticipantData, Integer> gridCol;
+	@FXML TableColumn<ParticipantData, String> statusCol;
 	
 	@FXML Button addEntryButton;
 	@FXML Button removeEntryButton;
@@ -57,7 +59,15 @@ public class CoreUI extends Application implements Initializable {
 	@FXML MenuItem loadMenuItem;
 	@FXML MenuItem saveMenuItem;
 	
-	static ParticipantModel pModel = new ParticipantModel();
+	@FXML TextField editionName;
+	@FXML TextField editionNumberField;
+	
+	@FXML CheckBox createBannersBox;
+	@FXML CheckBox traditionalVotingCheckBox;
+	@FXML CheckBox fullScreenBox;
+	@FXML CheckBox prettyFlagsBox;
+	
+	static InputDataModel inputData = new InputDataModel();
 	
 	public static void main(String[] args) {
 		launch (args);
@@ -66,7 +76,7 @@ public class CoreUI extends Application implements Initializable {
 	@Override
 	public void start(Stage primaryStage) throws Exception {	
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation (getClass ().getResource ("CoreUI.fxml"));
+		loader.setLocation (getClass ().getResource ("/view/CoreUI.fxml"));
 		content = (Pane) loader.load ();
 		
 		Scene scene = new Scene (content);
@@ -89,14 +99,14 @@ public class CoreUI extends Application implements Initializable {
 		CellCentralizer<Integer> intCentralizer = new CellCentralizer<> ();
 		CellCentralizer<String> textCentralizer = new CellCentralizer<> ();
 		
-		nationNameCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("name"));
-		shortnameCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("shortName"));
-		artistCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("artist"));
-		titleCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("title"));
-		startCol.setCellValueFactory (new PropertyValueFactory<Participant, Integer>("start"));
-		stopCol.setCellValueFactory (new PropertyValueFactory<Participant, Integer>("stop"));
-		gridCol.setCellValueFactory (new PropertyValueFactory<Participant, Integer>("grid"));
-		statusCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("status"));
+		nationNameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("name"));
+		shortnameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("shortName"));
+		artistCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("artist"));
+		titleCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("title"));
+		startCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("start"));
+		stopCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("stop"));
+		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("grid"));
+		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("status"));
 		
 		nationNameCol.setCellFactory (textCentralizer);
 		shortnameCol.setCellFactory (textCentralizer);
@@ -107,8 +117,8 @@ public class CoreUI extends Application implements Initializable {
 		gridCol.setCellFactory (intCentralizer);
 		statusCol.setCellFactory (textCentralizer);
 
-		table.itemsProperty ().bind (pModel.getParticipantsProperty ());
-		pModel.getSelectedIndexProperty ().bind (table.getSelectionModel ().selectedIndexProperty ());
+		table.itemsProperty ().bind (inputData.getParticipantsProperty ());
+		inputData.getSelectedIndexProperty ().bind (table.getSelectionModel ().selectedIndexProperty ());
 	}
 	
 	private void setUpButtons () {
@@ -134,7 +144,7 @@ public class CoreUI extends Application implements Initializable {
 		removeEntryButton.setOnAction (new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				pModel.removeParticipant (pModel.getSelectedParticipant ());
+				inputData.removeParticipant (inputData.getSelectedParticipant ());
 			}
 		});
 		
@@ -197,11 +207,11 @@ public class CoreUI extends Application implements Initializable {
 		while ((line = reader.readLine ()) != null) {
 			String[] tokens = line.split ("\\$");
 			
-			Participant participant = new Participant (tokens[0], tokens[1],
+			ParticipantData participant = new ParticipantData (tokens[0], tokens[1],
 					tokens[2], tokens[3], 
 					Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]),
 					Integer.parseInt(tokens[6]), tokens[8]);
-			pModel.addParticipant (participant);
+			inputData.addParticipant (participant);
 		}
 			
 		reader.close ();
@@ -214,15 +224,15 @@ public class CoreUI extends Application implements Initializable {
 		BufferedReader reader = new BufferedReader (new FileReader (inputFile));
 		while ((line = reader.readLine ()) != null) {
 			String[] tokens = line.split ("\\$");
-			Participant voter = pModel.retrieveParticipantByShortName (tokens[0]);
+			ParticipantData voter = inputData.retrieveParticipantByShortName (tokens[0]);
 			ArrayList<String> votes = new ArrayList<> ();
 			
 			for (int i = 1; i < tokens.length; i++) {
 				String[] innerTokens = tokens[i].split (" ");
-				votes.add (pModel.retrieveParticipantByShortName (innerTokens[1]).getName ());
+				votes.add (inputData.retrieveParticipantByShortName (innerTokens[1]).getName ());
 			}
 			
-			pModel.addVotes (voter, votes);
+			inputData.addVotes (voter, votes);
 		}
 			
 		reader.close ();
@@ -234,24 +244,24 @@ public class CoreUI extends Application implements Initializable {
 		
 		final String STRING_SEPARATOR = System.lineSeparator ();
 		
-		for (Participant p : pModel.getParticipants ()) {
+		for (ParticipantData p : inputData.getParticipants ()) {
 			participantsOut.append (p.getName () + "$" + p.getShortName () + "$" + 
 					p.getArtist () + "$" + p.getTitle () + "$" + p.getStart () +
 					"$" + p.getStop () + "$" + p.getGrid () + "$" + p.getStatus () + STRING_SEPARATOR);
 		}
 		
-		for (Map.Entry<Participant, ArrayList<String>> vote : pModel.getVotes ().entrySet ()) {
+		for (Map.Entry<ParticipantData, ArrayList<String>> vote : inputData.getVotes ().entrySet ()) {
 			votesOut.append (vote.getKey ().getShortName () + "$"
-					+ "12 " + pModel.getShortName (vote.getValue ().get (0)) + "$"
-					+ "10 " + pModel.getShortName (vote.getValue ().get (1)) + "$"
-					+ "08 " + pModel.getShortName (vote.getValue ().get (2)) + "$"
-					+ "07 " + pModel.getShortName (vote.getValue ().get (3)) + "$"
-					+ "06 " + pModel.getShortName (vote.getValue ().get (4)) + "$"
-					+ "05 " + pModel.getShortName (vote.getValue ().get (5)) + "$"
-					+ "04 " + pModel.getShortName (vote.getValue ().get (6)) + "$"
-					+ "03 " + pModel.getShortName (vote.getValue ().get (7)) + "$"
-					+ "02 " + pModel.getShortName (vote.getValue ().get (8)) + "$"
-					+ "01 " + pModel.getShortName (vote.getValue ().get (9))
+					+ "12 " + inputData.getShortName (vote.getValue ().get (0)) + "$"
+					+ "10 " + inputData.getShortName (vote.getValue ().get (1)) + "$"
+					+ "08 " + inputData.getShortName (vote.getValue ().get (2)) + "$"
+					+ "07 " + inputData.getShortName (vote.getValue ().get (3)) + "$"
+					+ "06 " + inputData.getShortName (vote.getValue ().get (4)) + "$"
+					+ "05 " + inputData.getShortName (vote.getValue ().get (5)) + "$"
+					+ "04 " + inputData.getShortName (vote.getValue ().get (6)) + "$"
+					+ "03 " + inputData.getShortName (vote.getValue ().get (7)) + "$"
+					+ "02 " + inputData.getShortName (vote.getValue ().get (8)) + "$"
+					+ "01 " + inputData.getShortName (vote.getValue ().get (9))
 					+ STRING_SEPARATOR);
 		}
 		
@@ -274,10 +284,10 @@ public class CoreUI extends Application implements Initializable {
 		
 	}
 	
-	private class CellCentralizer <T> implements Callback<TableColumn<Participant, T>, TableCell<Participant, T>> {
+	private class CellCentralizer <T> implements Callback<TableColumn<ParticipantData, T>, TableCell<ParticipantData, T>> {
 
-		@Override public TableCell<Participant, T> call (TableColumn<Participant, T> tc) {
-			TableCell<Participant, T> cell = new TableCell<Participant, T>() {
+		@Override public TableCell<ParticipantData, T> call (TableColumn<ParticipantData, T> tc) {
+			TableCell<ParticipantData, T> cell = new TableCell<ParticipantData, T>() {
 				
 				@Override public void updateItem (T item, boolean empty) {
 					super.updateItem(item, empty);

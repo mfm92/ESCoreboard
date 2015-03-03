@@ -3,7 +3,7 @@ package model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Participant {
+public class ParticipantData {
 	
 	SimpleStringProperty name;
 	SimpleStringProperty shortName;
@@ -14,7 +14,7 @@ public class Participant {
 	SimpleIntegerProperty grid;
 	SimpleStringProperty status;
 	
-	public Participant (String name, String shortName, String artist,
+	public ParticipantData (String name, String shortName, String artist,
 			String title, int start, int stop, int grid, String status) {
 
 		this.name = new SimpleStringProperty(name);

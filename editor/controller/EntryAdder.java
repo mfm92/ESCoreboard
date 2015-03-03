@@ -1,9 +1,9 @@
-package scoreboard;
+package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import model.Participant;
+import model.ParticipantData;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ public class EntryAdder implements Initializable {
 	@FXML Button confirmButton;
 	
 	public void init (Stage primaryStage) throws Exception {
-		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("EntryAdder.fxml"));
+		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/EntryAdder.fxml"));
 		Pane voteDocRoot = (Pane) loader.load ();
 		primaryStage.setScene (new Scene (voteDocRoot));
 		primaryStage.show ();
@@ -45,7 +45,7 @@ public class EntryAdder implements Initializable {
 			@Override
 			public void handle (ActionEvent event) {
 				if (checkValidity ()) {
-					Participant nParticipant = new Participant 
+					ParticipantData nParticipant = new ParticipantData 
 							(nameField.getText (), 
 							shortNameField.getText (), 
 							artistField.getText (), 
@@ -55,7 +55,7 @@ public class EntryAdder implements Initializable {
 							Integer.parseInt (startField.getText ()), 
 							statusField.getText ());
 					
-					CoreUI.pModel.addParticipant (nParticipant);
+					CoreUI.inputData.addParticipant (nParticipant);
 				}
 			}
 		});

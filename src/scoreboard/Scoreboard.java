@@ -37,6 +37,7 @@ import utilities.NSCUtilities;
 
 import com.sun.istack.internal.logging.Logger;
 
+import controller.CoreUI;
 import data.Standings;
 
 public class Scoreboard extends Application {

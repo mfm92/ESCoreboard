@@ -1,4 +1,4 @@
-package scoreboard;
+package controller;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Participant;
+import model.ParticipantData;
 
 public class VoteRegistrator extends Application implements Initializable {
 	
@@ -53,7 +53,7 @@ public class VoteRegistrator extends Application implements Initializable {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("VoteRegistrator.fxml"));
+		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/VoteRegistrator.fxml"));
 		Pane voteDocRoot = (Pane) loader.load ();
 		primaryStage.setScene (new Scene (voteDocRoot));
 		primaryStage.show ();
@@ -79,11 +79,11 @@ public class VoteRegistrator extends Application implements Initializable {
 		cmBoxes.add (combo2);
 		cmBoxes.add (combo1);
 		
-		voteTopLabel.setText ("Votes from...: " + CoreUI.pModel.getSelectedParticipant ().getName ());
+		voteTopLabel.setText ("Votes from...: " + CoreUI.inputData.getSelectedParticipant ().getName ());
 		
 		ArrayList<String> previousVotes;
 		
-		if ((previousVotes = CoreUI.pModel.getVotes ().get (CoreUI.pModel.getSelectedParticipant ())) != null) {
+		if ((previousVotes = CoreUI.inputData.getVotes ().get (CoreUI.inputData.getSelectedParticipant ())) != null) {
 			for (int i = 0; i < cmBoxes.size (); i++) {
 				cmBoxes.get (i).getSelectionModel ().select (previousVotes.get (i));
 			}	
@@ -91,11 +91,11 @@ public class VoteRegistrator extends Application implements Initializable {
 		
 		ObservableList<String> ps = FXCollections.observableArrayList ();
 		
-		for (Participant p : CoreUI.pModel.getParticipants ()) {
+		for (ParticipantData p : CoreUI.inputData.getParticipants ()) {
 			ps.add (p.getName ());
 		}
 		
-		ps.remove (CoreUI.pModel.getSelectedParticipant ().getName ());
+		ps.remove (CoreUI.inputData.getSelectedParticipant ().getName ());
 
 		for (ComboBox<String> box : cmBoxes) {
 			box.setItems (ps);
@@ -111,7 +111,7 @@ public class VoteRegistrator extends Application implements Initializable {
 					for (ComboBox<String> cBox : cmBoxes) {
 						votes.add (cBox.getSelectionModel ().getSelectedItem ());
 					}
-					CoreUI.pModel.addVotes (CoreUI.pModel.getSelectedParticipant (), votes);
+					CoreUI.inputData.addVotes (CoreUI.inputData.getSelectedParticipant (), votes);
 				}
 			}
 		});
