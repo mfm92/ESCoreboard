@@ -70,16 +70,16 @@
             <Label alignment="CENTER" prefHeight="45.0" prefWidth="55.0" text="4" />
          </children>
       </VBox>
-      <ListView fx:id="List12" layoutX="82.0" layoutY="98.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List10" layoutX="82.0" layoutY="142.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List8" layoutX="82.0" layoutY="186.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List7" layoutX="82.0" layoutY="230.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List3" layoutX="82.0" layoutY="406.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List4" layoutX="82.0" layoutY="362.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List5" layoutX="82.0" layoutY="318.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List6" layoutX="82.0" layoutY="274.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List2" layoutX="82.0" layoutY="450.0" prefHeight="44.0" prefWidth="302.0" />
-      <ListView fx:id="List1" layoutX="82.0" layoutY="494.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list12" layoutX="82.0" layoutY="98.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list10" layoutX="82.0" layoutY="142.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list8" layoutX="82.0" layoutY="186.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list7" layoutX="82.0" layoutY="230.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list3" layoutX="82.0" layoutY="406.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list4" layoutX="82.0" layoutY="362.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list5" layoutX="82.0" layoutY="318.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list6" layoutX="82.0" layoutY="274.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list2" layoutX="82.0" layoutY="450.0" prefHeight="44.0" prefWidth="302.0" />
+      <ListView fx:id="list1" layoutX="82.0" layoutY="494.0" prefHeight="44.0" prefWidth="302.0" />
       <Button fx:id="voteConfirmButton" layoutX="82.0" layoutY="560.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="302.0" text="OK">
          <font>
             <Font size="24.0" />

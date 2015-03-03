@@ -1,6 +1,5 @@
 package scoreboard;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -15,56 +14,63 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Participant;
+import model.ParticipantModel;
 
+import org.datafx.controller.FXMLController;
+
+@FXMLController("VoteRegistrator.fxml")
 public class VoteRegistrator extends Application implements EventHandler<ActionEvent>,
 		Initializable {
 	
 	@FXML Label voteTopLabel;
 	@FXML Button voteConfirmButton;
 	
-	@FXML ListView<ParticipantSave> List12;
-	@FXML ListView<ParticipantSave> List10;
-	@FXML ListView<ParticipantSave> List8;
-	@FXML ListView<ParticipantSave> List7;
-	@FXML ListView<ParticipantSave> List6;
-	@FXML ListView<ParticipantSave> List5;
-	@FXML ListView<ParticipantSave> List4;
-	@FXML ListView<ParticipantSave> List3;
-	@FXML ListView<ParticipantSave> List2;
-	@FXML ListView<ParticipantSave> List1;
+	@FXML ListView<Participant> list12;
+	@FXML ListView<Participant> list10;
+	@FXML ListView<Participant> list8;
+	@FXML ListView<Participant> list7;
+	@FXML ListView<Participant> list6;
+	@FXML ListView<Participant> list5;
+	@FXML ListView<Participant> list4;
+	@FXML ListView<Participant> list3;
+	@FXML ListView<Participant> list2;
+	@FXML ListView<Participant> list1;
 	
-	Stage primaryStage;
+	ParticipantModel pModel;
+	Participant currentVoter;
 	
 	public static void main(String[] args) {
 		launch (args);
 	}
 
+	public VoteRegistrator (ParticipantModel pModel, Participant p) {
+		this.pModel = pModel;
+		currentVoter = p;
+	}
+	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-
+	public void initialize(URL url, ResourceBundle rb) {
+		System.out.println (currentVoter.getName ());
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		primaryStage = stage;
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation (getClass ().getResource ("VoteRegistrator.fxml"));
+		Pane voteDocRoot = (Pane) loader.load ();	
+			
+		stage.setScene (new Scene (voteDocRoot));
+		stage.show();
 	}
 
 	@Override
 	public void handle (ActionEvent event) {
 		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation (getClass ().getResource ("VoteDoc.fxml"));
-			Pane voteDocRoot = (Pane) loader.load ();	
-			Stage voteStage = new Stage();
-			voteStage.initModality (Modality.APPLICATION_MODAL);
-			voteStage.setScene (new Scene (voteDocRoot));
-			voteStage.showAndWait ();
-		} catch (IOException ioex) {
-			ioex.printStackTrace ();
+			start (new Stage());
+		} catch (Exception e) {
+			e.printStackTrace ();
 		}
 	}
-
 }

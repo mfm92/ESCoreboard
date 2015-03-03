@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="1432.0" type="Pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scoreboard.CoreUI">
+<Pane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="1432.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scoreboard.CoreUI">
    <children>
       <MenuBar prefHeight="32.0" prefWidth="1438.0">
         <menus>
@@ -48,7 +48,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TableView fx:id="table" editable="true" layoutX="20.0" layoutY="51.0" prefHeight="326.0" prefWidth="1392.0">
+      <TableView fx:id="table" layoutX="20.0" layoutY="51.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="326.0" prefWidth="1392.0" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="nationNameCol" prefWidth="287.0" text="Nation Name" />
             <TableColumn fx:id="shortnameCol" prefWidth="97.0" text="Shortname" />
@@ -57,11 +57,8 @@
           <TableColumn fx:id="startCol" prefWidth="109.0" text="Start" />
             <TableColumn fx:id="stopCol" prefWidth="102.0" text="Stop" />
             <TableColumn fx:id="gridCol" prefWidth="114.0" text="StartGrid" />
-            <TableColumn id="statusCol" fx:id="statusCol" prefWidth="87.0" text="Status" />
+            <TableColumn id="statusCol" fx:id="statusCol" prefWidth="85.0" text="Status" />
         </columns>
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
       </TableView>
       <Button fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Add Entry" />
       <Button layoutX="1122.0" layoutY="508.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="290.0" text="Start Show">
@@ -69,22 +66,22 @@
             <Font name="Inconsolata" size="25.0" />
          </font>
       </Button>
-      <CheckBox layoutX="270.0" layoutY="533.0" mnemonicParsing="false" text="traditional vote presentation">
+      <CheckBox layoutX="22.0" layoutY="547.0" mnemonicParsing="false" text="traditional vote presentation">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox layoutX="22.0" layoutY="533.0" mnemonicParsing="false" text="create banners">
+      <CheckBox layoutX="22.0" layoutY="508.0" mnemonicParsing="false" text="create banners">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox layoutX="898.0" layoutY="533.0" mnemonicParsing="false" text="use pretty flags">
+      <CheckBox layoutX="328.0" layoutY="547.0" mnemonicParsing="false" text="use pretty flags">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox layoutX="648.0" layoutY="533.0" mnemonicParsing="false" text="fullscreen">
+      <CheckBox layoutX="328.0" layoutY="508.0" mnemonicParsing="false" text="fullscreen">
          <font>
             <Font size="18.0" />
          </font>
@@ -94,4 +91,4 @@
       <Button fx:id="prettyFlagDirButton" layoutX="995.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="417.0" text="Pretty Flag Directory" />
       <Button fx:id="setVotesButton" layoutX="280.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Set Votes" />
    </children>
-</fx:root>
+</Pane>

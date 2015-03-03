@@ -1,9 +1,9 @@
-package scoreboard;
+package model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class ParticipantSave {
+public class Participant {
 	
 	SimpleStringProperty name;
 	SimpleStringProperty shortName;
@@ -14,7 +14,7 @@ public class ParticipantSave {
 	SimpleIntegerProperty grid;
 	SimpleStringProperty status;
 	
-	public ParticipantSave (String name, String shortName, String artist,
+	public Participant (String name, String shortName, String artist,
 			String title, int start, int stop, int grid, String status) {
 
 		this.name = new SimpleStringProperty(name);

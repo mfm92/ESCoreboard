@@ -10,12 +10,10 @@ import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -25,26 +23,28 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import model.Participant;
+import model.ParticipantModel;
 
+import org.datafx.controller.FXMLController;
+
+@FXMLController("CoreUI.fxml")
 public class CoreUI extends Application implements Initializable {
-	
-	Stage primaryStage;
 	
 	@FXML Pane content;
 	
-	@FXML TableView<ParticipantSave> table;
+	@FXML TableView<Participant> table;
 	
-	@FXML TableColumn<ParticipantSave, String> nationNameCol;
-	@FXML TableColumn<ParticipantSave, String> shortnameCol;
-	@FXML TableColumn<ParticipantSave, String> artistCol;
-	@FXML TableColumn<ParticipantSave, String> titleCol;
-	@FXML TableColumn<ParticipantSave, Integer> startCol;
-	@FXML TableColumn<ParticipantSave, Integer> stopCol;
-	@FXML TableColumn<ParticipantSave, Integer> gridCol;
-	@FXML TableColumn<ParticipantSave, String> statusCol;
+	@FXML TableColumn<Participant, String> nationNameCol;
+	@FXML TableColumn<Participant, String> shortnameCol;
+	@FXML TableColumn<Participant, String> artistCol;
+	@FXML TableColumn<Participant, String> titleCol;
+	@FXML TableColumn<Participant, Integer> startCol;
+	@FXML TableColumn<Participant, Integer> stopCol;
+	@FXML TableColumn<Participant, Integer> gridCol;
+	@FXML TableColumn<Participant, String> statusCol;
 	
 	@FXML Button addEntryButton;
 	@FXML Button setVotesButton;
@@ -52,18 +52,16 @@ public class CoreUI extends Application implements Initializable {
 	@FXML Button entryDirButton;
 	@FXML Button prettyFlagDirButton;
 	
-	private final ObservableList<ParticipantSave> entries = FXCollections.observableArrayList (
-			new ParticipantSave ("Ugaly", "UGA", "Ugaly", "Ugaly", 42, 65, 3, "F"));
+	ParticipantModel pModel = new ParticipantModel();
 	
 	public static void main(String[] args) {
 		launch (args);
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		this.primaryStage = primaryStage;
+	public void start(Stage primaryStage) throws Exception {	
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation (getClass ().getResource ("Dialog.fxml"));
+		loader.setLocation (getClass ().getResource ("CoreUI.fxml"));
 		content = (Pane) loader.load ();
 		
 		Scene scene = new Scene (content);
@@ -77,6 +75,8 @@ public class CoreUI extends Application implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
+		pModel.addParticipant (new Participant ("Begonia", "BEG", "Donots", "Ohne Mich", 20, 40, 3, "F"));
+		
 		setUpTableView ();
 		setUpButtons ();
 		
@@ -87,14 +87,14 @@ public class CoreUI extends Application implements Initializable {
 		CellCentralizer<Integer> intCentralizer = new CellCentralizer<> ();
 		CellCentralizer<String> textCentralizer = new CellCentralizer<> ();
 		
-		nationNameCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, String> ("name"));
-		shortnameCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, String> ("shortName"));
-		artistCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, String> ("artist"));
-		titleCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, String> ("title"));
-		startCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, Integer>("start"));
-		stopCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, Integer>("stop"));
-		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, Integer>("grid"));
-		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantSave, String> ("status"));
+		nationNameCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("name"));
+		shortnameCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("shortName"));
+		artistCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("artist"));
+		titleCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("title"));
+		startCol.setCellValueFactory (new PropertyValueFactory<Participant, Integer>("start"));
+		stopCol.setCellValueFactory (new PropertyValueFactory<Participant, Integer>("stop"));
+		gridCol.setCellValueFactory (new PropertyValueFactory<Participant, Integer>("grid"));
+		statusCol.setCellValueFactory (new PropertyValueFactory<Participant, String> ("status"));
 		
 		nationNameCol.setCellFactory (textCentralizer);
 		shortnameCol.setCellFactory (textCentralizer);
@@ -105,7 +105,7 @@ public class CoreUI extends Application implements Initializable {
 		gridCol.setCellFactory (intCentralizer);
 		statusCol.setCellFactory (textCentralizer);
 		
-		table.getItems ().setAll (entries);
+		table.itemsProperty ().bind (pModel.getPProp ());
 	}
 	
 	private void setUpButtons () {
@@ -115,23 +115,23 @@ public class CoreUI extends Application implements Initializable {
 		entryDirButton.setOnMouseClicked (dirChooser);
 		prettyFlagDirButton.setOnMouseClicked (dirChooser);
 		
-		setVotesButton.setOnAction (new VoteRegistrator ());
+		setVotesButton.setOnAction (
+				new VoteRegistrator (
+						this.pModel,
+						table.getSelectionModel ().getSelectedItem ()));
 	}
 
 	@SuppressWarnings("unused") 
-	private ObservableList<ParticipantSave> readConfigFile () throws IOException {
+	private ObservableList<Participant> readConfigFile () throws IOException {
 		
 		String line;
 		String location = System.getProperty ("user.dir") + "/...";
-		ObservableList<ParticipantSave> list = FXCollections.observableArrayList ();
+		ObservableList<Participant> list = FXCollections.observableArrayList ();
 		
 		BufferedReader reader = new BufferedReader (new FileReader (new File (location)));
 		while ((line = reader.readLine ()) != null) {
 			String[] tokens = line.split ("\\$");
-				
-			list.add (new ParticipantSave (tokens[0], tokens[1], tokens[2], tokens[3],
-					Integer.parseInt (tokens[4]), Integer.parseInt (tokens[5]),
-					Integer.parseInt (tokens[6]), tokens[8]));
+			
 		}
 			
 		reader.close ();
@@ -154,10 +154,10 @@ public class CoreUI extends Application implements Initializable {
 		
 	}
 	
-	private class CellCentralizer <T> implements Callback<TableColumn<ParticipantSave, T>, TableCell<ParticipantSave, T>> {
+	private class CellCentralizer <T> implements Callback<TableColumn<Participant, T>, TableCell<Participant, T>> {
 
-		@Override public TableCell<ParticipantSave, T> call (TableColumn<ParticipantSave, T> tc) {
-			TableCell<ParticipantSave, T> cell = new TableCell<ParticipantSave, T>() {
+		@Override public TableCell<Participant, T> call (TableColumn<Participant, T> tc) {
+			TableCell<Participant, T> cell = new TableCell<Participant, T>() {
 				
 				@Override public void updateItem (T item, boolean empty) {
 					super.updateItem(item, empty);
