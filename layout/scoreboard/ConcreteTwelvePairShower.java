@@ -2,16 +2,14 @@ package scoreboard;
 
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.ImageViewBuilder;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.RectangleBuilder;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBuilder;
 import nations.Participant;
 
 public class ConcreteTwelvePairShower extends TwelvePairShower {
@@ -20,47 +18,56 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 	public void addTwelvePair(Scoreboard scoreboard, Participant voter,
 			Participant receiver) {
 		scoreboard.getRoot().getChildren ().remove (scoreboard.getBackground());
+		
+		Rectangle iR1 = new Rectangle();
+		iR1.setWidth (1920);
+		iR1.setHeight (1080);
+		iR1.setId ("background");
+		iR1.setId ("redBack");
+		iR1.setFill (new ImagePattern (scoreboard.getUtilities().backgroundRed));
 
-		scoreboard.getRoot().getChildren ().add (
-				RectangleBuilder
-						.create ()
-						.width (1920)
-						.id ("background")
-						.height (1080)
-						.id ("redBack")
-						.fill (new ImagePattern (
-								scoreboard.getUtilities().backgroundRed)).build ());
-		scoreboard.getRoot()
-				.getChildren ()
-				.add (RectangleBuilder
-						.create ()
-						.x (0)
-						.y (780)
-						.id ("12Strip")
-						.width (1920)
-						.height (270)
-						.fill (new ImagePattern (scoreboard.getUtilities().ppraisbg))
-						.build ());
-		scoreboard.getRoot().getChildren ().add (
-				RectangleBuilder.create ().x (100).y (830).id ("12D")
-						.width (216).height (170)
-						.fill (new ImagePattern (scoreboard.getUtilities().pprais))
-						.build ());
+		scoreboard.getRoot().getChildren ().add (iR1);
+		
+		Rectangle iR2 = new Rectangle();
+		iR2.setX (0);
+		iR2.setY (780);
+		iR2.setId ("12Strip");
+		iR2.setWidth (1920);
+		iR2.setHeight (270);
+		iR2.setFill (new ImagePattern (scoreboard.getUtilities().ppraisbg));
+		
+		scoreboard.getRoot().getChildren ().add (iR2);
+		
+		Rectangle iR3 = new Rectangle();
+		iR3.setWidth (216);
+		iR3.setHeight (170);
+		iR3.setX (100);
+		iR3.setY (830);
+		iR3.setId ("12D");
+		iR3.setFill (new ImagePattern (scoreboard.getUtilities().pprais));
+		
+		scoreboard.getRoot().getChildren ().add (iR3);
 
-		Text receiveNation = TextBuilder.create ().x (500).y (795)
-				.text (receiver.getName ())
-				.font (Font.font ("Coolvetica RG", FontWeight.BOLD, 81))
-				.fill (Color.WHITE).build ();
+		Text receiveNation = new Text();
+		receiveNation.setX (500);
+		receiveNation.setY (795);
+		receiveNation.setText (receiver.getName ());
+		receiveNation.setFont (Font.font ("Coolvetica RG", FontWeight.BOLD, 81));
+		receiveNation.setFill (Color.WHITE);
 
-		Text receiveText = TextBuilder.create ().x (500).y (850)
-				.text ("received 12 points from")
-				.font (Font.font ("Walkway SemiBold", FontWeight.BOLD, 42))
-				.fill (Color.WHITE).build ();
+		Text receiveText = new Text();
+		receiveText.setX (500);
+		receiveText.setY (850);
+		receiveText.setText ("received 12 points from");
+		receiveText.setFont (Font.font ("Walkway SemiBold", FontWeight.BOLD, 42));
+		receiveText.setFill (Color.WHITE);
 
-		Text giverNation = TextBuilder.create ().x (500).y (900)
-				.text (voter.getName ())
-				.font (Font.font ("Coolvetica RG", FontWeight.BOLD, 81))
-				.fill (Color.WHITE).build ();
+		Text giverNation = new Text();
+		giverNation.setX (500);
+		giverNation.setY (900);
+		giverNation.setText (voter.getName ());
+		giverNation.setFont (Font.font ("Coolvetica RG", FontWeight.BOLD, 81));
+		giverNation.setFill (Color.WHITE);
 
 		VBox vBox = new VBox ();
 		vBox.setId ("12Text");
@@ -71,12 +78,17 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		vBox.getChildren ().addAll (receiveNation, receiveText, giverNation);
 		vBox.setAlignment (Pos.CENTER);
 
-		ImageView recFlag = ImageViewBuilder.create ()
-				.image (receiver.getFlag ()).x (400).fitHeight (120)
-				.fitWidth (230).build ();
-
-		ImageView votFlag = ImageViewBuilder.create ().image (voter.getFlag ())
-				.x (1500).fitHeight (120).fitWidth (230).build ();
+		ImageView recFlag = new ImageView();
+		recFlag.setImage (receiver.getFlag ());
+		recFlag.setX (400);
+		recFlag.setFitHeight (120);
+		recFlag.setFitWidth (230);
+		
+		ImageView votFlag = new ImageView();
+		votFlag.setImage (voter.getFlag ());
+		votFlag.setX (1500);
+		votFlag.setFitHeight (120);
+		votFlag.setFitWidth (230);
 
 		HBox hBox = new HBox ();
 		hBox.setId ("12Flags");

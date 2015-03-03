@@ -11,21 +11,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.ImageViewBuilder;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.media.MediaViewBuilder;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBuilder;
 import javafx.util.Duration;
 import nations.Entry;
 import nations.Participant;
@@ -49,10 +44,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		final Participant currentVoterCopy = standings.getVotes ()
 				.get (scoreboard.inCountryCounter / 10).getVoter ();
 
-		to7Group.getChildren ().add (
-				RectangleBuilder
-					.create ().width (1920).id ("background").height (1080).id ("redBack")
-					.fill (new ImagePattern (scoreboard.getUtilities().backgroundBlue)).build ());
+		Rectangle iR = new Rectangle();
+		iR.setWidth (1920);
+		iR.setHeight (1080);
+		iR.setId ("background");
+		iR.setId ("redBack");
+		iR.setFill (new ImagePattern (scoreboard.getUtilities().backgroundBlue));
+		to7Group.getChildren ().add (iR);
 
 		int entryX = 100;
 		int entryY = 100;
@@ -73,10 +71,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			entryPlayer.setVolume (0);
 			entryPlayer.setCycleCount (1);
 
-			MediaView entryView = MediaViewBuilder.create ()
-					.mediaPlayer (entryPlayer).x (entryX).y (entryY).id ("media")
-					.fitHeight (2000).fitWidth (1200).build ();
-
+			MediaView entryView = new MediaView ();
+			entryView.setMediaPlayer (entryPlayer);
+			entryView.setX (entryX);
+			entryView.setY (entryY);
+			entryView.setId ("media");
+			entryView.setFitHeight (2000);
+			entryView.setFitWidth (1200);
 			scoreboard.getRoot().getChildren ().add (entryView);
 			entryPlayer.play ();
 
@@ -88,45 +89,39 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					int transSDen = (int) ((double) scoreboard.getHeightTransition() / (double) transSNum);
 					
 					for (int i = 0; i < scoreboard.getTransParts(); i++) {
-						Rectangle rect = RectangleBuilder
-								.create ()
-								.height (transSDen)
-								.width (scoreboard.getColumnWidthTransition())
-								.x (scoreboard.getTransitionXOffset() - scoreboard.getColumnWidthTransition() * ((i+1) / transSNum))
-								.y (scoreboard.getTransitionYOffset() - transSDen * ((i+1) % transSNum))
-								.fill (new ImagePattern (scoreboard.getUtilities().nationTileBackground))
-								.build ();
+						Rectangle rect = new Rectangle();
+						rect.setHeight (transSDen);
+						rect.setWidth (scoreboard.getColumnWidthTransition());
+						rect.setX (scoreboard.getTransitionXOffset() - scoreboard.getColumnWidthTransition() * ((i+1) / transSNum));
+						rect.setY (scoreboard.getTransitionYOffset() - transSDen * ((i+1) % transSNum));
+						rect.setFill (new ImagePattern (scoreboard.getUtilities().nationTileBackground));
 						rects.add (rect);
 
-						ImageView viewFlag = ImageViewBuilder
-								.create ()
-								.fitHeight (scoreboard.getFlagHeightTransition())
-								.fitWidth (scoreboard.getFlagWidthTransition())
-								.image (currentVoterCopy.getVotes ().getReceivers ()[i].getFlag ())
-								.x (rect.getX () + scoreboard.getPointTokenWidthTransition() + scoreboard.getFlagFromPTOffsetTrans() +
-										scoreboard.getPtfromEdgeOffsetTrans())
-								.y (rect.getY () + (rect.getHeight () - scoreboard.getFlagHeightTransition()) / 2)
-								.build ();
+						ImageView viewFlag = new ImageView();
+						viewFlag.setFitHeight (scoreboard.getFlagHeightTransition ());
+						viewFlag.setFitWidth (scoreboard.getFlagWidthTransition ());
+						viewFlag.setImage (currentVoterCopy.getVotes ().getReceivers ()[i].getFlag ());
+						viewFlag.setX (rect.getX () + scoreboard.getPointTokenWidthTransition() + scoreboard.getFlagFromPTOffsetTrans() +
+										scoreboard.getPtfromEdgeOffsetTrans());
+						viewFlag.setY (rect.getY () + (rect.getHeight () - scoreboard.getFlagHeightTransition()) / 2);
 						
 						flags.add (viewFlag);
 						
-						VBox rectVBox = VBoxBuilder.create ()
-								.layoutX (viewFlag.getX () + viewFlag.getFitWidth () + scoreboard.getTextFromFlagOffsetTrans())
-								.layoutY (rect.getY ())
-								.prefHeight (transSDen)
-								.prefWidth (rect.getWidth () - (scoreboard.getPointTokenWidthTransition() + 
-										scoreboard.getPtfromEdgeOffsetTrans() +
-										scoreboard.getFlagFromPTOffsetTrans() +
-										scoreboard.getFlagWidthTransition() +
-										scoreboard.getTextFromFlagOffsetTrans()))
-								.alignment (Pos.CENTER_LEFT)
-								.build ();
+						VBox rectVBox = new VBox();
+						rectVBox.setLayoutX (viewFlag.getX () + viewFlag.getFitWidth () + scoreboard.getTextFromFlagOffsetTrans());
+						rectVBox.setLayoutY (rect.getY ());
+						rectVBox.setPrefHeight (transSDen);
+						rectVBox.setPrefWidth (rect.getWidth () - (scoreboard.getPointTokenWidthTransition() + 
+								scoreboard.getPtfromEdgeOffsetTrans() +
+								scoreboard.getFlagFromPTOffsetTrans() +
+								scoreboard.getFlagWidthTransition() +
+								scoreboard.getTextFromFlagOffsetTrans()));
+						rectVBox.setAlignment (Pos.CENTER_LEFT);
 
-						Text recText = TextBuilder
-								.create ()
-								.text (currentVoterCopy.getVotes ().getReceivers ()[i].getName ())
-								.font (Font.font ("Coolvetica RG", FontWeight.MEDIUM, 33)).fill (Color.WHITE)
-								.build ();
+						Text recText = new Text();
+						recText.setText (currentVoterCopy.getVotes ().getReceivers ()[i].getName ());
+						recText.setFont (Font.font ("Coolvetica RG", FontWeight.MEDIUM, 33));
+						recText.setFill (Color.WHITE);
 						
 						rectVBox.getChildren().add (recText);
 						recTexts.add (rectVBox);
@@ -136,14 +131,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					final ArrayList<ImageView> pointViews = new ArrayList<> ();
 					
 					for (int i = 0; i < scoreboard.getTransParts(); i++) {
-						ImageView pointView = ImageViewBuilder
-								.create ()
-								.fitHeight (scoreboard.getPointTokenHeightTransition())
-								.fitWidth (scoreboard.getPointTokenWidthTransition())
-								.image (scoreboard.getUtilities().getPointsTokens ().get (i))
-								.x (scoreboard.getPointTokenXOffsetTransition() + i *
-										scoreboard.getPointTokenWidthTransition())
-								.y (scoreboard.getPointTokenYOffsetTransition()).build ();
+						ImageView pointView = new ImageView();
+						pointView.setFitHeight (scoreboard.getPointTokenHeightTransition ());
+						pointView.setFitWidth (scoreboard.getPointTokenWidthTransition ());
+						pointView.setImage (scoreboard.getUtilities ().getPointsTokens ().get (i));
+						pointView.setX(scoreboard.getPointTokenXOffsetTransition() + i *
+								scoreboard.getPointTokenWidthTransition());
+						pointView.setY (scoreboard.getPointTokenYOffsetTransition());
 
 						pointViews.add (pointView);
 						double shiftPVX = rects.get (i).getX () - pointView.getX () + scoreboard.getPtfromEdgeOffsetTrans();

@@ -63,6 +63,7 @@ public class CoreUI extends Application implements Initializable {
 	@FXML TableColumn<ParticipantData, String> statusCol;
 	
 	@FXML Button addEntryButton;
+	@FXML Button editEntryButton;
 	@FXML Button removeEntryButton;
 	@FXML Button setVotesButton;
 	@FXML Button flagDirButton;
@@ -93,6 +94,7 @@ public class CoreUI extends Application implements Initializable {
 	
 	VoteRegistrator voteRegistrator = new VoteRegistrator ();
 	EntryAdder entryAdder = new EntryAdder ();
+	EntryEditor entryEditor = new EntryEditor ();
 	
 	private Stage primaryStage;
 	
@@ -266,6 +268,18 @@ public class CoreUI extends Application implements Initializable {
 			public void handle (ActionEvent event) {
 				try {
 					entryAdder.init (new Stage());
+				} catch (Exception e) {
+					e.printStackTrace ();
+				}
+			}
+		});
+		
+		editEntryButton.setOnAction (new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					entryEditor.init (new Stage());
 				} catch (Exception e) {
 					e.printStackTrace ();
 				}
