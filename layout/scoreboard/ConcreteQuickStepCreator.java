@@ -36,14 +36,14 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 	@Override
 	public void showSplitScreen(final Scoreboard scoreboard,
 			final Standings standings, final boolean tradVP) {
-		clear (scoreboard.root);
+		clear (scoreboard.getRoot());
 		createPointsArray (scoreboard);
 
 		final Group to7Group = new Group ();
 		to7Group.setId ("To7");
 		
 		if (!tradVP) {
-			scoreboard.root.getChildren ().add (to7Group);	
+			scoreboard.getRoot().getChildren ().add (to7Group);	
 		}
 
 		final Participant currentVoterCopy = standings.getVotes ()
@@ -52,12 +52,12 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		to7Group.getChildren ().add (
 				RectangleBuilder
 					.create ().width (1920).id ("background").height (1080).id ("redBack")
-					.fill (new ImagePattern (scoreboard.utilities.backgroundBlue)).build ());
+					.fill (new ImagePattern (scoreboard.getUtilities().backgroundBlue)).build ());
 
 		int entryX = 100;
 		int entryY = 100;
 		
-		scoreboard.rightSideBar.makeSideOfScoreboard (to7Group, currentVoterCopy, scoreboard, 900, entryX);
+		scoreboard.getRightSideBar().makeSideOfScoreboard (to7Group, currentVoterCopy, scoreboard, 900, entryX);
 
 		if (!tradVP) {
 			final ArrayList<Rectangle> rects = new ArrayList<> ();
@@ -77,7 +77,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					.mediaPlayer (entryPlayer).x (entryX).y (entryY).id ("media")
 					.fitHeight (2000).fitWidth (1200).build ();
 
-			scoreboard.root.getChildren ().add (entryView);
+			scoreboard.getRoot().getChildren ().add (entryView);
 			entryPlayer.play ();
 
 			entryPlayer.setOnPlaying (new Runnable () {
@@ -94,7 +94,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 								.width (scoreboard.getColumnWidthTransition())
 								.x (scoreboard.getTransitionXOffset() - scoreboard.getColumnWidthTransition() * ((i+1) / transSNum))
 								.y (scoreboard.getTransitionYOffset() - transSDen * ((i+1) % transSNum))
-								.fill (new ImagePattern (scoreboard.utilities.nationTileBackground))
+								.fill (new ImagePattern (scoreboard.getUtilities().nationTileBackground))
 								.build ();
 						rects.add (rect);
 
@@ -140,7 +140,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 								.create ()
 								.fitHeight (scoreboard.getPointTokenHeightTransition())
 								.fitWidth (scoreboard.getPointTokenWidthTransition())
-								.image (scoreboard.utilities.getPointsTokens ().get (i))
+								.image (scoreboard.getUtilities().getPointsTokens ().get (i))
 								.x (scoreboard.getPointTokenXOffsetTransition() + i *
 										scoreboard.getPointTokenWidthTransition())
 								.y (scoreboard.getPointTokenYOffsetTransition()).build ();
@@ -152,7 +152,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 						to7Group.getChildren ().add (pointView);
 						Timeline timeline = new Timeline ();
 						timeline.getKeyFrames ().addAll (
-								new KeyFrame (scoreboard.voteTokenDuration, new KeyValue (
+								new KeyFrame (scoreboard.getVoteTokenDuration(), new KeyValue (
 										pointView.translateXProperty (), shiftPVX),
 										new KeyValue (pointView.translateYProperty (), shiftPVY)));
 						timelines.add (timeline);
@@ -181,13 +181,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 				public void run() {
 					final int save = scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
 					Platform.runLater (new VoteAdder (standings, scoreboard,
-							scoreboard.utilities, save, tradVP));
+							scoreboard.getUtilities(), save, tradVP));
 				}
 			});	
 		} else {
 			final int save = scoreboard.inCountryCounter;
 			Platform.runLater (new VoteAdder (standings, scoreboard,
-					scoreboard.utilities, save, tradVP));
+					scoreboard.getUtilities(), save, tradVP));
 		}
 	}
 

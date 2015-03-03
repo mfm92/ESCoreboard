@@ -9,18 +9,18 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 	
 	@Override
 	public void updateTiles(Scoreboard scoreboard, Participant receiver) {
-		int nrOfPart = scoreboard.participants.size ();
+		int nrOfPart = scoreboard.getParticipants().size ();
 		prettyFormatting (scoreboard, nrOfPart, receiver);
 	}
 
 	@Override
 	public void updateBackgroundOnly(Scoreboard scoreboard) {
-		for (int position = 0; position < scoreboard.participants.size (); position++) {
+		for (int position = 0; position < scoreboard.getParticipants().size (); position++) {
 
-			Group group = scoreboard.groupNationMap
-					.get (scoreboard.participants.get (position));
+			Group group = scoreboard.getGroupNationMap()
+					.get (scoreboard.getParticipants().get (position));
 			
-			int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr());
+			int sizeDenom = (int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr());
 
 			Rectangle base = new Rectangle();
 			
@@ -30,8 +30,8 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 			base.setLayoutY (0);
 			base.setId ("base");
 			base.setFill (new ImagePattern (
-							(position < scoreboard.getSpecialBorder() ? scoreboard.utilities.nationTileBackgroundPQ
-									: scoreboard.utilities.nationTileBackground)));
+							(position < scoreboard.getSpecialBorder() ? scoreboard.getUtilities().nationTileBackgroundPQ
+									: scoreboard.getUtilities().nationTileBackground)));
 
 			group.getChildren ().remove (group.getChildren ().get (0));
 			group.getChildren ().add (0, base);

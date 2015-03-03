@@ -3,17 +3,14 @@ package scoreboard;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.ImageViewBuilder;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextBuilder;
 import nations.Participant;
 
 public class ConcreteTileUpdater extends AbstractTileUpdater {
@@ -29,51 +26,45 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			final Group nationTile = new Group ();
 
-			Rectangle base = RectangleBuilder
-					.create ()
-					.width (scoreboard.getColumnNameWidth())
-					.height (scoreboard.getHeight() / sizeDenom)
-					.layoutX (0)
-					.layoutY (0)
-					.id ("base")
-					.fill (new ImagePattern (
-							(position < scoreboard.getSpecialBorder() ? scoreboard.utilities.nationTileBackgroundPQ
-									: scoreboard.utilities.nationTileBackground)))
-					.build ();
+			Rectangle base = new Rectangle();
+			base.setWidth (scoreboard.getColumnNameWidth ());
+			base.setHeight (scoreboard.getHeight() / sizeDenom);
+			base.setLayoutX (0);
+			base.setLayoutY (0);
+			base.setId ("base");
+			base.setFill (new ImagePattern (
+							(position < scoreboard.getSpecialBorder() ? scoreboard.getUtilities().nationTileBackgroundPQ
+									: scoreboard.getUtilities().nationTileBackground)));
 
-			Rectangle pointsBase = RectangleBuilder
-					.create ()
-					.width (scoreboard.getColumnWidth() - scoreboard.getColumnNameWidth())
-					.height (scoreboard.getHeight() / sizeDenom)
-					.layoutX (scoreboard.getColumnNameWidth())
-					.layoutY (0)
-					.id ("pointBase")
-					.fill (new ImagePattern (
-							position < scoreboard.getSpecialBorder() ? scoreboard.utilities.pointsTileBackgroundPQ
-									: scoreboard.utilities.pointsTileBackground))
-					.build ();
+			Rectangle pointsBase = new Rectangle();
+			pointsBase.setWidth (scoreboard.getColumnWidth() - scoreboard.getColumnNameWidth());
+			pointsBase.setHeight (scoreboard.getHeight() / sizeDenom);
+			pointsBase.setLayoutX (scoreboard.getColumnNameWidth ());
+			pointsBase.setLayoutY (0);
+			pointsBase.setId ("pointBase");
+			pointsBase.setFill (new ImagePattern (
+							position < scoreboard.getSpecialBorder() ? scoreboard.getUtilities().pointsTileBackgroundPQ
+									: scoreboard.getUtilities().pointsTileBackground));
 
-			Text nationName = TextBuilder
-					.create ()
-					.text (scoreboard.participants.get (position).getName ())
-					.layoutX (
-							scoreboard.getFlagWidth()
-									+ scoreboard.getNameFromFlagOffset())
-					.layoutY (0.65 * pointsBase.getHeight ())
-					.id ("nationName")
-					.textAlignment (TextAlignment.CENTER)
-					.font (Font.font ("Harabara Mais", FontWeight.MEDIUM, 33))
-					.fill (position < scoreboard.getSpecialBorder() ? Color.RED
-							: Color.WHITE).build ();
+			Text nationName = new Text();
+			nationName.setText (scoreboard.getParticipants().get (position).getName ());
+			nationName.setLayoutX (scoreboard.getFlagWidth()
+					+ scoreboard.getNameFromFlagOffset());
+			nationName.setLayoutY (0.65 * pointsBase.getHeight ());
+			nationName.setId ("nationName");
+			nationName.setTextAlignment (TextAlignment.CENTER);
+			nationName.setFont (Font.font ("Harabara Mais", FontWeight.MEDIUM, 33));
+			nationName.setFill (position < scoreboard.getSpecialBorder() ? Color.RED
+					: Color.WHITE);
 
-			Text scoreTest = TextBuilder
-					.create ()
-					.text (new Integer (scoreboard.participants.get (position)
-							.getScore ()).toString ())
-					.layoutX (base.getWidth () + 46).layoutY (40)
-					.textAlignment (TextAlignment.CENTER)
-					.font (Font.font ("Inconsolata", FontWeight.MEDIUM, 41))
-					.fill (Color.WHITE).build ();
+			Text scoreTest = new Text();
+			scoreTest.setText (new Integer (scoreboard.getParticipants().get (position)
+							.getScore ()).toString ());
+			scoreTest.setLayoutX (base.getWidth () + 46);
+			scoreTest.setLayoutY (40);
+			scoreTest.setTextAlignment (TextAlignment.CENTER);
+			scoreTest.setFont (Font.font ("Inconsolata", FontWeight.MEDIUM, 41));
+			scoreTest.setFill (Color.WHITE);
 
 			VBox scoreVBox = new VBox ();
 			scoreVBox.setLayoutX (pointsBase.getLayoutX ());
@@ -84,11 +75,11 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			scoreVBox.setId ("score");
 			scoreVBox.getChildren ().add (scoreTest);
 
-			ImageView nationIcon = ImageViewBuilder.create ()
-					.image (scoreboard.participants.get (position).getFlag ())
-					.layoutX ((base.getHeight () - scoreboard.getFlagHeight()) / 2)
-					.layoutY ((base.getHeight () - scoreboard.getFlagHeight()) / 2)
-					.id ("icon").build ();
+			ImageView nationIcon = new ImageView();
+			nationIcon.setImage (scoreboard.getParticipants().get (position).getFlag ());
+			nationIcon.setLayoutX ((base.getHeight () - scoreboard.getFlagHeight()) / 2);
+			nationIcon.setLayoutY ((base.getHeight () - scoreboard.getFlagHeight()) / 2);
+			nationIcon.setId ("icon");
 
 			nationTile.setLayoutX (scoreboard.getGlobalXOffset()
 					+ scoreboard.getColumnWidth() * (position / sizeDenom));
@@ -102,60 +93,56 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			nationTile.getChildren ().addAll (base, pointsBase, nationName,
 					scoreVBox, nationIcon);
 
-			if (scoreboard.currentVoter != null) {
-				if (scoreboard.participants.get (position).getName ()
-						.equals (scoreboard.currentVoter.getName ())) {
-					nationIcon.setImage (scoreboard.utilities.voterPointToken);
+			if (scoreboard.getCurrentVoter() != null) {
+				if (scoreboard.getParticipants().get (position).getName ()
+						.equals (scoreboard.getCurrentVoter().getName ())) {
+					nationIcon.setImage (scoreboard.getUtilities().voterPointToken);
 					base.setFill (new ImagePattern (
-							scoreboard.utilities.nationTileBackgroundVoter));
+							scoreboard.getUtilities().nationTileBackgroundVoter));
 					nationName.setFill (Color.LIGHTGRAY);
 					scoreTest.setFill (Color.LIGHTGRAY);
 				}
 			}
 
-			if (scoreboard.participants.get (position).getTmpScore () != 0) {
-				ImageView ptsView = ImageViewBuilder
-						.create ()
-						.image (scoreboard.utilities
-								.getPointsTokens ()
-								.get (scoreboard
-										.pointsToIndices (scoreboard.participants
-												.get (position).getTmpScore ())))
-						.layoutX (nationIcon.getLayoutX ())
-						.layoutY (nationIcon.getLayoutY ()).id ("ptsProof")
-						.build ();
+			if (scoreboard.getParticipants().get (position).getTmpScore () != 0) {
+				ImageView ptsView = new ImageView();
+				ptsView.setImage (scoreboard.getUtilities().getPointsTokens ().get (scoreboard
+						.pointsToIndices (scoreboard.getParticipants().get (position).getTmpScore ())));
+				ptsView.setLayoutX (nationIcon.getLayoutX ());
+				ptsView.setLayoutY (nationIcon.getLayoutY ());
+				ptsView.setId("ptsProof");
 
 				ptsView.setFitHeight (nationIcon.getFitHeight ());
 				ptsView.setFitWidth (nationIcon.getFitWidth ());
 
-				if (scoreboard.participants.get (position).getScoredFlag ()
+				if (scoreboard.getParticipants().get (position).getScoredFlag ()
 						&& !(nationName.getText ().endsWith (" has SCORED!") && !(nationName
 								.getText ().endsWith (" PQ!")))) {
 					base.setFill (new ImagePattern (
-							scoreboard.utilities.nationTileBackgroundScored));
+							scoreboard.getUtilities().nationTileBackgroundScored));
 					if (position < scoreboard.getSpecialBorder()) {
 						base.setFill (new ImagePattern (
-								scoreboard.utilities.nationTileBackgroundPQScored));
+								scoreboard.getUtilities().nationTileBackgroundPQScored));
 					}
 				}
 				
-				if (scoreboard.participants.get (position) == receiver) {
+				if (scoreboard.getParticipants().get (position) == receiver) {
 					// do some effects here...
 				}
 
 				nationTile.getChildren ().add (ptsView);
 			}
 
-			scoreboard.groupNationMap.put (
-					scoreboard.participants.get (position), nationTile);
+			scoreboard.getGroupNationMap().put (
+					scoreboard.getParticipants().get (position), nationTile);
 			newSuperNations.getChildren ().add (nationTile);
 		}
 
-		scoreboard.root.getChildren ().remove (
-				scoreboard.root.lookup ("#nations"));
-		if (scoreboard.root.getChildren ().size () >= 1)
-			scoreboard.root.getChildren ().add (1, newSuperNations);
+		scoreboard.getRoot().getChildren ().remove (
+				scoreboard.getRoot().lookup ("#nations"));
+		if (scoreboard.getRoot().getChildren ().size () >= 1)
+			scoreboard.getRoot().getChildren ().add (1, newSuperNations);
 		newSuperNations.setId ("nations");
-		scoreboard.superNations = newSuperNations;
+		scoreboard.setSuperNations (newSuperNations);
 	}
 }

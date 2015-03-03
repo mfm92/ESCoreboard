@@ -27,24 +27,24 @@ public class StepByStepAnimator extends UpdateAnimator {
 			final ArrayList<Participant> standings, final boolean tradVP) {
 		
 		if (scoreboard.inCountryCounter % 10 == 1) {
-			scoreboard.root.getChildren ().remove (scoreboard.root.lookup ("#media"));
+			scoreboard.getRoot().getChildren ().remove (scoreboard.getRoot().lookup ("#media"));
 			votesClear (voter, scoreboard);
-			scoreboard.tileUpdater.updateBackgroundOnly (scoreboard);
+			scoreboard.getTileUpdater().updateBackgroundOnly (scoreboard);
 		}
 		
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
-		int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr());
+		int sizeDenom = (int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr());
 		
 		// PLACE POINT NODE
-		Rectangle pointView = scoreboard.pointViews.get ((scoreboard.inCountryCounter - 1) % 10);
+		Rectangle pointView = scoreboard.getPointViews().get ((scoreboard.inCountryCounter - 1) % 10);
 		pointView.setHeight (0.7 * (scoreboard.getHeight()/sizeDenom));
-		Votes votes = scoreboard.utilities.voteMap.get (voter);
+		Votes votes = scoreboard.getUtilities().voteMap.get (voter);
 		Participant receiver = votes.getReceivers ()[(scoreboard.inCountryCounter - 1) % 10];
 		receiver.setTmpScore (scoreboard.indicesToPoints ((scoreboard.inCountryCounter - 1) % 10));
 		receiver.setScoredFlag (true);
-		Group nationGroup = scoreboard.groupNationMap.get (receiver);
+		Group nationGroup = scoreboard.getGroupNationMap().get (receiver);
 		pointView.setId ("tmpPts");
-		scoreboard.root.getChildren ().remove (pointView);
+		scoreboard.getRoot().getChildren ().remove (pointView);
 		nationGroup.getChildren ().remove (pointView);
 		nationGroup.getChildren ().add (pointView);
 
@@ -65,12 +65,12 @@ public class StepByStepAnimator extends UpdateAnimator {
 								- nationGroup.getLayoutX ()), new KeyValue (
 						pointView.yProperty (), oldPosY
 								- nationGroup.getLayoutY ())),
-				new KeyFrame (scoreboard.voteTokenDuration, new KeyValue (pointView
+				new KeyFrame (scoreboard.getVoteTokenDuration(), new KeyValue (pointView
 						.xProperty (), newPosX - nationGroup.getLayoutX ()),
 						new KeyValue (pointView.yProperty (), newPosY
 								- nationGroup.getLayoutY ())));
 
-		scoreboard.groupNationMap.get (scoreboard.participants.get (sizeDenom - 1)).toFront ();		
+		scoreboard.getGroupNationMap().get (scoreboard.getParticipants().get (sizeDenom - 1)).toFront ();		
 		timeline.play ();
 
 		final Participant rece = receiver;
@@ -81,7 +81,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 				countUpScore (scoreboard, rece);
 
 				// MOVE TILES
-				for (Participant participant : scoreboard.participants) {
+				for (Participant participant : scoreboard.getParticipants()) {
 					int oldPos = overview.getPosition (oldStandings, participant);
 					int newPos = overview.getPosition (standings, participant);
 
@@ -93,13 +93,13 @@ public class StepByStepAnimator extends UpdateAnimator {
 					double xShift = newX - oldX;
 					double yShift = newY - oldY;
 
-					Group nationGroup = scoreboard.groupNationMap
+					Group nationGroup = scoreboard.getGroupNationMap()
 							.get (participant);
 
 					TranslateTransition tTrans = new TranslateTransition ();
 					
 					tTrans.setNode (nationGroup);
-					tTrans.setDuration (scoreboard.voteTokenDuration);
+					tTrans.setDuration (scoreboard.getVoteTokenDuration());
 					tTrans.setByX (xShift);
 					tTrans.setByY (yShift);
 					tTrans.setAutoReverse (false);
@@ -116,14 +116,14 @@ public class StepByStepAnimator extends UpdateAnimator {
 						tT.setOnFinished (new EventHandler<ActionEvent> () {
 							@Override
 							public void handle(ActionEvent event) {
-								Collections.sort (scoreboard.participants);								
-								scoreboard.tileUpdater.updateTiles (scoreboard, rece);
+								Collections.sort (scoreboard.getParticipants());								
+								scoreboard.getTileUpdater().updateTiles (scoreboard, rece);
 
 								// GET RID OF THAT
-								scoreboard.groupNationMap
+								scoreboard.getGroupNationMap()
 										.get (rece)
 										.getChildren ()
-										.remove (scoreboard.groupNationMap.get (rece).lookup ("#tmpPts"));
+										.remove (scoreboard.getGroupNationMap().get (rece).lookup ("#tmpPts"));
 
 								// SHOW 12 POINTER MEZZO
 								if (scoreboard.inCountryCounter % 10 == 1
@@ -135,7 +135,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 
 								// NEXT VOTES, PLEASE...
 								Platform.runLater (new VoteAdder (overview,
-										scoreboard, scoreboard.utilities, save, tradVP));
+										scoreboard, scoreboard.getUtilities(), save, tradVP));
 							}
 						});
 					}

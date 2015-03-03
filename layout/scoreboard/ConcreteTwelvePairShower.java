@@ -19,9 +19,9 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 	@Override
 	public void addTwelvePair(Scoreboard scoreboard, Participant voter,
 			Participant receiver) {
-		scoreboard.root.getChildren ().remove (scoreboard.background);
+		scoreboard.getRoot().getChildren ().remove (scoreboard.getBackground());
 
-		scoreboard.root.getChildren ().add (
+		scoreboard.getRoot().getChildren ().add (
 				RectangleBuilder
 						.create ()
 						.width (1920)
@@ -29,8 +29,8 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 						.height (1080)
 						.id ("redBack")
 						.fill (new ImagePattern (
-								scoreboard.utilities.backgroundRed)).build ());
-		scoreboard.root
+								scoreboard.getUtilities().backgroundRed)).build ());
+		scoreboard.getRoot()
 				.getChildren ()
 				.add (RectangleBuilder
 						.create ()
@@ -39,12 +39,12 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 						.id ("12Strip")
 						.width (1920)
 						.height (270)
-						.fill (new ImagePattern (scoreboard.utilities.ppraisbg))
+						.fill (new ImagePattern (scoreboard.getUtilities().ppraisbg))
 						.build ());
-		scoreboard.root.getChildren ().add (
+		scoreboard.getRoot().getChildren ().add (
 				RectangleBuilder.create ().x (100).y (830).id ("12D")
 						.width (216).height (170)
-						.fill (new ImagePattern (scoreboard.utilities.pprais))
+						.fill (new ImagePattern (scoreboard.getUtilities().pprais))
 						.build ());
 
 		Text receiveNation = TextBuilder.create ().x (500).y (795)
@@ -86,7 +86,7 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		hBox.setPrefWidth (1320);
 		hBox.getChildren ().addAll (recFlag, vBox, votFlag);
 		hBox.setAlignment (Pos.CENTER);
-		scoreboard.root.getChildren ().add (hBox);
+		scoreboard.getRoot().getChildren ().add (hBox);
 	}
 
 }

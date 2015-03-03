@@ -39,16 +39,16 @@ import data.Standings;
 
 public class Scoreboard extends Application {
 
-	boolean tradVP = CoreUI.inputData.getTraditionalVoting ();
-	boolean useSpecialFlags = CoreUI.inputData.getUsePrettyFlags ();
-	boolean useFullScreen = CoreUI.inputData.getUseFullScreen ();
-	boolean createBanners = CoreUI.inputData.getBannerCreatorActivated ();
+	private boolean traditionalVoting = CoreUI.inputData.getTraditionalVoting ();
+	private boolean useSpecialFlags = CoreUI.inputData.getUsePrettyFlags ();
+	private boolean useFullScreen = CoreUI.inputData.getUseFullScreen ();
+	private boolean createBanners = CoreUI.inputData.getBannerCreatorActivated ();
 	
-	Duration minDuration = Duration.seconds (0.2);
-	Duration maxDuration = Duration.seconds (3.0);
+	private Duration minDuration = Duration.seconds (0.2);
+	private Duration maxDuration = Duration.seconds (3.0);
 	
-	String title = CoreUI.inputData.getNameOfEdition () + " " + CoreUI.inputData.getEditionNr () + " results";
-	Duration voteTokenDuration = Duration.seconds 
+	private String title = CoreUI.inputData.getNameOfEdition () + " " + CoreUI.inputData.getEditionNr () + " results";
+	private Duration voteTokenDuration = Duration.seconds 
 			(minDuration.toSeconds () + (1 - (CoreUI.inputData.getShowSpeed () / 100.0)) * 
 					(maxDuration.toSeconds () - minDuration.toSeconds ()));
 
@@ -105,26 +105,27 @@ public class Scoreboard extends Application {
 	
 	private int nameFromFlagOffset = 25;
 
-	SideOverviewTableCreator sideTableCreator = new SimpleSideTableStyle ();
-	TwelvePairShower twelvePairShower = new ConcreteTwelvePairShower ();
-	VoteSideBarCreator rightSideBar = new RightSideVoteBarCreator ();
-	VoteSideBarCreator bottomSideBar = new BottomSideVoteBarCreator ();
-	TileUpdater tileUpdater = new ConcreteTileUpdater ();
-	IntermediatePreparator to7ScreenMaker = new ConcreteQuickStepCreator ();
+	private SideOverviewTableCreator sideTableCreator = new SimpleSideTableStyle ();
+	private TwelvePairShower twelvePairShower = new ConcreteTwelvePairShower ();
+	private VoteSideBarCreator rightSideBar = new RightSideVoteBarCreator ();
+	private VoteSideBarCreator bottomSideBar = new BottomSideVoteBarCreator ();
+	private TileUpdater tileUpdater = new ConcreteTileUpdater ();
+	private IntermediatePreparator to7ScreenMaker = new ConcreteQuickStepCreator ();
 
-	UpdateAnimator oneToSevenAnimator = new QuickUpdater ();
-	UpdateAnimator topThreeAnimator = new StepByStepAnimator ();
+	private UpdateAnimator oneToSevenAnimator = new QuickUpdater ();
+	private UpdateAnimator topThreeAnimator = new StepByStepAnimator ();
 
-	Group root;
-	Group superNations;
-	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
-	ArrayList<Participant> participants;
-	Participant currentVoter;
+	private Group root;
+	private Group superNations;
+	private HashMap<Participant, Group> groupNationMap = new HashMap<> ();
+	private ArrayList<Participant> participants;
+	private Participant currentVoter;
 
-	ArrayList<Rectangle> pointViews;
+	private ArrayList<Rectangle> pointViews;
 
-	NSCUtilities utilities;
-	Rectangle background;
+	private NSCUtilities utilities;
+	private Rectangle background;
+	
 	int inCountryCounter;
 	
 	public static void main(String[] args) {
@@ -135,8 +136,8 @@ public class Scoreboard extends Application {
 	public void start(Stage primaryStage) {
 		Standings standings = null;
 		try {
-			utilities = new NSCUtilities (useSpecialFlags);
-			standings = new Standings (utilities);
+			setUtilities (new NSCUtilities (isUsingSpecialFlags()));
+			standings = new Standings (getUtilities());
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
@@ -147,17 +148,17 @@ public class Scoreboard extends Application {
 		background.setWidth (1920);
 		background.setHeight (1080);
 		background.setId ("background");
-		background.setFill (new ImagePattern (utilities.backgroundWhite));
+		background.setFill (new ImagePattern (getUtilities().backgroundWhite));
 
-		this.background = background;
-		String[] finalists = utilities.getListOfNames ();
-		ArrayList<Participant> rosterNations = utilities
+		this.setBackground (background);
+		String[] finalists = getUtilities().getListOfNames ();
+		ArrayList<Participant> rosterNations = getUtilities()
 				.getListOfNations (finalists);
-		this.participants = new ArrayList<> (rosterNations);
+		this.setParticipants (new ArrayList<> (rosterNations));
 		Collections.sort (rosterNations);
 
-		root = new Group ();
-		root.setId ("RootGroup");
+		setRoot (new Group ());
+		getRoot().setId ("RootGroup");
 
 		drawScoreboard (rosterNations, standings, primaryStage);
 
@@ -172,14 +173,14 @@ public class Scoreboard extends Application {
 		backgroundDummy.setWidth (1920);
 		backgroundDummy.setHeight (1080);
 		backgroundDummy.setId ("backgroundDummy");
-		backgroundDummy.setFill (new ImagePattern (utilities.backgroundWhite));
+		backgroundDummy.setFill (new ImagePattern (getUtilities().backgroundWhite));
 
-		tileUpdater.updateTiles (this, null);
-		root.getChildren ().add (background);
-		root.getChildren ().add (superNations);
-		root.getChildren ().add (backgroundDummy);
+		getTileUpdater().updateTiles (this, null);
+		getRoot().getChildren ().add (getBackground());
+		getRoot().getChildren ().add (getSuperNations());
+		getRoot().getChildren ().add (backgroundDummy);
 
-		Scene scene = new Scene (root);
+		Scene scene = new Scene (getRoot());
 
 		// MAKE IT FULL SCREEN
 		primaryStage.setX (Screen.getPrimary ().getVisualBounds ().getMinX ());
@@ -189,8 +190,8 @@ public class Scoreboard extends Application {
 		primaryStage.setHeight (Screen.getPrimary ().getVisualBounds ()
 				.getHeight ());
 		primaryStage.setScene (scene);
-		primaryStage.setTitle (title);
-		primaryStage.setFullScreen (useFullScreen);
+		primaryStage.setTitle (getTitle());
+		primaryStage.setFullScreen (isUsingFullScreen());
 		primaryStage.show ();
 	}
 
@@ -198,11 +199,11 @@ public class Scoreboard extends Application {
 			final Participant voter, final ArrayList<Participant> oldStandings,
 			Standings overview) {
 		
-		if (!tradVP) {
-			((inCountryCounter % 10 == getTransParts()) ? oneToSevenAnimator : topThreeAnimator)
-			.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);	
+		if (!isTraditionalVoting()) {
+			((inCountryCounter % 10 == getTransParts()) ? getOneToSevenAnimator() : getTopThreeAnimator())
+			.updateAnimate (this, voter, overview, oldStandings, standings, isTraditionalVoting());	
 		} else {
-			topThreeAnimator.updateAnimate (this, voter, overview, oldStandings, standings, tradVP);
+			getTopThreeAnimator().updateAnimate (this, voter, overview, oldStandings, standings, isTraditionalVoting());
 		}
 	}
 
@@ -217,13 +218,13 @@ public class Scoreboard extends Application {
 			public void run() {
 
 				// GENERATE SCOREBOARD
-				generateImageScoreboard (root, voter);
+				generateImageScoreboard (getRoot(), voter);
 
 				// SHOW 12 PAIR
-				twelvePairShower.addTwelvePair (scoreboard, voter, receiver);
+				getTwelvePairShower().addTwelvePair (scoreboard, voter, receiver);
 
 				// CREATE TABLE
-				root.getChildren ().add (sideTableCreator.createSideTable (participants));
+				getRoot().getChildren ().add (getSideTableCreator().createSideTable (getParticipants()));
 
 				// GET THE VIDEO
 				showVideoAndDirect (receiver, standings, scoreboard);
@@ -250,12 +251,12 @@ public class Scoreboard extends Application {
 		entryView.setY (50);
 		entryView.setId ("media");
 
-		root.getChildren ().add (entryView);
+		getRoot().getChildren ().add (entryView);
 		entryPlayer.play ();
 		entryPlayer.setOnEndOfMedia (new Runnable () {
 			@Override
 			public void run() {
-				root.getChildren ().add (0, background);
+				getRoot().getChildren ().add (0, getBackground());
 				Platform.runLater (showOneToSeven (standings, scoreboard));
 			}
 		});
@@ -266,7 +267,7 @@ public class Scoreboard extends Application {
 		return new Thread (new Runnable () {
 			@Override
 			public void run() {
-				to7ScreenMaker.showSplitScreen (scoreboard, standings, tradVP);
+				getTo7ScreenMaker().showSplitScreen (scoreboard, standings, isTraditionalVoting());
 			}
 		});
 	}
@@ -309,7 +310,55 @@ public class Scoreboard extends Application {
 
 		return pts;
 	}
-	
+
+	public boolean isTraditionalVoting() {
+		return traditionalVoting;
+	}
+
+	public void setTraditionalVoting(boolean tradVP) {
+		this.traditionalVoting = tradVP;
+	}
+
+	public boolean isCreatingBanners() {
+		return createBanners;
+	}
+
+	public void setCreateBanners(boolean createBanners) {
+		this.createBanners = createBanners;
+	}
+
+	public boolean isUsingSpecialFlags() {
+		return useSpecialFlags;
+	}
+
+	public void setUseSpecialFlags(boolean useSpecialFlags) {
+		this.useSpecialFlags = useSpecialFlags;
+	}
+
+	public boolean isUsingFullScreen() {
+		return useFullScreen;
+	}
+
+	public void setUseFullScreen(boolean useFullScreen) {
+		this.useFullScreen = useFullScreen;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Duration getVoteTokenDuration() {
+		return voteTokenDuration;
+	}
+
+	public void setVoteTokenDuration(Duration voteTokenDuration) {
+		this.voteTokenDuration = voteTokenDuration;
+	}
+
 	int getColumnsNr() {
 		return columnsNr;
 	}
@@ -596,5 +645,133 @@ public class Scoreboard extends Application {
 
 	public void setNameFromFlagOffset(int nameFromFlagOffset) {
 		this.nameFromFlagOffset = nameFromFlagOffset;
+	}
+
+	public SideOverviewTableCreator getSideTableCreator() {
+		return sideTableCreator;
+	}
+
+	public void setSideTableCreator(SideOverviewTableCreator sideTableCreator) {
+		this.sideTableCreator = sideTableCreator;
+	}
+
+	public TwelvePairShower getTwelvePairShower() {
+		return twelvePairShower;
+	}
+
+	public void setTwelvePairShower(TwelvePairShower twelvePairShower) {
+		this.twelvePairShower = twelvePairShower;
+	}
+
+	public VoteSideBarCreator getRightSideBar() {
+		return rightSideBar;
+	}
+
+	public void setRightSideBar(VoteSideBarCreator rightSideBar) {
+		this.rightSideBar = rightSideBar;
+	}
+
+	public VoteSideBarCreator getBottomSideBar() {
+		return bottomSideBar;
+	}
+
+	public void setBottomSideBar(VoteSideBarCreator bottomSideBar) {
+		this.bottomSideBar = bottomSideBar;
+	}
+
+	public TileUpdater getTileUpdater() {
+		return tileUpdater;
+	}
+
+	public void setTileUpdater(TileUpdater tileUpdater) {
+		this.tileUpdater = tileUpdater;
+	}
+
+	public IntermediatePreparator getTo7ScreenMaker() {
+		return to7ScreenMaker;
+	}
+
+	public void setTo7ScreenMaker(IntermediatePreparator to7ScreenMaker) {
+		this.to7ScreenMaker = to7ScreenMaker;
+	}
+
+	public UpdateAnimator getOneToSevenAnimator() {
+		return oneToSevenAnimator;
+	}
+
+	public void setOneToSevenAnimator(UpdateAnimator oneToSevenAnimator) {
+		this.oneToSevenAnimator = oneToSevenAnimator;
+	}
+
+	public UpdateAnimator getTopThreeAnimator() {
+		return topThreeAnimator;
+	}
+
+	public void setTopThreeAnimator(UpdateAnimator topThreeAnimator) {
+		this.topThreeAnimator = topThreeAnimator;
+	}
+
+	public Group getRoot() {
+		return root;
+	}
+
+	public void setRoot(Group root) {
+		this.root = root;
+	}
+
+	public Group getSuperNations() {
+		return superNations;
+	}
+
+	public void setSuperNations(Group superNations) {
+		this.superNations = superNations;
+	}
+
+	public HashMap<Participant, Group> getGroupNationMap() {
+		return groupNationMap;
+	}
+
+	public void setGroupNationMap(HashMap<Participant, Group> groupNationMap) {
+		this.groupNationMap = groupNationMap;
+	}
+
+	ArrayList<Participant> getParticipants() {
+		return participants;
+	}
+
+	void setParticipants(ArrayList<Participant> participants) {
+		this.participants = participants;
+	}
+
+	Participant getCurrentVoter() {
+		return currentVoter;
+	}
+
+	void setCurrentVoter(Participant currentVoter) {
+		this.currentVoter = currentVoter;
+	}
+
+	public ArrayList<Rectangle> getPointViews() {
+		return pointViews;
+	}
+
+	public void setPointViews(ArrayList<Rectangle> pointViews) {
+		this.pointViews = pointViews;
+	}
+
+	public NSCUtilities getUtilities() {
+		return utilities;
+	}
+
+	public void setUtilities(NSCUtilities utilities) {
+		this.utilities = utilities;
+	}
+
+	public Rectangle getBackground() {
+		return background;
+	}
+
+	public void setBackground(Rectangle background) {
+		this.background = background;
 	}
 }

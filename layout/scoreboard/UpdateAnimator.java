@@ -22,7 +22,7 @@ public abstract class UpdateAnimator {
 	void countUpScore(Scoreboard scoreboard, Participant receiver) {
 		// SET CORRECT SCORE
 		int newNrOfPoints = receiver.getScore ();
-		Group nationGroup = scoreboard.groupNationMap.get (receiver);
+		Group nationGroup = scoreboard.getGroupNationMap().get (receiver);
 		double xProperty = nationGroup.getChildren ().get (3).getLayoutX ();
 		double yProperty = nationGroup.getChildren ().get (3).getLayoutY ();
 		double vHeight = ((VBox) (nationGroup.getChildren ().get (3)))
@@ -51,32 +51,32 @@ public abstract class UpdateAnimator {
 	}
 	
 	void votesClear(Participant voter, Scoreboard scoreboard) {
-		scoreboard.currentVoter = voter;
-		for (Participant finalist : scoreboard.participants) {
+		scoreboard.setCurrentVoter (voter);
+		for (Participant finalist : scoreboard.getParticipants()) {
 			finalist.setTmpScore (0);
 			finalist.setScoredFlag (false);
-			scoreboard.groupNationMap
+			scoreboard.getGroupNationMap()
 					.get (finalist)
 					.getChildren ()
-					.remove (scoreboard.groupNationMap.get (finalist).lookup ("#ptsProof"));
+					.remove (scoreboard.getGroupNationMap().get (finalist).lookup ("#ptsProof"));
 		}
 		
 		if (scoreboard.getColumnsNr() > 2) {
-			scoreboard.bottomSideBar.makeSideOfScoreboard (scoreboard.root,
+			scoreboard.getBottomSideBar().makeSideOfScoreboard (scoreboard.getRoot(),
 					voter, scoreboard, scoreboard.getBottomBarWidth(), scoreboard.getBottomBarX());
 		} else {
-			scoreboard.rightSideBar.makeSideOfScoreboard (scoreboard.root, voter, scoreboard, 
+			scoreboard.getRightSideBar().makeSideOfScoreboard (scoreboard.getRoot(), voter, scoreboard, 
 					scoreboard.getHeight(), scoreboard.getGlobalYOffset());
 		}
 	}
 
 	double getXCoordByPos(int position, Scoreboard scoreboard) {
 		return scoreboard.getGlobalXOffset() + scoreboard.getColumnWidth() * 
-				((position - 1) / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr())));
+				((position - 1) / ((int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr())));
 	}
 
 	double getYCoordByPos(int position, Scoreboard scoreboard) {
-		return scoreboard.getGlobalYOffset() + (scoreboard.getHeight() / ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr())))
-				* ((position - 1) % ((int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr())));
+		return scoreboard.getGlobalYOffset() + (scoreboard.getHeight() / ((int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr())))
+				* ((position - 1) % ((int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr())));
 	}
 }

@@ -37,7 +37,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.height (scoreboard.getBottomBarHeight())
 				.x (underlayX)
 				.y (scoreboard.getBottomBarY())
-				.fill (new ImagePattern (scoreboard.utilities.voteFlagUnderlay))
+				.fill (new ImagePattern (scoreboard.getUtilities().voteFlagUnderlay))
 				.build ();
 
 		ImageView voterFlag = ImageViewBuilder.create ()
@@ -53,7 +53,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.height (voteFlagUnderlay.getHeight ())
 				.x (voteFlagUnderlay.getX () + 0.2 * underlayWidth)
 				.y (voteFlagUnderlay.getY ())
-				.fill (new ImagePattern (scoreboard.utilities.voteUnderlay))
+				.fill (new ImagePattern (scoreboard.getUtilities().voteUnderlay))
 				.build ();
 
 		Text currentVoter = TextBuilder.create ()
@@ -76,12 +76,12 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.x (underlayX + 0.85 * underlayWidth)
 				.y (voteFlagUnderlay.getY ())
 				.fill (new ImagePattern (
-						scoreboard.utilities.voteCounterULSmall)).build ();
+						scoreboard.getUtilities().voteCounterULSmall)).build ();
 
 		Text counter = TextBuilder
 				.create ()
 				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " / "
-						+ scoreboard.utilities.voteMap.size ())
+						+ scoreboard.getUtilities().voteMap.size ())
 				.fill (Color.WHITE)
 				.font (Font.font ("Coolvetica RG", FontWeight.LIGHT, 32))
 				.build ();

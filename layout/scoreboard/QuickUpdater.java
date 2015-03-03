@@ -26,27 +26,27 @@ public class QuickUpdater extends UpdateAnimator {
 			final ArrayList<Participant> oldStandings,
 			final ArrayList<Participant> standings, final boolean tradVP) {
 
-		scoreboard.root.getChildren ().remove (
-				scoreboard.root.lookup ("#media"));
+		scoreboard.getRoot().getChildren ().remove (
+				scoreboard.getRoot().lookup ("#media"));
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
-		int sizeDenom = (scoreboard.participants.size () + 1) / scoreboard.getColumnsNr();
+		int sizeDenom = (scoreboard.getParticipants().size () + 1) / scoreboard.getColumnsNr();
 
 		// CLEAR AFTER FULL VOTE
 		votesClear (voter, scoreboard);
-		scoreboard.tileUpdater.updateBackgroundOnly (scoreboard);
-		final Votes votes = scoreboard.utilities.voteMap.get (voter);
+		scoreboard.getTileUpdater().updateBackgroundOnly (scoreboard);
+		final Votes votes = scoreboard.getUtilities().voteMap.get (voter);
 		ArrayList<Timeline> timelines = new ArrayList<> ();
 
 		for (int i = 1; i <= scoreboard.getTransParts(); i++) {
 			// PLACE POINT NODE
-			Rectangle pointView = scoreboard.pointViews.get ((i - 1));
+			Rectangle pointView = scoreboard.getPointViews().get ((i - 1));
 			pointView.setHeight (0.7*(scoreboard.getHeight()/sizeDenom));
 			Participant receiver = votes.getReceivers ()[(i - 1)];
 			receiver.setTmpScore (scoreboard.indicesToPoints (i - 1));
 			receiver.setScoredFlag (true);
-			Group nationGroup = scoreboard.groupNationMap.get (receiver);
+			Group nationGroup = scoreboard.getGroupNationMap().get (receiver);
 			pointView.setId ("tmpPts");
-			scoreboard.root.getChildren ().remove (pointView);
+			scoreboard.getRoot().getChildren ().remove (pointView);
 			nationGroup.getChildren ().remove (pointView);
 			nationGroup.getChildren ().add (pointView);
 
@@ -64,18 +64,18 @@ public class QuickUpdater extends UpdateAnimator {
 									- nationGroup.getLayoutX ()), new KeyValue (
 							pointView.yProperty (), oldPosY
 									- nationGroup.getLayoutY ())),
-					new KeyFrame (scoreboard.voteTokenDuration,
+					new KeyFrame (scoreboard.getVoteTokenDuration(),
 							new KeyValue (pointView.xProperty (), newPosX
 									- nationGroup.getLayoutX ()), new KeyValue (
 									pointView.yProperty (), newPosY
 											- nationGroup.getLayoutY ())));
 
-			scoreboard.groupNationMap.get (scoreboard.participants.get (sizeDenom - 2)).toFront ();
+			scoreboard.getGroupNationMap().get (scoreboard.getParticipants().get (sizeDenom - 2)).toFront ();
 			nationGroup.toFront ();
 			timelines.add (timeline);
 		}
 
-		scoreboard.root.getChildren ().remove (scoreboard.root.lookup ("#To7"));
+		scoreboard.getRoot().getChildren ().remove (scoreboard.getRoot().lookup ("#To7"));
 		for (Timeline timeline : timelines) {
 			timeline.play ();
 			if (timeline == timelines.get (timelines.size () - 1)) {
@@ -83,10 +83,10 @@ public class QuickUpdater extends UpdateAnimator {
 					@Override
 					public void handle(ActionEvent event) {
 						// UPDATE
-						scoreboard.tileUpdater.updateTiles (scoreboard, null);
+						scoreboard.getTileUpdater().updateTiles (scoreboard, null);
 
 						// MOVE TILES
-						for (Participant participant : scoreboard.participants) {
+						for (Participant participant : scoreboard.getParticipants()) {
 							int oldPos = overview.getPosition (oldStandings, participant);
 							int newPos = overview.getPosition (standings, participant);
 
@@ -98,13 +98,13 @@ public class QuickUpdater extends UpdateAnimator {
 							double xShift = newX - oldX;
 							double yShift = newY - oldY;
 
-							Group nationGroup = scoreboard.groupNationMap
+							Group nationGroup = scoreboard.getGroupNationMap()
 									.get (participant);
 
 							TranslateTransition tTrans = new TranslateTransition ();
 							
 							tTrans.setNode (nationGroup);
-							tTrans.setDuration (scoreboard.voteTokenDuration);
+							tTrans.setDuration (scoreboard.getVoteTokenDuration());
 							tTrans.setByX (xShift);
 							tTrans.setByY (yShift);
 							tTrans.setAutoReverse (false);
@@ -115,26 +115,26 @@ public class QuickUpdater extends UpdateAnimator {
 						}
 						for (TranslateTransition tT : transTrans) {
 							for (int i = 0; i < scoreboard.getTransParts(); i++) {
-								scoreboard.pointViews.get (i).toFront ();
+								scoreboard.getPointViews().get (i).toFront ();
 							}
 							tT.play ();
 							if (tT == transTrans.get (transTrans.size () - 1)) {
 								tT.setOnFinished (new EventHandler<ActionEvent> () {
 									@Override
 									public void handle(ActionEvent arg0) {
-										Collections.sort (scoreboard.participants);
-										scoreboard.tileUpdater.updateTiles (scoreboard, null);
+										Collections.sort (scoreboard.getParticipants());
+										scoreboard.getTileUpdater().updateTiles (scoreboard, null);
 										
 										for (int i = 0; i < scoreboard.getTransParts(); i++) {
-											scoreboard.root
+											scoreboard.getRoot()
 													.getChildren ()
-													.remove (scoreboard.pointViews.get (i));
+													.remove (scoreboard.getPointViews().get (i));
 										}
 
 										// NEXT VOTES, PLEASE...
 										Platform.runLater (new VoteAdder (
 												overview, scoreboard,
-												scoreboard.utilities,
+												scoreboard.getUtilities(),
 												++scoreboard.inCountryCounter, tradVP));
 										return;
 									}
