@@ -48,7 +48,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="20.0" layoutY="51.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="326.0" prefWidth="1392.0" tableMenuButtonVisible="true">
+      <TableView fx:id="table" editable="true" layoutX="20.0" layoutY="51.0" prefHeight="326.0" prefWidth="1392.0" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="nationNameCol" prefWidth="287.0" text="Nation Name" />
             <TableColumn fx:id="shortnameCol" prefWidth="97.0" text="Shortname" />
@@ -59,6 +59,9 @@
             <TableColumn fx:id="gridCol" prefWidth="114.0" text="StartGrid" />
             <TableColumn id="statusCol" fx:id="statusCol" prefWidth="85.0" text="Status" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Button fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Add Entry" />
       <Button layoutX="1122.0" layoutY="508.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="290.0" text="Start Show">

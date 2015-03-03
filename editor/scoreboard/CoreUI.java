@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +29,6 @@ import javafx.util.Callback;
 import model.Participant;
 import model.ParticipantModel;
 
-import org.datafx.controller.FXMLController;
-
-@FXMLController("CoreUI.fxml")
 public class CoreUI extends Application implements Initializable {
 	
 	@FXML Pane content;
@@ -52,7 +50,7 @@ public class CoreUI extends Application implements Initializable {
 	@FXML Button entryDirButton;
 	@FXML Button prettyFlagDirButton;
 	
-	ParticipantModel pModel = new ParticipantModel();
+	static ParticipantModel pModel = new ParticipantModel();
 	
 	public static void main(String[] args) {
 		launch (args);
@@ -74,8 +72,28 @@ public class CoreUI extends Application implements Initializable {
 	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
-		pModel.addParticipant (new Participant ("Begonia", "BEG", "Donots", "Ohne Mich", 20, 40, 3, "F"));
+		pModel.addParticipant (new Participant ("Slovenia", "SLO", "Maraaya", "Here For You", 20, 40, 1, "F"));
+		pModel.addParticipant (new Participant ("Latvia", "LAT", "Aminata", "Love Injected", 50, 68, 2, "F"));
+		pModel.addParticipant (new Participant ("Estonia", "EST", "Elina Born & Stig Rästa", 
+				"Goodbye To Yesterday", 50, 68, 3, "F"));
+		pModel.addParticipant (new Participant ("Finland", "FIN", "Pertti Kurikan Nimipäivät", 
+				"Aina Mun Pitää", 50, 68, 4, "F"));
+		pModel.addParticipant (new Participant ("Ireland", "IRL", "Molly Sterling", 
+				"Playing With Numbers", 50, 68, 5, "F"));
+		pModel.addParticipant (new Participant ("Serbia", "SRB", "Bojana Stamenov", 
+				"Ceo Svet Je Moj", 50, 68, 6, "F"));
+		pModel.addParticipant (new Participant ("France", "FRA", "Lisa Angell", 
+				"N'oubliez pas", 50, 68, 7, "F"));
+		pModel.addParticipant (new Participant ("Iceland", "ISL", "María Ólafsdóttir", 
+				"Unbroken", 50, 68, 8, "F"));
+		pModel.addParticipant (new Participant ("Hungary", "HUN", "Boggie", 
+				"Wars For Nothing", 50, 68, 9, "F"));
+		pModel.addParticipant (new Participant ("Georgia", "GEO", "Nina Sublati", 
+				"Warrior", 50, 68, 10, "F"));
+		pModel.addParticipant (new Participant ("Lithuania", "LTU", "Vaidas & Monika", 
+				"This Time", 50, 68, 11, "F"));
+		pModel.addParticipant (new Participant ("F.Y.R. Macedonia", "MKD", "Daniel Kajmakoski", 
+				"Lisja Esenski", 50, 68, 12, "F"));
 		
 		setUpTableView ();
 		setUpButtons ();
@@ -104,8 +122,9 @@ public class CoreUI extends Application implements Initializable {
 		stopCol.setCellFactory (intCentralizer);
 		gridCol.setCellFactory (intCentralizer);
 		statusCol.setCellFactory (textCentralizer);
-		
-		table.itemsProperty ().bind (pModel.getPProp ());
+
+		table.itemsProperty ().bind (pModel.getParticipantsProperty ());
+		pModel.getSelectedIndexProperty ().bind (table.getSelectionModel ().selectedIndexProperty ());
 	}
 	
 	private void setUpButtons () {
@@ -115,10 +134,29 @@ public class CoreUI extends Application implements Initializable {
 		entryDirButton.setOnMouseClicked (dirChooser);
 		prettyFlagDirButton.setOnMouseClicked (dirChooser);
 		
-		setVotesButton.setOnAction (
-				new VoteRegistrator (
-						this.pModel,
-						table.getSelectionModel ().getSelectedItem ()));
+		addEntryButton.setOnAction (new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle (ActionEvent event) {
+				try {
+					EntryAdder vAdder = new EntryAdder ();
+					vAdder.init (new Stage());
+				} catch (Exception e) {
+					e.printStackTrace ();
+				}
+			}
+		});
+		
+		setVotesButton.setOnAction (new EventHandler<ActionEvent>() {
+			public void handle (ActionEvent event) {
+				try {
+					VoteRegistrator vr = new VoteRegistrator ();
+					vr.start (new Stage());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	@SuppressWarnings("unused") 
@@ -162,7 +200,6 @@ public class CoreUI extends Application implements Initializable {
 				@Override public void updateItem (T item, boolean empty) {
 					super.updateItem(item, empty);
 					setText(empty ? null : getString());
-					setGraphic(null);
 				}
 
 				private String getString() {
