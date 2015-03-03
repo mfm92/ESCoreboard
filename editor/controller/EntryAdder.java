@@ -56,6 +56,9 @@ public class EntryAdder implements Initializable {
 							statusField.getText ());
 					
 					CoreUI.inputData.addParticipant (nParticipant);
+					CoreUI.commandLog.put (++CoreUI.nrOfCommands, new Pair<CoreUI.Command, ParticipantData> 
+						(CoreUI.Command.ADD, nParticipant));
+					CoreUI.commandPtr = CoreUI.nrOfCommands;
 				}
 			}
 		});

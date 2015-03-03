@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -28,6 +29,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -37,6 +40,11 @@ import model.InputDataModel;
 import model.ParticipantData;
 
 public class CoreUI extends Application implements Initializable {
+	
+	enum Command {ADD, DELETE, SET_VOTES};
+	
+	static int nrOfCommands;
+	static int commandPtr;
 	
 	@FXML Pane content;
 	
@@ -62,6 +70,9 @@ public class CoreUI extends Application implements Initializable {
 	
 	@FXML MenuItem loadMenuItem;
 	@FXML MenuItem saveMenuItem;
+	@FXML MenuItem undoMI;
+	@FXML MenuItem redoMI;
+	@FXML MenuItem closeMI;
 	
 	@FXML TextField editionName;
 	@FXML TextField editionNumberField;
@@ -74,6 +85,12 @@ public class CoreUI extends Application implements Initializable {
 	@FXML Slider speedSlider;
 	
 	static InputDataModel inputData = new InputDataModel();
+	static HashMap<Integer, Pair<Command, ParticipantData>> commandLog = new HashMap<>();
+	
+	VoteRegistrator voteRegistrator = new VoteRegistrator ();
+	EntryAdder entryAdder = new EntryAdder ();
+	
+	private Stage primaryStage;
 	
 	public static void main (String[] args) {
 		launch (args);
@@ -81,11 +98,14 @@ public class CoreUI extends Application implements Initializable {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {	
+		this.primaryStage = primaryStage;
+		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation (getClass ().getResource ("../view/CoreUI.fxml"));
 		content = (Pane) loader.load ();
 		
 		Scene scene = new Scene (content);
+		setScene (scene);
 		
 		primaryStage.setResizable (false);
 		primaryStage.setScene (scene);
@@ -101,6 +121,62 @@ public class CoreUI extends Application implements Initializable {
 		setUpTextFields ();
 		setUpCheckBoxes ();
 		setUpSlider ();
+	}
+	
+	private void setScene (Scene scene) {
+		scene.addEventHandler (KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.isControlDown () && event.getCode () == KeyCode.Z) undo();
+				else if (event.isControlDown () && event.getCode () == KeyCode.Y) redo();
+			}
+		});
+	}
+	
+	private void undo () {
+		if (commandPtr < 1) {
+			System.out.println ("nothing left to undo!");
+			return;
+		}
+		else {
+			ParticipantData pcData = commandLog.get (commandPtr).getRight ();
+			
+			switch (commandLog.get (commandPtr).getLeft ()) {
+				case ADD: 
+					inputData.removeParticipant (pcData);
+					break;
+				case DELETE: 
+					inputData.addParticipant (pcData);
+					break;
+				case SET_VOTES: 
+					inputData.removeVotes (pcData);
+					break;
+			}
+			commandPtr--;
+		}
+	}
+	
+	private void redo() {
+		commandPtr++;
+		
+		if (commandPtr > commandLog.size ()) {
+			System.out.println ("nothing to redo!");
+			return;
+		} else {
+			ParticipantData pcData = commandLog.get (commandPtr).getRight ();
+			
+			switch (commandLog.get (commandPtr).getLeft ()) {						
+				case ADD: 
+					inputData.addParticipant (pcData);
+					break;
+				case DELETE: 
+					inputData.removeParticipant (pcData);
+					break;
+				case SET_VOTES: 
+					inputData.addVotes (pcData, null);
+					break;
+			}
+		}
 	}
 
 	private void setUpTableView () {
@@ -179,8 +255,7 @@ public class CoreUI extends Application implements Initializable {
 			@Override
 			public void handle (ActionEvent event) {
 				try {
-					EntryAdder vAdder = new EntryAdder ();
-					vAdder.init (new Stage());
+					entryAdder.init (new Stage());
 				} catch (Exception e) {
 					e.printStackTrace ();
 				}
@@ -190,15 +265,18 @@ public class CoreUI extends Application implements Initializable {
 		removeEntryButton.setOnAction (new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				inputData.removeParticipant (inputData.getSelectedParticipant ());
+				ParticipantData toDelete = inputData.getSelectedParticipant ();
+				inputData.removeParticipant (toDelete);
+				commandLog.put (++nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
+					(CoreUI.Command.DELETE, toDelete));
+				commandPtr = nrOfCommands;
 			}
 		});
 		
 		setVotesButton.setOnAction (new EventHandler<ActionEvent>() {
 			public void handle (ActionEvent event) {
 				try {
-					VoteRegistrator vr = new VoteRegistrator ();
-					vr.start (new Stage());
+					voteRegistrator.start (new Stage());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -221,6 +299,11 @@ public class CoreUI extends Application implements Initializable {
 				System.out.println ("Traditional Voting: " + inputData.getTraditionalVoting ());
 				System.out.println ("Use pretty flags: " + inputData.getUsePrettyFlags ());
 				System.out.println ("Scoreboard Speed: " + inputData.getShowSpeed ());
+				
+				for (Map.Entry<Integer, Pair<Command, ParticipantData>> pair : commandLog.entrySet ()) {
+					System.out.println (pair.getKey () + ": " + pair.getValue ().getLeft ().toString () + 
+							" to " + pair.getValue ().getRight ().getName ());
+				}
 			}
 		});
 	}
@@ -260,6 +343,30 @@ public class CoreUI extends Application implements Initializable {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+		
+		undoMI.setOnAction (new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				undo();
+			}
+		});
+		
+		redoMI.setOnAction (new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				redo();
+			}
+		});
+		
+		closeMI.setOnAction (new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				primaryStage.hide ();
 			}
 		});
 	}

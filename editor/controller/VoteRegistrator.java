@@ -112,6 +112,9 @@ public class VoteRegistrator extends Application implements Initializable {
 						votes.add (cBox.getSelectionModel ().getSelectedItem ());
 					}
 					CoreUI.inputData.addVotes (CoreUI.inputData.getSelectedParticipant (), votes);
+					CoreUI.commandLog.put (++CoreUI.nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
+						(CoreUI.Command.SET_VOTES, CoreUI.inputData.getSelectedParticipant ()));
+					CoreUI.commandPtr = CoreUI.nrOfCommands;
 				}
 			}
 		});

@@ -128,6 +128,10 @@ public class InputDataModel {
 		this.votes.getValue ().put (voter, votes);
 	}
 	
+	public void removeVotes (ParticipantData p) {
+		votes.getValue ().remove (p);
+	}
+	
 	public String getNameOfEdition () {
 		return nameOfEdition.get ();
 	}
