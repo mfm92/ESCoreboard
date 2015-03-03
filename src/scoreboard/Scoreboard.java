@@ -37,7 +37,6 @@ import utilities.NSCUtilities;
 
 import com.sun.istack.internal.logging.Logger;
 
-import controller.CoreUI;
 import data.Standings;
 
 public class Scoreboard extends Application {
@@ -120,8 +119,6 @@ public class Scoreboard extends Application {
 
 	UpdateAnimator oneToSevenAnimator = new QuickUpdater ();
 	UpdateAnimator topThreeAnimator = new StepByStepAnimator ();
-	
-	CoreUI coreUI = new CoreUI();
 
 	public static void main(String[] args) {
 		launch (args);

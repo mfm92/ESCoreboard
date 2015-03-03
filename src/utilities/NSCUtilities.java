@@ -173,7 +173,7 @@ public class NSCUtilities {
 		ArrayList<Participant> nations = new ArrayList<> ();
 		nameMap = new HashMap<> ();
 
-		String nationsFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
+		String nationsFile = resourcesFile + "resources\\Input Information\\participants.txt";
 		String flagFile = resourcesFile + "resources\\Nation Info\\Participant Flags\\";
 		String diamondFile = resourcesFile + "resources\\Nation Info\\Diamond Flags\\";
 
@@ -206,7 +206,7 @@ public class NSCUtilities {
 	}
 
 	public void createBanners() throws IOException {
-		String nationsFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
+		String nationsFile = resourcesFile + "resources\\Input Information\\participants.txt";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (nationsFile)))) {
@@ -226,7 +226,7 @@ public class NSCUtilities {
 	}
 
 	public void readEntries() throws NumberFormatException, IOException {
-		String mediaFile = resourcesFile + "resources\\Input Information\\ParticipantsFile.txt";
+		String mediaFile = resourcesFile + "resources\\Input Information\\participants.txt";
 		String mediaLocation = resourcesFile + "resources\\Nation Info\\Entries Videos\\";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
@@ -246,7 +246,7 @@ public class NSCUtilities {
 	}
 
 	private void readVotes() throws FileNotFoundException, IOException {
-		String votesFile = resourcesFile + "resources\\Input Information\\VotesFile.txt";
+		String votesFile = resourcesFile + "resources\\Input Information\\votes.txt";
 		allVotes = new ArrayList<> ();
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (

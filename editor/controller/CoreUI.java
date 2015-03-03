@@ -2,6 +2,7 @@ package controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,8 +11,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
+import scoreboard.Scoreboard;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -288,10 +291,10 @@ public class CoreUI extends Application implements Initializable {
 
 			@Override
 			public void handle (ActionEvent event) {
-				try {
-					writeOut (new File(System.getProperty("user.dir")));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
+				try {	
+					Scoreboard sc = new Scoreboard();
+					sc.start (new Stage());
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -310,10 +313,12 @@ public class CoreUI extends Application implements Initializable {
 				
 				File participantsFile = new File (selected + "\\participants.txt");
 				File votesFile = new File (selected + "\\votes.txt");
+				File paramsFile = new File (selected + "\\params.txt");
 
 				try {
 					readInParticipants (participantsFile);
 					readInVotes (votesFile);
+					readInParams (paramsFile);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -413,7 +418,7 @@ public class CoreUI extends Application implements Initializable {
 			ParticipantData participant = new ParticipantData (tokens[0], tokens[1],
 					tokens[2], tokens[3], 
 					Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]),
-					Integer.parseInt(tokens[6]), tokens[8]);
+					Integer.parseInt(tokens[6]), tokens[7]);
 			inputData.addParticipant (participant);
 		}
 			
@@ -439,6 +444,23 @@ public class CoreUI extends Application implements Initializable {
 		}
 			
 		reader.close ();
+	}
+	
+	private void readInParams (File inputFile) throws IOException {
+		Properties paramFile = new Properties ();
+		FileInputStream fis = new FileInputStream (inputFile);
+		paramFile.load (fis);
+		
+		editionName.setText (paramFile.getProperty ("NAME_EDITION"));
+		editionNumberField.setText (paramFile.getProperty ("EDITION_NR"));
+		inputData.setFlagDirectory (paramFile.getProperty ("FLAGS_DIR"));
+		inputData.setPrettyFlagDirectory (paramFile.getProperty ("PRETTY_FLAGS_DIR"));
+		inputData.setEntriesDirectory (paramFile.getProperty ("ENTRIES_DIR"));
+		createBannersBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("CREATE_BANNERS")));
+		fullScreenBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_FULLSCREEN")));
+		prettyFlagsBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_PRETTY_FLAGS")));
+		traditionalVotingCheckBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("TRADITIONAL_VOTING")));
+		speedSlider.setValue (Double.parseDouble (paramFile.getProperty ("SPEED_SHOW")));
 	}
 	
 	private void writeOut (File outputFile) throws FileNotFoundException {
@@ -469,12 +491,12 @@ public class CoreUI extends Application implements Initializable {
 					+ STRING_SEPARATOR);
 		}
 		
-		paramsOut.append ("NAME EDITION = " + inputData.getNameOfEdition () + STRING_SEPARATOR);
+		paramsOut.append ("NAME_EDITION = " + inputData.getNameOfEdition () + STRING_SEPARATOR);
 		paramsOut.append ("EDITION_NR = " + inputData.getEditionNr () + STRING_SEPARATOR + STRING_SEPARATOR);
 		paramsOut.append ("FLAGS_DIR = " + inputData.getFlagDirectory () + STRING_SEPARATOR);
 		paramsOut.append ("PRETTY_FLAGS_DIR = " + inputData.getPrettyFlagDirectory () + STRING_SEPARATOR);
 		paramsOut.append ("ENTRIES_DIR = " + inputData.getEntriesDirectory () + STRING_SEPARATOR + STRING_SEPARATOR);
-		paramsOut.append ("CREATE BANNERS = " + inputData.getBannerCreatorActivated () + STRING_SEPARATOR);
+		paramsOut.append ("CREATE_BANNERS = " + inputData.getBannerCreatorActivated () + STRING_SEPARATOR);
 		paramsOut.append ("USE_FULLSCREEN = " + inputData.getUseFullScreen () + STRING_SEPARATOR);
 		paramsOut.append ("USE_PRETTY_FLAGS = " + inputData.getUsePrettyFlags () + STRING_SEPARATOR);
 		paramsOut.append ("TRADITIONAL_VOTING = " + inputData.getTraditionalVoting () + STRING_SEPARATOR + STRING_SEPARATOR);

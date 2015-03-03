@@ -1,0 +1,13 @@
+NAME_EDITION = Nation Song Contest
+EDITION_NR = 156
+
+FLAGS_DIR = C:\Users\MM92\Desktop\Study Folder\Software Engineering\ESCoreboard\src
+PRETTY_FLAGS_DIR = C:\Users\MM92\Desktop\Study Folder\Software Engineering\ESCoreboard\layout
+ENTRIES_DIR = C:\Users\MM92\Desktop\Study Folder\Software Engineering\ESCoreboard\bin
+
+CREATE_BANNERS = true
+USE_FULLSCREEN = false
+USE_PRETTY_FLAGS = true
+TRADITIONAL_VOTING = false
+
+SPEED_SHOW = 62.5
