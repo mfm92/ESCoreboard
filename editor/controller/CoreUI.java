@@ -203,6 +203,7 @@ public class CoreUI extends Application implements Initializable {
 		statusCol.setCellFactory (textCentralizer);
 
 		table.itemsProperty ().bind (inputData.getParticipantsProperty ());
+		table.getSortOrder ().add (nationNameCol);
 		inputData.getSelectedIndexProperty ().bind (table.getSelectionModel ().selectedIndexProperty ());
 	}
 	
@@ -286,23 +287,12 @@ public class CoreUI extends Application implements Initializable {
 		startButton.setOnAction (new EventHandler<ActionEvent>() {
 
 			@Override
-			public void handle(ActionEvent event) {
-				System.out.println (inputData.getParticipants ().size () + " entries confirmed!");
-				System.out.println (inputData.getVotes ().size () + " have voted!");
-				System.out.println ("Name: " + inputData.getNameOfEdition ());
-				System.out.println ("EditionNr: " + inputData.getEditionNr ());
-				System.out.println ("Flag Directory: " + inputData.getFlagDirectory ());
-				System.out.println ("Pretty Flag Directory: " + inputData.getPrettyFlagDirectory ());
-				System.out.println ("Entries Directory: " + inputData.getEntriesDirectory ());
-				System.out.println ("Use Fullscreen: " + inputData.getUseFullScreen ());
-				System.out.println ("Create banners: " + inputData.getBannerCreatorActivated ());
-				System.out.println ("Traditional Voting: " + inputData.getTraditionalVoting ());
-				System.out.println ("Use pretty flags: " + inputData.getUsePrettyFlags ());
-				System.out.println ("Scoreboard Speed: " + inputData.getShowSpeed ());
-				
-				for (Map.Entry<Integer, Pair<Command, ParticipantData>> pair : commandLog.entrySet ()) {
-					System.out.println (pair.getKey () + ": " + pair.getValue ().getLeft ().toString () + 
-							" to " + pair.getValue ().getRight ().getName ());
+			public void handle (ActionEvent event) {
+				try {
+					writeOut (new File(System.getProperty("user.dir")));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});
@@ -454,6 +444,7 @@ public class CoreUI extends Application implements Initializable {
 	private void writeOut (File outputFile) throws FileNotFoundException {
 		PrintStream participantsOut = new PrintStream (new File (outputFile + "\\participants.txt"));
 		PrintStream votesOut = new PrintStream (new File (outputFile + "\\votes.txt"));
+		PrintStream paramsOut = new PrintStream (new File (outputFile + "\\params.txt"));
 		
 		final String STRING_SEPARATOR = System.lineSeparator ();
 		
@@ -478,8 +469,20 @@ public class CoreUI extends Application implements Initializable {
 					+ STRING_SEPARATOR);
 		}
 		
+		paramsOut.append ("NAME EDITION = " + inputData.getNameOfEdition () + STRING_SEPARATOR);
+		paramsOut.append ("EDITION_NR = " + inputData.getEditionNr () + STRING_SEPARATOR + STRING_SEPARATOR);
+		paramsOut.append ("FLAGS_DIR = " + inputData.getFlagDirectory () + STRING_SEPARATOR);
+		paramsOut.append ("PRETTY_FLAGS_DIR = " + inputData.getPrettyFlagDirectory () + STRING_SEPARATOR);
+		paramsOut.append ("ENTRIES_DIR = " + inputData.getEntriesDirectory () + STRING_SEPARATOR + STRING_SEPARATOR);
+		paramsOut.append ("CREATE BANNERS = " + inputData.getBannerCreatorActivated () + STRING_SEPARATOR);
+		paramsOut.append ("USE_FULLSCREEN = " + inputData.getUseFullScreen () + STRING_SEPARATOR);
+		paramsOut.append ("USE_PRETTY_FLAGS = " + inputData.getUsePrettyFlags () + STRING_SEPARATOR);
+		paramsOut.append ("TRADITIONAL_VOTING = " + inputData.getTraditionalVoting () + STRING_SEPARATOR + STRING_SEPARATOR);
+		paramsOut.append ("SPEED_SHOW = " + inputData.getShowSpeed ());
+		
 		participantsOut.close ();
 		votesOut.close ();
+		paramsOut.close ();
 	}
 	
 	private class CellCentralizer <T> implements Callback<TableColumn<ParticipantData, T>, TableCell<ParticipantData, T>> {
