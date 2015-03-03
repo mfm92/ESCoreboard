@@ -6,8 +6,10 @@ import java.util.HashMap;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,17 +24,17 @@ public class InputDataModel {
 	 */
 	Property<HashMap<ParticipantData, ArrayList<String>>> votes = new SimpleObjectProperty<> ();
 	
-	StringProperty nameOfEdition;
-	IntegerProperty editionNr;
+	StringProperty nameOfEdition = new SimpleStringProperty ();
+	StringProperty editionNr = new SimpleStringProperty ();
 	
-	StringProperty flagDirectory;
-	StringProperty entriesDirectory;
-	StringProperty prettyFlagDirectory;
+	StringProperty flagDirectory = new SimpleStringProperty ();
+	StringProperty entriesDirectory = new SimpleStringProperty ();
+	StringProperty prettyFlagDirectory = new SimpleStringProperty ();
 	
-	BooleanProperty traditionalVoting;
-	BooleanProperty bannerCreatorActivated;
-	BooleanProperty useFullScreen;
-	BooleanProperty usePrettyFlags;
+	BooleanProperty traditionalVoting = new SimpleBooleanProperty ();
+	BooleanProperty bannerCreatorActivated = new SimpleBooleanProperty ();
+	BooleanProperty useFullScreen = new SimpleBooleanProperty ();
+	BooleanProperty usePrettyFlags = new SimpleBooleanProperty ();
 	
 	public InputDataModel () {
 		participants.setValue (FXCollections.<ParticipantData> observableArrayList ());
@@ -134,16 +136,16 @@ public class InputDataModel {
 		this.nameOfEdition.set (nameOfEdition);
 	}
 	
-	public int getEditionNr () {
+	public String getEditionNr () {
 		return editionNr.get ();
 	}
 	
-	public IntegerProperty getEditionNrProperty () {
+	public StringProperty getEditionNrProperty () {
 		return editionNr;
 	}
 	
-	public void setEditionNr (int ediNr) {
-		editionNr.set (ediNr);
+	public void setEditionNr (String editionNr) {
+		this.editionNr.set (editionNr);
 	}
 	
 	public String getFlagDirectory () {
@@ -167,7 +169,7 @@ public class InputDataModel {
 	}
 	
 	public void setEntriesDirectory (String entriesDirectory) {
-		this.entriesDirectory.set (getEntriesDirectory());
+		this.entriesDirectory.set (entriesDirectory);
 	}
 	
 	public String getPrettyFlagDirectory () {

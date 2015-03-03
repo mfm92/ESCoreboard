@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,13 +27,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.ParticipantData;
 import model.InputDataModel;
+import model.ParticipantData;
 
 public class CoreUI extends Application implements Initializable {
 	
@@ -56,6 +56,8 @@ public class CoreUI extends Application implements Initializable {
 	@FXML Button entryDirButton;
 	@FXML Button prettyFlagDirButton;
 	
+	@FXML Button startButton;
+	
 	@FXML MenuItem loadMenuItem;
 	@FXML MenuItem saveMenuItem;
 	
@@ -69,14 +71,14 @@ public class CoreUI extends Application implements Initializable {
 	
 	static InputDataModel inputData = new InputDataModel();
 	
-	public static void main(String[] args) {
+	public static void main (String[] args) {
 		launch (args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {	
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation (getClass ().getResource ("/view/CoreUI.fxml"));
+		loader.setLocation (getClass ().getResource ("../view/CoreUI.fxml"));
 		content = (Pane) loader.load ();
 		
 		Scene scene = new Scene (content);
@@ -92,6 +94,8 @@ public class CoreUI extends Application implements Initializable {
 		setUpTableView ();
 		setUpButtons ();
 		setUpMenu ();
+		setUpTextFields ();
+		setUpCheckBoxes ();
 	}
 
 	private void setUpTableView () {
@@ -122,11 +126,48 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void setUpButtons () {
-		DirChooser dirChooser = new DirChooser();
 		
-		flagDirButton.setOnMouseClicked (dirChooser);
-		entryDirButton.setOnMouseClicked (dirChooser);
-		prettyFlagDirButton.setOnMouseClicked (dirChooser);
+		flagDirButton.setOnMouseClicked (new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				DirectoryChooser dirChooser = new DirectoryChooser ();
+				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				dirChooser.setTitle ("Folder that contains the flags...");
+				
+				File selected = dirChooser.showDialog (null);
+				
+				inputData.setFlagDirectory (selected == null ? null : selected.getAbsolutePath ());
+			}
+		});
+		
+		entryDirButton.setOnMouseClicked (new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				DirectoryChooser dirChooser = new DirectoryChooser ();
+				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				dirChooser.setTitle ("Folder that contains the entries...");
+				
+				File selectedFile = dirChooser.showDialog (null);
+				
+				inputData.setEntriesDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
+			}
+		});
+		
+		prettyFlagDirButton.setOnMouseClicked (new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				DirectoryChooser dirChooser = new DirectoryChooser ();
+				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				dirChooser.setTitle ("Folder that contains the pretty flags...");
+				
+				File selectedFile = dirChooser.showDialog (null);
+				
+				inputData.setPrettyFlagDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
+			}
+		});
 		
 		addEntryButton.setOnAction (new EventHandler<ActionEvent>() {
 
@@ -156,6 +197,24 @@ public class CoreUI extends Application implements Initializable {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		});
+		
+		startButton.setOnAction (new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println (inputData.getParticipants ().size () + " entries confirmed!");
+				System.out.println (inputData.getVotes ().size () + " have voted!");
+				System.out.println ("Name: " + inputData.getNameOfEdition ());
+				System.out.println ("EditionNr: " + inputData.getEditionNr ());
+				System.out.println ("Flag Directory: " + inputData.getFlagDirectory ());
+				System.out.println ("Pretty Flag Directory: " + inputData.getPrettyFlagDirectory ());
+				System.out.println ("Entries Directory: " + inputData.getEntriesDirectory ());
+				System.out.println ("Use Fullscreen: " + inputData.getUseFullScreen ());
+				System.out.println ("Create banners: " + inputData.getBannerCreatorActivated ());
+				System.out.println ("Traditional Voting: " + inputData.getTraditionalVoting ());
+				System.out.println ("Use pretty flags: " + inputData.getUsePrettyFlags ());
 			}
 		});
 	}
@@ -197,6 +256,18 @@ public class CoreUI extends Application implements Initializable {
 				}
 			}
 		});
+	}
+	
+	private void setUpTextFields () {
+		inputData.getNameOfEditionProperty ().bind (editionName.textProperty ());
+		inputData.getEditionNrProperty ().bind (editionNumberField.textProperty ());
+	}
+	
+	private void setUpCheckBoxes () {
+		inputData.getBannerCreatorActivatedProperty ().bind (createBannersBox.selectedProperty ());
+		inputData.getUseFullScreenProperty ().bind (fullScreenBox.selectedProperty ());
+		inputData.getUsePrettyFlagsProperty ().bind (prettyFlagsBox.selectedProperty ());
+		inputData.getTraditionalVotingProperty ().bind (traditionalVotingCheckBox.selectedProperty ());
 	}
 
 	private void readInParticipants (File inputFile) throws IOException {
@@ -267,21 +338,6 @@ public class CoreUI extends Application implements Initializable {
 		
 		participantsOut.close ();
 		votesOut.close ();
-	}
-	
-	private class DirChooser implements EventHandler<MouseEvent> {
-
-		@Override
-		public void handle(MouseEvent event) {
-			DirectoryChooser dirChooser = new DirectoryChooser ();
-			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
-			dirChooser.setTitle ("Folder that contains the flags...");
-			
-			File selected = dirChooser.showDialog (null);
-			
-			System.out.println ("You've selected: " + selected.getAbsolutePath ());
-		}
-		
 	}
 	
 	private class CellCentralizer <T> implements Callback<TableColumn<ParticipantData, T>, TableCell<ParticipantData, T>> {
