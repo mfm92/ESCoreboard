@@ -16,6 +16,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
+                  <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" text="Load" />
+                  <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" text="Save" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
@@ -36,12 +38,12 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label alignment="CENTER_RIGHT" layoutX="535.0" layoutY="385.0" prefHeight="51.0" prefWidth="82.0" text="Name:   ">
+      <Label alignment="CENTER_RIGHT" layoutX="757.0" layoutY="385.0" prefHeight="51.0" prefWidth="82.0" text="Name:   ">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField layoutX="629.0" layoutY="395.0" prefHeight="31.0" prefWidth="581.0" />
+      <TextField layoutX="862.0" layoutY="395.0" prefHeight="31.0" prefWidth="348.0" />
       <TextField layoutX="1333.0" layoutY="395.0" prefHeight="31.0" prefWidth="79.0" />
       <Label alignment="CENTER_RIGHT" layoutX="1171.0" layoutY="385.0" prefHeight="51.0" prefWidth="152.0" text="Edition:   ">
          <font>
@@ -63,7 +65,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Add Entry" />
+      <Button fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="225.0" text="Add Entry" />
       <Button layoutX="1122.0" layoutY="508.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="290.0" text="Start Show">
          <font>
             <Font name="Inconsolata" size="25.0" />
@@ -92,6 +94,7 @@
       <Button fx:id="flagDirButton" layoutX="22.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="497.0" text="Flag Directory" />
       <Button fx:id="entryDirButton" layoutX="539.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="436.0" text="Entry Directory" />
       <Button fx:id="prettyFlagDirButton" layoutX="995.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="417.0" text="Pretty Flag Directory" />
-      <Button fx:id="setVotesButton" layoutX="280.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Set Votes" />
+      <Button fx:id="setVotesButton" layoutX="494.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Set Votes" />
+      <Button fx:id="removeEntryButton" layoutX="258.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="225.0" text="Remove Entry" />
    </children>
 </Pane>

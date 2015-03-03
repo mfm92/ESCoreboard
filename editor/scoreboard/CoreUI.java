@@ -2,14 +2,16 @@ package scoreboard;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -45,10 +48,14 @@ public class CoreUI extends Application implements Initializable {
 	@FXML TableColumn<Participant, String> statusCol;
 	
 	@FXML Button addEntryButton;
+	@FXML Button removeEntryButton;
 	@FXML Button setVotesButton;
 	@FXML Button flagDirButton;
 	@FXML Button entryDirButton;
 	@FXML Button prettyFlagDirButton;
+	
+	@FXML MenuItem loadMenuItem;
+	@FXML MenuItem saveMenuItem;
 	
 	static ParticipantModel pModel = new ParticipantModel();
 	
@@ -72,32 +79,9 @@ public class CoreUI extends Application implements Initializable {
 	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		pModel.addParticipant (new Participant ("Slovenia", "SLO", "Maraaya", "Here For You", 20, 40, 1, "F"));
-		pModel.addParticipant (new Participant ("Latvia", "LAT", "Aminata", "Love Injected", 50, 68, 2, "F"));
-		pModel.addParticipant (new Participant ("Estonia", "EST", "Elina Born & Stig Rästa", 
-				"Goodbye To Yesterday", 50, 68, 3, "F"));
-		pModel.addParticipant (new Participant ("Finland", "FIN", "Pertti Kurikan Nimipäivät", 
-				"Aina Mun Pitää", 50, 68, 4, "F"));
-		pModel.addParticipant (new Participant ("Ireland", "IRL", "Molly Sterling", 
-				"Playing With Numbers", 50, 68, 5, "F"));
-		pModel.addParticipant (new Participant ("Serbia", "SRB", "Bojana Stamenov", 
-				"Ceo Svet Je Moj", 50, 68, 6, "F"));
-		pModel.addParticipant (new Participant ("France", "FRA", "Lisa Angell", 
-				"N'oubliez pas", 50, 68, 7, "F"));
-		pModel.addParticipant (new Participant ("Iceland", "ISL", "María Ólafsdóttir", 
-				"Unbroken", 50, 68, 8, "F"));
-		pModel.addParticipant (new Participant ("Hungary", "HUN", "Boggie", 
-				"Wars For Nothing", 50, 68, 9, "F"));
-		pModel.addParticipant (new Participant ("Georgia", "GEO", "Nina Sublati", 
-				"Warrior", 50, 68, 10, "F"));
-		pModel.addParticipant (new Participant ("Lithuania", "LTU", "Vaidas & Monika", 
-				"This Time", 50, 68, 11, "F"));
-		pModel.addParticipant (new Participant ("F.Y.R. Macedonia", "MKD", "Daniel Kajmakoski", 
-				"Lisja Esenski", 50, 68, 12, "F"));
-		
 		setUpTableView ();
 		setUpButtons ();
-		
+		setUpMenu ();
 	}
 
 	private void setUpTableView () {
@@ -147,6 +131,13 @@ public class CoreUI extends Application implements Initializable {
 			}
 		});
 		
+		removeEntryButton.setOnAction (new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				pModel.removeParticipant (pModel.getSelectedParticipant ());
+			}
+		});
+		
 		setVotesButton.setOnAction (new EventHandler<ActionEvent>() {
 			public void handle (ActionEvent event) {
 				try {
@@ -158,23 +149,114 @@ public class CoreUI extends Application implements Initializable {
 			}
 		});
 	}
+	
+	private void setUpMenu () {
+		loadMenuItem.setOnAction (new EventHandler<ActionEvent>() {
 
-	@SuppressWarnings("unused") 
-	private ObservableList<Participant> readConfigFile () throws IOException {
+			@Override
+			public void handle(ActionEvent event) {
+				DirectoryChooser fileChooser = new DirectoryChooser ();
+				fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				fileChooser.setTitle ("Choose participants file...");
+				File selected = fileChooser.showDialog (null);
+				
+				File participantsFile = new File (selected + "\\participants.txt");
+				File votesFile = new File (selected + "\\votes.txt");
+
+				try {
+					readInParticipants (participantsFile);
+					readInVotes (votesFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		saveMenuItem.setOnAction (new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				DirectoryChooser dirChooser = new DirectoryChooser ();
+				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+				dirChooser.setTitle ("where to write out that shit...");
+				
+				try {
+					writeOut (dirChooser.showDialog (null));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	private void readInParticipants (File inputFile) throws IOException {
 		
 		String line;
-		String location = System.getProperty ("user.dir") + "/...";
-		ObservableList<Participant> list = FXCollections.observableArrayList ();
 		
-		BufferedReader reader = new BufferedReader (new FileReader (new File (location)));
+		BufferedReader reader = new BufferedReader (new FileReader (inputFile));
 		while ((line = reader.readLine ()) != null) {
 			String[] tokens = line.split ("\\$");
 			
+			Participant participant = new Participant (tokens[0], tokens[1],
+					tokens[2], tokens[3], 
+					Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]),
+					Integer.parseInt(tokens[6]), tokens[8]);
+			pModel.addParticipant (participant);
 		}
 			
 		reader.close ();
+	}
+	
+	private void readInVotes (File inputFile) throws IOException {
 		
-		return list;
+		String line;
+		
+		BufferedReader reader = new BufferedReader (new FileReader (inputFile));
+		while ((line = reader.readLine ()) != null) {
+			String[] tokens = line.split ("\\$");
+			Participant voter = pModel.retrieveParticipantByShortName (tokens[0]);
+			ArrayList<String> votes = new ArrayList<> ();
+			
+			for (int i = 1; i < tokens.length; i++) {
+				String[] innerTokens = tokens[i].split (" ");
+				votes.add (pModel.retrieveParticipantByShortName (innerTokens[1]).getName ());
+			}
+			
+			pModel.addVotes (voter, votes);
+		}
+			
+		reader.close ();
+	}
+	
+	private void writeOut (File outputFile) throws FileNotFoundException {
+		PrintStream participantsOut = new PrintStream (new File (outputFile + "\\participants.txt"));
+		PrintStream votesOut = new PrintStream (new File (outputFile + "\\votes.txt"));
+		
+		final String STRING_SEPARATOR = System.lineSeparator ();
+		
+		for (Participant p : pModel.getParticipants ()) {
+			participantsOut.append (p.getName () + "$" + p.getShortName () + "$" + 
+					p.getArtist () + "$" + p.getTitle () + "$" + p.getStart () +
+					"$" + p.getStop () + "$" + p.getGrid () + "$" + p.getStatus () + STRING_SEPARATOR);
+		}
+		
+		for (Map.Entry<Participant, ArrayList<String>> vote : pModel.getVotes ().entrySet ()) {
+			votesOut.append (vote.getKey ().getShortName () + "$"
+					+ "12 " + pModel.getShortName (vote.getValue ().get (0)) + "$"
+					+ "10 " + pModel.getShortName (vote.getValue ().get (1)) + "$"
+					+ "08 " + pModel.getShortName (vote.getValue ().get (2)) + "$"
+					+ "07 " + pModel.getShortName (vote.getValue ().get (3)) + "$"
+					+ "06 " + pModel.getShortName (vote.getValue ().get (4)) + "$"
+					+ "05 " + pModel.getShortName (vote.getValue ().get (5)) + "$"
+					+ "04 " + pModel.getShortName (vote.getValue ().get (6)) + "$"
+					+ "03 " + pModel.getShortName (vote.getValue ().get (7)) + "$"
+					+ "02 " + pModel.getShortName (vote.getValue ().get (8)) + "$"
+					+ "01 " + pModel.getShortName (vote.getValue ().get (9))
+					+ STRING_SEPARATOR);
+		}
+		
+		participantsOut.close ();
+		votesOut.close ();
 	}
 	
 	private class DirChooser implements EventHandler<MouseEvent> {

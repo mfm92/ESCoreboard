@@ -43,6 +43,27 @@ public class ParticipantModel {
 		participants.getValue().add (p);
 	}
 	
+	public void removeParticipant (Participant p) {
+		participants.getValue ().remove (p);
+	}
+	
+	public Participant retrieveParticipantByShortName (String shortName) {
+		for (Participant p : participants.getValue ()) {
+			if (p.getShortName ().equals (shortName)) return p;
+		}
+		return null;
+	}
+	
+	public String getShortName (String pName) {
+		Participant pa = null;
+		
+		for (Participant p : participants.getValue ()) {
+			if (p.getName ().equals (pName)) pa = p;
+		}
+		
+		return pa == null ? null : pa.getShortName ();
+	}
+	
 	public int getSelectedIndex () {
 		return selectedIndex.get ();
 	}
