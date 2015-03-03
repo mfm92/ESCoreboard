@@ -15,16 +15,13 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.SceneBuilder;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.media.MediaViewBuilder;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -145,9 +142,12 @@ public class Scoreboard extends Application {
 		}
 
 		inCountryCounter = 1;
-		Rectangle background = RectangleBuilder.create ().width (1920)
-				.id ("background").height (1080)
-				.fill (new ImagePattern (utilities.backgroundWhite)).build ();
+		
+		Rectangle background = new Rectangle ();
+		background.setWidth (1920);
+		background.setHeight (1080);
+		background.setId ("background");
+		background.setFill (new ImagePattern (utilities.backgroundWhite));
 
 		this.background = background;
 		String[] finalists = utilities.getListOfNames ();
@@ -167,17 +167,19 @@ public class Scoreboard extends Application {
 	private void drawScoreboard(
 			ArrayList<Participant> rosterNations, Standings standings,
 			Stage primaryStage) {
+		
+		Rectangle backgroundDummy = new Rectangle ();
+		backgroundDummy.setWidth (1920);
+		backgroundDummy.setHeight (1080);
+		backgroundDummy.setId ("backgroundDummy");
+		backgroundDummy.setFill (new ImagePattern (utilities.backgroundWhite));
 
 		tileUpdater.updateTiles (this, null);
 		root.getChildren ().add (background);
 		root.getChildren ().add (superNations);
-		root.getChildren ().add (
-				RectangleBuilder.create ().width (1920).id ("backgroundDummy")
-						.height (1080)
-						.fill (new ImagePattern (utilities.backgroundWhite))
-						.build ());
+		root.getChildren ().add (backgroundDummy);
 
-		Scene scene = SceneBuilder.create ().root (root).build ();
+		Scene scene = new Scene (root);
 
 		// MAKE IT FULL SCREEN
 		primaryStage.setX (Screen.getPrimary ().getVisualBounds ().getMinX ());
@@ -240,9 +242,13 @@ public class Scoreboard extends Application {
 		entryPlayer.setVolume (0.5);
 		entryPlayer.setCycleCount (1);
 
-		MediaView entryView = MediaViewBuilder.create ()
-				.mediaPlayer (entryPlayer).x (100).y (50).id ("media")
-				.fitHeight (2000).fitWidth (1200).build ();
+		MediaView entryView = new MediaView ();
+		entryView.setMediaPlayer (entryPlayer);
+		entryView.setFitHeight (2000);
+		entryView.setFitWidth (1200);
+		entryView.setX (100);
+		entryView.setY (50);
+		entryView.setId ("media");
 
 		root.getChildren ().add (entryView);
 		entryPlayer.play ();
