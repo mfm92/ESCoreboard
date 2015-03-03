@@ -68,22 +68,22 @@
             <Font name="Inconsolata" size="25.0" />
          </font>
       </Button>
-      <CheckBox fx:id="traditionalVotingCheckBox" layoutX="22.0" layoutY="547.0" mnemonicParsing="false" text="traditional vote presentation">
+      <CheckBox fx:id="traditionalVotingCheckBox" layoutX="22.0" layoutY="552.0" mnemonicParsing="false" text="traditional vote presentation">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="createBannersBox" layoutX="22.0" layoutY="508.0" mnemonicParsing="false" text="create banners">
+      <CheckBox fx:id="createBannersBox" layoutX="22.0" layoutY="513.0" mnemonicParsing="false" text="create banners">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="prettyFlagsBox" layoutX="328.0" layoutY="547.0" mnemonicParsing="false" text="use pretty flags">
+      <CheckBox fx:id="prettyFlagsBox" layoutX="334.0" layoutY="552.0" mnemonicParsing="false" text="use pretty flags">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="fullScreenBox" layoutX="328.0" layoutY="508.0" mnemonicParsing="false" text="fullscreen">
+      <CheckBox fx:id="fullScreenBox" layoutX="334.0" layoutY="513.0" mnemonicParsing="false" text="fullscreen">
          <font>
             <Font size="18.0" />
          </font>
@@ -93,5 +93,11 @@
       <Button fx:id="prettyFlagDirButton" layoutX="995.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="417.0" text="Pretty Flag Directory" />
       <Button fx:id="setVotesButton" layoutX="494.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Set Votes" />
       <Button fx:id="removeEntryButton" layoutX="258.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="225.0" text="Remove Entry" />
+      <Slider fx:id="speedSlider" layoutX="625.0" layoutY="552.0" majorTickUnit="50.0" prefHeight="27.0" prefWidth="411.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Label alignment="CENTER" layoutX="725.0" layoutY="506.0" prefHeight="32.0" prefWidth="211.0" text="pick speed of show...">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

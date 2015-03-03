@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import model.InputDataModel;
 import model.ParticipantData;
 
@@ -69,6 +71,8 @@ public class CoreUI extends Application implements Initializable {
 	@FXML CheckBox fullScreenBox;
 	@FXML CheckBox prettyFlagsBox;
 	
+	@FXML Slider speedSlider;
+	
 	static InputDataModel inputData = new InputDataModel();
 	
 	public static void main (String[] args) {
@@ -96,6 +100,7 @@ public class CoreUI extends Application implements Initializable {
 		setUpMenu ();
 		setUpTextFields ();
 		setUpCheckBoxes ();
+		setUpSlider ();
 	}
 
 	private void setUpTableView () {
@@ -215,6 +220,7 @@ public class CoreUI extends Application implements Initializable {
 				System.out.println ("Create banners: " + inputData.getBannerCreatorActivated ());
 				System.out.println ("Traditional Voting: " + inputData.getTraditionalVoting ());
 				System.out.println ("Use pretty flags: " + inputData.getUsePrettyFlags ());
+				System.out.println ("Scoreboard Speed: " + inputData.getShowSpeed ());
 			}
 		});
 	}
@@ -268,6 +274,35 @@ public class CoreUI extends Application implements Initializable {
 		inputData.getUseFullScreenProperty ().bind (fullScreenBox.selectedProperty ());
 		inputData.getUsePrettyFlagsProperty ().bind (prettyFlagsBox.selectedProperty ());
 		inputData.getTraditionalVotingProperty ().bind (traditionalVotingCheckBox.selectedProperty ());
+	}
+	
+	private void setUpSlider () {
+		inputData.getShowSpeedProperty ().bind (speedSlider.valueProperty ());
+		
+        speedSlider.setMajorTickUnit(25);
+        speedSlider.setSnapToTicks(true);
+        speedSlider.setShowTickMarks(true);
+        speedSlider.setShowTickLabels(true);
+		speedSlider.setLabelFormatter (new StringConverter<Double>() {
+			
+			@Override
+			public String toString(Double n) {
+				if (n < 25.0) {
+					return "very slow";
+				} else if (n < 50.0) {
+					return "slow";
+				} else if (n < 75.0) {
+					return "normal";
+				} else if (n < 100.0) {
+					return "fast";
+				} else return "very fast";
+			}
+			
+			@Override
+			public Double fromString(String string) {
+				return speedSlider.getValue ();
+			}
+		});
 	}
 
 	private void readInParticipants (File inputFile) throws IOException {
