@@ -37,14 +37,23 @@ import utilities.NSCUtilities;
 
 import com.sun.istack.internal.logging.Logger;
 
+import controller.CoreUI;
 import data.Standings;
 
 public class Scoreboard extends Application {
 
-	Group root;
-	Group superNations;
-	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
-	ArrayList<Participant> participants;
+	boolean tradVP = CoreUI.inputData.getTraditionalVoting ();
+	boolean useSpecialFlags = CoreUI.inputData.getUsePrettyFlags ();
+	boolean useFullScreen = CoreUI.inputData.getUseFullScreen ();
+	boolean createBanners = CoreUI.inputData.getBannerCreatorActivated ();
+	
+	Duration minDuration = Duration.seconds (0.2);
+	Duration maxDuration = Duration.seconds (3.0);
+	
+	String title = CoreUI.inputData.getNameOfEdition () + " " + CoreUI.inputData.getEditionNr () + " results";
+	Duration voteTokenDuration = Duration.seconds 
+			(minDuration.toSeconds () + (1 - (CoreUI.inputData.getShowSpeed () / 100.0)) * 
+					(maxDuration.toSeconds () - minDuration.toSeconds ()));
 
 	int columnsNr = 3;
 	int columnsNrTransition = 2;
@@ -98,17 +107,6 @@ public class Scoreboard extends Application {
 	int ptUnderLayWidth = 10 * flagWidth + 100;
 	
 	int nameFromFlagOffset = 25;
-	
-	boolean tradVP = true;
-	boolean useSpecialFlags = true;
-	
-	Participant currentVoter;
-
-	ArrayList<Rectangle> pointViews;
-
-	NSCUtilities utilities;
-	Rectangle background;
-	int inCountryCounter;
 
 	SideOverviewTableCreator sideTableCreator = new SimpleSideTableStyle ();
 	TwelvePairShower twelvePairShower = new ConcreteTwelvePairShower ();
@@ -120,6 +118,18 @@ public class Scoreboard extends Application {
 	UpdateAnimator oneToSevenAnimator = new QuickUpdater ();
 	UpdateAnimator topThreeAnimator = new StepByStepAnimator ();
 
+	Group root;
+	Group superNations;
+	HashMap<Participant, Group> groupNationMap = new HashMap<> ();
+	ArrayList<Participant> participants;
+	Participant currentVoter;
+
+	ArrayList<Rectangle> pointViews;
+
+	NSCUtilities utilities;
+	Rectangle background;
+	int inCountryCounter;
+	
 	public static void main(String[] args) {
 		launch (args);
 	}
@@ -177,8 +187,8 @@ public class Scoreboard extends Application {
 		primaryStage.setHeight (Screen.getPrimary ().getVisualBounds ()
 				.getHeight ());
 		primaryStage.setScene (scene);
-		primaryStage.setTitle ("NSC 121 Results");
-		primaryStage.setFullScreen (true);
+		primaryStage.setTitle (title);
+		primaryStage.setFullScreen (useFullScreen);
 		primaryStage.show ();
 	}
 

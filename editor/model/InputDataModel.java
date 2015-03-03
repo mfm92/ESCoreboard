@@ -40,6 +40,8 @@ public class InputDataModel {
 	
 	DoubleProperty showSpeed = new SimpleDoubleProperty ();
 	
+	String currentFilePath;
+	
 	public InputDataModel () {
 		participants.setValue (FXCollections.<ParticipantData> observableArrayList ());
 		votes.setValue (new HashMap<ParticipantData, ArrayList<String>>());
@@ -250,5 +252,13 @@ public class InputDataModel {
 	
 	public void setShowSpeed (double speed) {
 		showSpeed.set (speed);
+	}
+	
+	public String getCurrentDir () {
+		return currentFilePath;
+	}
+	
+	public void setCurrentDir (String dir) {
+		currentFilePath = dir;
 	}
 }

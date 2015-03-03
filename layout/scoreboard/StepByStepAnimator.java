@@ -66,7 +66,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 								- nationGroup.getLayoutX ()), new KeyValue (
 						pointView.yProperty (), oldPosY
 								- nationGroup.getLayoutY ())),
-				new KeyFrame (new Duration (1500), new KeyValue (pointView
+				new KeyFrame (scoreboard.voteTokenDuration, new KeyValue (pointView
 						.xProperty (), newPosX - nationGroup.getLayoutX ()),
 						new KeyValue (pointView.yProperty (), newPosY
 								- nationGroup.getLayoutY ())));
@@ -99,7 +99,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 
 					TranslateTransition tTrans = TranslateTransitionBuilder
 							.create ().node (nationGroup)
-							.duration (new Duration (1500)).byX (xShift)
+							.duration (scoreboard.voteTokenDuration).byX (xShift)
 							.byY (yShift).autoReverse (false)
 							.interpolator (Interpolator.EASE_BOTH)
 							.cycleCount (1).build ();

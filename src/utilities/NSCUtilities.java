@@ -15,6 +15,7 @@ import javafx.scene.media.Media;
 
 import javax.imageio.ImageIO;
 
+import controller.CoreUI;
 import nations.Entry;
 import nations.Participant;
 import nations.Votes;
@@ -79,7 +80,10 @@ public class NSCUtilities {
 		readNations ();
 		readVotes ();
 		readEntries ();
-		createBanners ();
+		
+		if (CoreUI.inputData.getBannerCreatorActivated ()) {
+			createBanners ();
+		}
 	}
 
 	public void readUtilImages() throws IOException {
@@ -173,9 +177,9 @@ public class NSCUtilities {
 		ArrayList<Participant> nations = new ArrayList<> ();
 		nameMap = new HashMap<> ();
 
-		String nationsFile = resourcesFile + "resources\\Input Information\\participants.txt";
-		String flagFile = resourcesFile + "resources\\Nation Info\\Participant Flags\\";
-		String diamondFile = resourcesFile + "resources\\Nation Info\\Diamond Flags\\";
+		String nationsFile = CoreUI.inputData.getCurrentDir () + "\\participants.txt";
+		String flagFile = CoreUI.inputData.getFlagDirectory () + "\\";
+		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "\\";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (nationsFile)))) {
@@ -195,7 +199,7 @@ public class NSCUtilities {
 				
 				nameMap.put (tokens[0], newNation);
 
-				boolean shouldBeCreated = tokens[8].equals ("P");
+				boolean shouldBeCreated = tokens[7].equals ("P");
 
 				if (shouldBeCreated) {
 					participants.add (newNation);
@@ -206,7 +210,7 @@ public class NSCUtilities {
 	}
 
 	public void createBanners() throws IOException {
-		String nationsFile = resourcesFile + "resources\\Input Information\\participants.txt";
+		String nationsFile = CoreUI.inputData.getCurrentDir () + "\\participants.txt";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (nationsFile)))) {
@@ -214,7 +218,7 @@ public class NSCUtilities {
 
 			while ((nation = bReader.readLine ()) != null) {
 				String[] tokens = nation.split ("\\$");
-				boolean shouldBeCreated = tokens[8].equals ("P");
+				boolean shouldBeCreated = tokens[7].equals ("P");
 
 				if (shouldBeCreated) {
 					bannerCreator.createBanners (
@@ -226,8 +230,8 @@ public class NSCUtilities {
 	}
 
 	public void readEntries() throws NumberFormatException, IOException {
-		String mediaFile = resourcesFile + "resources\\Input Information\\participants.txt";
-		String mediaLocation = resourcesFile + "resources\\Nation Info\\Entries Videos\\";
+		String mediaFile = CoreUI.inputData.getCurrentDir () + "\\participants.txt";
+		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "\\";
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (
 				new File (mediaFile)))) {
@@ -240,13 +244,13 @@ public class NSCUtilities {
 				int start = Integer.parseInt (tokens[4]);
 				int stop = Integer.parseInt (tokens[5]);
 				p.setEntry (new Entry (tokens[2], tokens[3], entryVid, start,
-						stop, tokens[8]));
+						stop, tokens[7]));
 			}
 		}
 	}
 
 	private void readVotes() throws FileNotFoundException, IOException {
-		String votesFile = resourcesFile + "resources\\Input Information\\votes.txt";
+		String votesFile = CoreUI.inputData.getCurrentDir () + "\\votes.txt";
 		allVotes = new ArrayList<> ();
 
 		try (BufferedReader bReader = new BufferedReader (new FileReader (

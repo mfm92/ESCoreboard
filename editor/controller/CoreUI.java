@@ -462,6 +462,7 @@ public class CoreUI extends Application implements Initializable {
 		inputData.setFlagDirectory (paramFile.getProperty ("FLAGS_DIR"));
 		inputData.setPrettyFlagDirectory (paramFile.getProperty ("PRETTY_FLAGS_DIR"));
 		inputData.setEntriesDirectory (paramFile.getProperty ("ENTRIES_DIR"));
+		inputData.setCurrentDir (paramFile.getProperty ("CURRENT_FILE_PATH"));
 		createBannersBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("CREATE_BANNERS")));
 		fullScreenBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_FULLSCREEN")));
 		prettyFlagsBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_PRETTY_FLAGS")));
@@ -497,10 +498,12 @@ public class CoreUI extends Application implements Initializable {
 					+ STRING_SEPARATOR);
 		}
 		
+		String currentDir = outputFile.getAbsolutePath ().replace ("\\", "\\\\");
 		String flagsDirectory = inputData.getFlagDirectory ().replace ("\\", "\\\\");
 		String prettyFlagDirectory = inputData.getPrettyFlagDirectory ().replace ("\\", "\\\\");
 		String entriesDirectory = inputData.getEntriesDirectory ().replace ("\\", "\\\\");
 		
+		paramsOut.append ("CURRENT_FILE_PATH = " + currentDir + STRING_SEPARATOR + STRING_SEPARATOR);
 		paramsOut.append ("NAME_EDITION = " + inputData.getNameOfEdition () + STRING_SEPARATOR);
 		paramsOut.append ("EDITION_NR = " + inputData.getEditionNr () + STRING_SEPARATOR + STRING_SEPARATOR);
 		paramsOut.append ("FLAGS_DIR = " + flagsDirectory + STRING_SEPARATOR);

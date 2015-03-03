@@ -65,7 +65,7 @@ public class QuickUpdater extends UpdateAnimator {
 									- nationGroup.getLayoutX ()), new KeyValue (
 							pointView.yProperty (), oldPosY
 									- nationGroup.getLayoutY ())),
-					new KeyFrame (new Duration (1500),
+					new KeyFrame (scoreboard.voteTokenDuration,
 							new KeyValue (pointView.xProperty (), newPosX
 									- nationGroup.getLayoutX ()), new KeyValue (
 									pointView.yProperty (), newPosY
@@ -104,7 +104,7 @@ public class QuickUpdater extends UpdateAnimator {
 
 							TranslateTransition tTrans = TranslateTransitionBuilder
 									.create ().node (nationGroup)
-									.duration (new Duration (1500))
+									.duration (scoreboard.voteTokenDuration)
 									.byX (xShift).byY (yShift)
 									.autoReverse (false)
 									.interpolator (Interpolator.EASE_BOTH)

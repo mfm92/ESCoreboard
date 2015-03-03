@@ -152,7 +152,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 						to7Group.getChildren ().add (pointView);
 						Timeline timeline = new Timeline ();
 						timeline.getKeyFrames ().addAll (
-								new KeyFrame (Duration.seconds (1), new KeyValue (
+								new KeyFrame (scoreboard.voteTokenDuration, new KeyValue (
 										pointView.translateXProperty (), shiftPVX),
 										new KeyValue (pointView.translateYProperty (), shiftPVY)));
 						timelines.add (timeline);
