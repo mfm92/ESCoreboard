@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
 import data.Standings;
 
 public abstract class IntermediatePreparator {
@@ -14,24 +13,24 @@ public abstract class IntermediatePreparator {
 			Standings standings, boolean tradVP);
 
 	void createPointsArray(Scoreboard scoreboard) {
-		Rectangle ptRect = RectangleBuilder.create ()
-			.x (scoreboard.getGlobalXOffset())
-			.y (scoreboard.getGlobalYOffset() + scoreboard.getHeight() + scoreboard.getBottomScoreboardOffset())
-			.id ("ptHolder")
-			.width (scoreboard.getPtUnderLayWidth())
-			.height (scoreboard.getPtUnderLayHeight())
-			.fill (new ImagePattern (scoreboard.utilities.ptHolder))
-			.build ();
+		Rectangle ptRect = new Rectangle();
+		
+		ptRect.setX (scoreboard.getGlobalXOffset());
+		ptRect.setY (scoreboard.getGlobalYOffset() + scoreboard.getHeight() + scoreboard.getBottomScoreboardOffset());
+		ptRect.setId ("ptHolder");
+		ptRect.setWidth (scoreboard.getPtUnderLayWidth());
+		ptRect.setHeight (scoreboard.getPtUnderLayHeight());
+		ptRect.setFill (new ImagePattern (scoreboard.utilities.ptHolder));
 		
 		ArrayList<Rectangle> pointViews = new ArrayList<> ();
 		int pointCounter = 0;
+		
 		for (Image image : scoreboard.utilities.getPointsTokens ()) {
-			Rectangle pointView = RectangleBuilder.create ()
-				.width (scoreboard.getFlagWidth())
-				.height (scoreboard.getFlagHeight())
-				.fill (new ImagePattern (image))
-				.id ("P" + indicesToPoints ((pointCounter + 1) % 10))
-				.build ();
+			Rectangle pointView = new Rectangle();
+			pointView.setWidth (scoreboard.getFlagWidth());
+			pointView.setHeight (scoreboard.getFlagHeight());
+			pointView.setFill (new ImagePattern (image));
+			pointView.setId ("P" + indicesToPoints ((pointCounter + 1) % 10));
 
 			pointView.setX (15 + scoreboard.getPointTokenXOffset() + pointView.getWidth () * pointCounter++);
 			pointView.setY (3 + scoreboard.getPointTokenYOffset());

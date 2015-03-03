@@ -8,7 +8,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.animation.TranslateTransitionBuilder;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -97,12 +96,15 @@ public class StepByStepAnimator extends UpdateAnimator {
 					Group nationGroup = scoreboard.groupNationMap
 							.get (participant);
 
-					TranslateTransition tTrans = TranslateTransitionBuilder
-							.create ().node (nationGroup)
-							.duration (scoreboard.voteTokenDuration).byX (xShift)
-							.byY (yShift).autoReverse (false)
-							.interpolator (Interpolator.EASE_BOTH)
-							.cycleCount (1).build ();
+					TranslateTransition tTrans = new TranslateTransition ();
+					
+					tTrans.setNode (nationGroup);
+					tTrans.setDuration (scoreboard.voteTokenDuration);
+					tTrans.setByX (xShift);
+					tTrans.setByY (yShift);
+					tTrans.setAutoReverse (false);
+					tTrans.setInterpolator (Interpolator.EASE_BOTH);
+					tTrans.setCycleCount (1);
 
 					transTrans.add (tTrans);
 				}

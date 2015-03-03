@@ -1,10 +1,9 @@
 package scoreboard;
 
-import nations.Participant;
 import javafx.scene.Group;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
+import nations.Participant;
 
 public abstract class AbstractTileUpdater extends TileUpdater {
 	
@@ -23,17 +22,16 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 			
 			int sizeDenom = (int) Math.ceil ((double) scoreboard.participants.size () / (double) scoreboard.getColumnsNr());
 
-			Rectangle base = RectangleBuilder
-					.create ()
-					.width (scoreboard.getColumnNameWidth())
-					.height (scoreboard.getHeight() / sizeDenom)
-					.layoutX (0)
-					.layoutY (0)
-					.id ("base")
-					.fill (new ImagePattern (
+			Rectangle base = new Rectangle();
+			
+			base.setWidth (scoreboard.getColumnNameWidth());
+			base.setHeight (scoreboard.getHeight() / sizeDenom);
+			base.setLayoutX (0);
+			base.setLayoutY (0);
+			base.setId ("base");
+			base.setFill (new ImagePattern (
 							(position < scoreboard.getSpecialBorder() ? scoreboard.utilities.nationTileBackgroundPQ
-									: scoreboard.utilities.nationTileBackground)))
-					.build ();
+									: scoreboard.utilities.nationTileBackground)));
 
 			group.getChildren ().remove (group.getChildren ().get (0));
 			group.getChildren ().add (0, base);

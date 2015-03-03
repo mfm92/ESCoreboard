@@ -3,13 +3,11 @@ package scoreboard;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import data.Standings;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.animation.TranslateTransitionBuilder;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nations.Participant;
 import nations.Votes;
+import data.Standings;
 
 public class QuickUpdater extends UpdateAnimator {
 
@@ -102,13 +101,15 @@ public class QuickUpdater extends UpdateAnimator {
 							Group nationGroup = scoreboard.groupNationMap
 									.get (participant);
 
-							TranslateTransition tTrans = TranslateTransitionBuilder
-									.create ().node (nationGroup)
-									.duration (scoreboard.voteTokenDuration)
-									.byX (xShift).byY (yShift)
-									.autoReverse (false)
-									.interpolator (Interpolator.EASE_BOTH)
-									.cycleCount (1).build ();
+							TranslateTransition tTrans = new TranslateTransition ();
+							
+							tTrans.setNode (nationGroup);
+							tTrans.setDuration (scoreboard.voteTokenDuration);
+							tTrans.setByX (xShift);
+							tTrans.setByY (yShift);
+							tTrans.setAutoReverse (false);
+							tTrans.setInterpolator (Interpolator.EASE_BOTH);
+							tTrans.setCycleCount (1);
 
 							transTrans.add (tTrans);
 						}
