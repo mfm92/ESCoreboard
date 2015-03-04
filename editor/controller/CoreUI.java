@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -77,6 +78,7 @@ public class CoreUI extends Application implements Initializable {
 	@FXML MenuItem redoMI;
 	@FXML MenuItem clearMI;
 	@FXML MenuItem closeMI;
+	@FXML MenuItem aboutMI;
 	
 	@FXML TextField editionName;
 	@FXML TextField editionNumberField;
@@ -211,9 +213,11 @@ public class CoreUI extends Application implements Initializable {
 		File toSave = null;
 		
 		System.out.println ("called!");
+		System.out.println (currentSaveFile == null);
+		System.out.println (saveAs);
 		
 		if (currentSaveFile == null || saveAs) {
-			System.out.println ("not me :)");
+			System.out.println ("Inner call!");
 			DirectoryChooser dirChooser = new DirectoryChooser ();
 			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
 			dirChooser.setTitle ("where to write out that shit...");
@@ -223,9 +227,20 @@ public class CoreUI extends Application implements Initializable {
 			toSave = currentSaveFile;
 		}
 		
+		if (toSave == null) return;
+		
 		try {
 			writeOut (toSave);
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void help () {
+		File pdfFile = new File (System.getProperty ("user.dir") + "\\resources\\About.pdf");
+		try {
+			Desktop.getDesktop ().open (pdfFile);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -338,6 +353,7 @@ public class CoreUI extends Application implements Initializable {
 		redoMI.setOnAction (event -> redo());
 		clearMI.setOnAction (event -> clear());
 		closeMI.setOnAction (event -> primaryStage.hide ());
+		aboutMI.setOnAction (event -> help());
 	}
 	
 	private void setUpTextFields () {
