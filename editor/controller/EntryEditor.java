@@ -31,9 +31,9 @@ public class EntryEditor implements Initializable {
 	ParticipantData toBeEdited;
 	
 	public void init (Stage primaryStage) throws Exception {
-		toBeEdited = CoreUI.inputData.getSelectedParticipant ();
-		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/EntryEditor.fxml"));
+		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/EntryAdder.fxml"));
 		Pane voteDocRoot = (Pane) loader.load ();
+		toBeEdited = CoreUI.inputData.getSelectedParticipant ();
 		primaryStage.setScene (new Scene (voteDocRoot));
 		primaryStage.show ();
 	}

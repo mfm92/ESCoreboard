@@ -60,7 +60,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="20.0" layoutY="51.0" prefHeight="326.0" prefWidth="1392.0" tableMenuButtonVisible="true">
+      <TableView fx:id="table" editable="true" layoutX="20.0" layoutY="51.0" prefHeight="326.0" prefWidth="1392.0" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="nationNameCol" prefWidth="287.0" text="Nation Name" />
             <TableColumn fx:id="shortnameCol" prefWidth="97.0" text="Shortname" />
@@ -101,7 +101,7 @@
       <Button fx:id="flagDirButton" layoutX="22.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="497.0" text="Flag Directory" />
       <Button fx:id="entryDirButton" layoutX="539.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="436.0" text="Entry Directory" />
       <Button fx:id="prettyFlagDirButton" layoutX="995.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="417.0" text="Pretty Flag Directory" />
-      <Button fx:id="setVotesButton" layoutX="495.0" layoutY="390.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="238.0" text="Set Votes" />
+      <Button fx:id="setVotesButton" layoutX="502.0" layoutY="390.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="231.0" text="Set Votes" />
       <Button fx:id="removeEntryButton" layoutX="342.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="138.0" text="Remove Entry" />
       <Slider fx:id="speedSlider" layoutX="625.0" layoutY="552.0" majorTickUnit="50.0" prefHeight="27.0" prefWidth="411.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label alignment="CENTER" layoutX="725.0" layoutY="506.0" prefHeight="32.0" prefWidth="211.0" text="pick speed of show...">

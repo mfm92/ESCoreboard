@@ -29,6 +29,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -141,7 +142,6 @@ public class CoreUI extends Application implements Initializable {
 	
 	private void undo () {
 		if (commandPtr < 1) {
-			System.out.println ("nothing left to undo!");
 			return;
 		}
 		else {
@@ -166,7 +166,6 @@ public class CoreUI extends Application implements Initializable {
 		commandPtr++;
 		
 		if (commandPtr > commandLog.size ()) {
-			System.out.println ("nothing to redo!");
 			return;
 		} else {
 			ParticipantData pcData = commandLog.get (commandPtr).getRight ();
@@ -178,9 +177,7 @@ public class CoreUI extends Application implements Initializable {
 				case DELETE: 
 					inputData.removeParticipant (pcData);
 					break;
-				case SET_VOTES: 
-					inputData.addVotes (pcData, null);
-					break;
+				default: break;
 			}
 		}
 	}
@@ -189,6 +186,8 @@ public class CoreUI extends Application implements Initializable {
 		
 		CellCentralizer<Integer> intCentralizer = new CellCentralizer<> ();
 		CellCentralizer<String> textCentralizer = new CellCentralizer<> ();
+		
+		table.setEditable (true);
 		
 		nationNameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("name"));
 		shortnameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("shortName"));
@@ -207,6 +206,13 @@ public class CoreUI extends Application implements Initializable {
 		stopCol.setCellFactory (intCentralizer);
 		gridCol.setCellFactory (intCentralizer);
 		statusCol.setCellFactory (textCentralizer);
+		
+		nationNameCol.setOnEditCommit (new EventHandler<TableColumn.CellEditEvent<ParticipantData,String>>() {
+			@Override public void handle (CellEditEvent<ParticipantData, String> event) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());
+				
+			}
+		});
 
 		table.itemsProperty ().bind (inputData.getParticipantsProperty ());
 		table.getSortOrder ().add (nationNameCol);

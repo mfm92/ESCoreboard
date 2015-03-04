@@ -26,6 +26,11 @@ public class ParticipantData {
 		this.grid = new SimpleIntegerProperty (grid);
 		this.status = new SimpleStringProperty (status);
 	}
+	
+	public ParticipantData clone() {
+		return new ParticipantData (name.get (), shortName.get (), artist.get (),
+				title.get (), start.get (), stop.get (), grid.get (), status.get ());
+	}
 
 	public String getName() {
 		return name.get();

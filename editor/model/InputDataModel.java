@@ -102,6 +102,10 @@ public class InputDataModel {
 		return participants.getValue ().get (selectedIndex.get ());
 	}
 	
+	public ParticipantData getSelectedParticipantClone () {
+		return participants.getValue ().get (selectedIndex.get ()).clone();
+	}
+	
 	public HashMap<ParticipantData, ArrayList<String>> getVotes () {
 		return votes.getValue ();
 	}

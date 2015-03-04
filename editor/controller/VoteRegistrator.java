@@ -113,7 +113,7 @@ public class VoteRegistrator extends Application implements Initializable {
 					}
 					CoreUI.inputData.addVotes (CoreUI.inputData.getSelectedParticipant (), votes);
 					CoreUI.commandLog.put (++CoreUI.nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
-						(CoreUI.Command.SET_VOTES, CoreUI.inputData.getSelectedParticipant ()));
+						(CoreUI.Command.SET_VOTES, CoreUI.inputData.getSelectedParticipant ().clone ()));
 					CoreUI.commandPtr = CoreUI.nrOfCommands;
 				}
 			}

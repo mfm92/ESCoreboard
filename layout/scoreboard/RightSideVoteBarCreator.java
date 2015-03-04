@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
 import nations.Participant;
 
+@SuppressWarnings("deprecation")
 public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 	int nrOfCalled = 0;
