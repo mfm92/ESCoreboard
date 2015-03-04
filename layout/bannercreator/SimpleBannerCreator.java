@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
@@ -23,9 +22,6 @@ import javafx.scene.text.Text;
 import javax.imageio.ImageIO;
 
 import nations.Participant;
-import scoreboard.Scoreboard;
-
-import com.sun.istack.internal.logging.Logger;
 
 public class SimpleBannerCreator extends BannerCreator {
 
@@ -52,8 +48,7 @@ public class SimpleBannerCreator extends BannerCreator {
 			g2D.translate (bannerHeight, bannerWidth);
 			ImageIO.write (bannerNextStep, "png", bannerDestination);
 		} catch (IOException ioex) {
-			Logger.getLogger (Scoreboard.class).log (Level.SEVERE,
-					ioex.getMessage ());
+			ioex.printStackTrace ();
 		}
 	}
 

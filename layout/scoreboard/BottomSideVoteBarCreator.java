@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
 import nations.Participant;
 
-@SuppressWarnings("deprecation")
 public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 
 	int nrOfCalled = 0;
@@ -38,7 +37,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.height (scoreboard.getBottomBarHeight())
 				.x (underlayX)
 				.y (scoreboard.getBottomBarY())
-				.fill (new ImagePattern (scoreboard.getUtilities().voteFlagUnderlay))
+				.fill (new ImagePattern (scoreboard.getDataCarrier().voteFlagUnderlay))
 				.build ();
 
 		ImageView voterFlag = ImageViewBuilder.create ()
@@ -54,7 +53,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.height (voteFlagUnderlay.getHeight ())
 				.x (voteFlagUnderlay.getX () + 0.2 * underlayWidth)
 				.y (voteFlagUnderlay.getY ())
-				.fill (new ImagePattern (scoreboard.getUtilities().voteUnderlay))
+				.fill (new ImagePattern (scoreboard.getDataCarrier().voteUnderlay))
 				.build ();
 
 		Text currentVoter = TextBuilder.create ()
@@ -77,12 +76,12 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.x (underlayX + 0.85 * underlayWidth)
 				.y (voteFlagUnderlay.getY ())
 				.fill (new ImagePattern (
-						scoreboard.getUtilities().voteCounterULSmall)).build ();
+						scoreboard.getDataCarrier().voteCounterULSmall)).build ();
 
 		Text counter = TextBuilder
 				.create ()
 				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " / "
-						+ scoreboard.getUtilities().voteMap.size ())
+						+ scoreboard.getDataCarrier().voteMap.size ())
 				.fill (Color.WHITE)
 				.font (Font.font ("Coolvetica RG", FontWeight.LIGHT, 32))
 				.build ();

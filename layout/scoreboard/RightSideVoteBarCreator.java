@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextBuilder;
 import nations.Participant;
 
-@SuppressWarnings("deprecation")
 public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 	int nrOfCalled = 0;
@@ -35,7 +34,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		// VOTING CALL
 		Rectangle voteUnderlay = RectangleBuilder.create ().width (scoreboard.getRightBarWidth())
 				.height (0.2 * underlayHeight).x (scoreboard.getRightBarX()).y (underlayY)
-				.fill (new ImagePattern (scoreboard.getUtilities().voteUnderlay))
+				.fill (new ImagePattern (scoreboard.getDataCarrier().voteUnderlay))
 				.build ();
 
 		Text voteText = TextBuilder.create ().text ("voting")
@@ -56,7 +55,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.height (0.5 * underlayHeight)
 				.x (voteUnderlay.getX ())
 				.y (underlayY + 0.2 * underlayHeight)
-				.fill (new ImagePattern (scoreboard.getUtilities().voteFlagUnderlay))
+				.fill (new ImagePattern (scoreboard.getDataCarrier().voteFlagUnderlay))
 				.build ();
 
 		int specialFlagWidth = (int) (0.8 * scoreboard.getRightBarWidth());
@@ -67,7 +66,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 		ImageView voterFlag = ImageViewBuilder
 				.create ()
-				.image (scoreboard.isUsingSpecialFlags() ? scoreboard.getUtilities().diamondMap
+				.image (scoreboard.isUsingSpecialFlags() ? scoreboard.getDataCarrier().diamondMap
 						.get (voter) : voter.getFlag ())
 				.fitWidth (scoreboard.isUsingSpecialFlags() ? specialFlagWidth : normalFlagWidth)
 				.fitHeight (scoreboard.isUsingSpecialFlags() ? specialFlagHeight : normalFlagHeight).build ();
@@ -88,7 +87,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.height (0.2 * underlayHeight)
 				.x (voteUnderlay.getX ())
 				.y (underlayY + 0.7 * underlayHeight)
-				.fill (new ImagePattern (scoreboard.getUtilities().voteNameUnderlay))
+				.fill (new ImagePattern (scoreboard.getDataCarrier().voteNameUnderlay))
 				.build ();
 
 		Text currentVoter = TextBuilder
@@ -109,13 +108,13 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		Rectangle counterUnderlay = RectangleBuilder.create ()
 				.width (voteUnderlay.getWidth ()).height (0.1 * underlayHeight)
 				.x (voteUnderlay.getX ()).y (underlayY + 0.9 * underlayHeight)
-				.fill (new ImagePattern (scoreboard.getUtilities().voteCounterUL))
+				.fill (new ImagePattern (scoreboard.getDataCarrier().voteCounterUL))
 				.build ();
 
 		Text counter = TextBuilder
 				.create ()
 				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " out of "
-						+ scoreboard.getUtilities().voteMap.size ())
+						+ scoreboard.getDataCarrier().voteMap.size ())
 				.fill (Color.WHITE)
 				.font (Font.font ("Coolvetica RG", FontWeight.LIGHT, 32))
 				.build ();

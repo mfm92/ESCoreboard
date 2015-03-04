@@ -33,8 +33,8 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			base.setLayoutY (0);
 			base.setId ("base");
 			base.setFill (new ImagePattern (
-							(position < scoreboard.getSpecialBorder() ? scoreboard.getUtilities().nationTileBackgroundPQ
-									: scoreboard.getUtilities().nationTileBackground)));
+							(position < scoreboard.getSpecialBorder() ? scoreboard.getDataCarrier().nationTileBackgroundPQ
+									: scoreboard.getDataCarrier().nationTileBackground)));
 
 			Rectangle pointsBase = new Rectangle();
 			pointsBase.setWidth (scoreboard.getColumnWidth() - scoreboard.getColumnNameWidth());
@@ -43,8 +43,8 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			pointsBase.setLayoutY (0);
 			pointsBase.setId ("pointBase");
 			pointsBase.setFill (new ImagePattern (
-							position < scoreboard.getSpecialBorder() ? scoreboard.getUtilities().pointsTileBackgroundPQ
-									: scoreboard.getUtilities().pointsTileBackground));
+							position < scoreboard.getSpecialBorder() ? scoreboard.getDataCarrier().pointsTileBackgroundPQ
+									: scoreboard.getDataCarrier().pointsTileBackground));
 
 			Text nationName = new Text();
 			nationName.setText (scoreboard.getParticipants().get (position).getName ());
@@ -96,9 +96,9 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			if (scoreboard.getCurrentVoter() != null) {
 				if (scoreboard.getParticipants().get (position).getName ()
 						.equals (scoreboard.getCurrentVoter().getName ())) {
-					nationIcon.setImage (scoreboard.getUtilities().voterPointToken);
+					nationIcon.setImage (scoreboard.getDataCarrier().voterPointToken);
 					base.setFill (new ImagePattern (
-							scoreboard.getUtilities().nationTileBackgroundVoter));
+							scoreboard.getDataCarrier().nationTileBackgroundVoter));
 					nationName.setFill (Color.LIGHTGRAY);
 					scoreTest.setFill (Color.LIGHTGRAY);
 				}
@@ -106,7 +106,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			if (scoreboard.getParticipants().get (position).getTmpScore () != 0) {
 				ImageView ptsView = new ImageView();
-				ptsView.setImage (scoreboard.getUtilities().getPointsTokens ().get (scoreboard
+				ptsView.setImage (scoreboard.getDataCarrier().getPointsTokens ().get (scoreboard
 						.pointsToIndices (scoreboard.getParticipants().get (position).getTmpScore ())));
 				ptsView.setLayoutX (nationIcon.getLayoutX ());
 				ptsView.setLayoutY (nationIcon.getLayoutY ());
@@ -119,10 +119,10 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 						&& !(nationName.getText ().endsWith (" has SCORED!") && !(nationName
 								.getText ().endsWith (" PQ!")))) {
 					base.setFill (new ImagePattern (
-							scoreboard.getUtilities().nationTileBackgroundScored));
+							scoreboard.getDataCarrier().nationTileBackgroundScored));
 					if (position < scoreboard.getSpecialBorder()) {
 						base.setFill (new ImagePattern (
-								scoreboard.getUtilities().nationTileBackgroundPQScored));
+								scoreboard.getDataCarrier().nationTileBackgroundPQScored));
 					}
 				}
 				

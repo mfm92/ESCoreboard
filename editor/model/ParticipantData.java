@@ -1,19 +1,20 @@
 package model;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class ParticipantData {
 	
-	SimpleStringProperty name;
-	SimpleStringProperty shortName;
-	SimpleStringProperty artist;
-	SimpleStringProperty title;
-	SimpleIntegerProperty start;
-	SimpleIntegerProperty stop;
-	SimpleIntegerProperty grid;
-	SimpleStringProperty status;
+	StringProperty name;
+	StringProperty shortName;
+	StringProperty artist;
+	StringProperty title;
+	IntegerProperty start;
+	IntegerProperty stop;
+	IntegerProperty grid;
+	StringProperty status;
 	
 	public ParticipantData (String name, String shortName, String artist,
 			String title, int start, int stop, int grid, String status) {

@@ -34,7 +34,7 @@ public class QuickUpdater extends UpdateAnimator {
 		// CLEAR AFTER FULL VOTE
 		votesClear (voter, scoreboard);
 		scoreboard.getTileUpdater().updateBackgroundOnly (scoreboard);
-		final Votes votes = scoreboard.getUtilities().voteMap.get (voter);
+		final Votes votes = scoreboard.getDataCarrier().voteMap.get (voter);
 		ArrayList<Timeline> timelines = new ArrayList<> ();
 
 		for (int i = 1; i <= scoreboard.getTransParts(); i++) {
@@ -134,7 +134,7 @@ public class QuickUpdater extends UpdateAnimator {
 										// NEXT VOTES, PLEASE...
 										Platform.runLater (new VoteAdder (
 												overview, scoreboard,
-												scoreboard.getUtilities(),
+												scoreboard.getDataCarrier(),
 												++scoreboard.inCountryCounter, tradVP));
 										return;
 									}

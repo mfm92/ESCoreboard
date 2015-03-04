@@ -20,12 +20,12 @@ public abstract class IntermediatePreparator {
 		ptRect.setId ("ptHolder");
 		ptRect.setWidth (scoreboard.getPtUnderLayWidth());
 		ptRect.setHeight (scoreboard.getPtUnderLayHeight());
-		ptRect.setFill (new ImagePattern (scoreboard.getUtilities().ptHolder));
+		ptRect.setFill (new ImagePattern (scoreboard.getDataCarrier().ptHolder));
 		
 		ArrayList<Rectangle> pointViews = new ArrayList<> ();
 		int pointCounter = 0;
 		
-		for (Image image : scoreboard.getUtilities().getPointsTokens ()) {
+		for (Image image : scoreboard.getDataCarrier().getPointsTokens ()) {
 			Rectangle pointView = new Rectangle();
 			pointView.setWidth (scoreboard.getFlagWidth());
 			pointView.setHeight (scoreboard.getFlagHeight());

@@ -38,7 +38,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 		// PLACE POINT NODE
 		Rectangle pointView = scoreboard.getPointViews().get ((scoreboard.inCountryCounter - 1) % 10);
 		pointView.setHeight (0.7 * (scoreboard.getHeight()/sizeDenom));
-		Votes votes = scoreboard.getUtilities().voteMap.get (voter);
+		Votes votes = scoreboard.getDataCarrier().voteMap.get (voter);
 		Participant receiver = votes.getReceivers ()[(scoreboard.inCountryCounter - 1) % 10];
 		receiver.setTmpScore (scoreboard.indicesToPoints ((scoreboard.inCountryCounter - 1) % 10));
 		receiver.setScoredFlag (true);
@@ -135,7 +135,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 
 								// NEXT VOTES, PLEASE...
 								Platform.runLater (new VoteAdder (overview,
-										scoreboard, scoreboard.getUtilities(), save, tradVP));
+										scoreboard, scoreboard.getDataCarrier(), save, tradVP));
 							}
 						});
 					}

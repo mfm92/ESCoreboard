@@ -12,7 +12,7 @@ public class Participant implements Comparable<Participant>, Cloneable {
 	private String shortName;
 	private Image flag;
 	private Votes votes;
-	private Entry nscEntry;
+	private Entry entry;
 
 	private SimpleIntegerProperty score;
 	private int tmpScore;
@@ -54,11 +54,11 @@ public class Participant implements Comparable<Participant>, Cloneable {
 	}
 
 	public Entry getEntry() {
-		return nscEntry;
+		return entry;
 	}
 
 	public void setEntry(Entry entry) {
-		nscEntry = entry;
+		this.entry = entry;
 	}
 
 	public Image getFlag() {

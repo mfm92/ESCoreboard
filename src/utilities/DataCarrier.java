@@ -23,7 +23,7 @@ import bannercreator.BannerCreator;
 import bannercreator.SimpleBannerCreator;
 import controller.CoreUI;
 
-public class NSCUtilities {
+public class DataCarrier {
 
 	public Image nationTileBackground;
 	public Image nationTileBackgroundScored;
@@ -66,7 +66,7 @@ public class NSCUtilities {
 	
 	String resourcesFile = System.getProperty ("user.dir") + "\\";
 
-	public NSCUtilities(boolean readDiamonds) throws IOException {
+	public DataCarrier(boolean readDiamonds) throws IOException {
 		this.readDiamonds = readDiamonds;
 		initialize ();
 	}

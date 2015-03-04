@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -30,10 +29,7 @@ import javax.imageio.ImageIO;
 
 import nations.Entry;
 import nations.Participant;
-import utilities.NSCUtilities;
-
-import com.sun.istack.internal.logging.Logger;
-
+import utilities.DataCarrier;
 import controller.CoreUI;
 import data.Standings;
 
@@ -123,7 +119,7 @@ public class Scoreboard extends Application {
 
 	private ArrayList<Rectangle> pointViews;
 
-	private NSCUtilities utilities;
+	private DataCarrier dataCarrier;
 	private Rectangle background;
 	
 	int inCountryCounter;
@@ -136,8 +132,8 @@ public class Scoreboard extends Application {
 	public void start(Stage primaryStage) {
 		Standings standings = null;
 		try {
-			setUtilities (new NSCUtilities (isUsingSpecialFlags()));
-			standings = new Standings (getUtilities());
+			setDataCarrier (new DataCarrier (isUsingSpecialFlags()));
+			standings = new Standings (getDataCarrier());
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
@@ -148,11 +144,11 @@ public class Scoreboard extends Application {
 		background.setWidth (1920);
 		background.setHeight (1080);
 		background.setId ("background");
-		background.setFill (new ImagePattern (getUtilities().backgroundWhite));
+		background.setFill (new ImagePattern (getDataCarrier().backgroundWhite));
 
 		this.setBackground (background);
-		String[] finalists = getUtilities().getListOfNames ();
-		ArrayList<Participant> rosterNations = getUtilities()
+		String[] finalists = getDataCarrier().getListOfNames ();
+		ArrayList<Participant> rosterNations = getDataCarrier()
 				.getListOfNations (finalists);
 		this.setParticipants (new ArrayList<> (rosterNations));
 		Collections.sort (rosterNations);
@@ -173,7 +169,7 @@ public class Scoreboard extends Application {
 		backgroundDummy.setWidth (1920);
 		backgroundDummy.setHeight (1080);
 		backgroundDummy.setId ("backgroundDummy");
-		backgroundDummy.setFill (new ImagePattern (getUtilities().backgroundWhite));
+		backgroundDummy.setFill (new ImagePattern (getDataCarrier().backgroundWhite));
 
 		getTileUpdater().updateTiles (this, null);
 		getRoot().getChildren ().add (getBackground());
@@ -288,8 +284,7 @@ public class Scoreboard extends Application {
 			g2d.translate (1920, 1080);
 			ImageIO.write (scoreboard, "png", destScoreboard);
 		} catch (IOException ioex) {
-			Logger.getLogger (Scoreboard.class).log (Level.SEVERE,
-					ioex.getMessage ());
+			ioex.printStackTrace ();
 		}
 	}
 	
@@ -759,12 +754,12 @@ public class Scoreboard extends Application {
 		this.pointViews = pointViews;
 	}
 
-	public NSCUtilities getUtilities() {
-		return utilities;
+	public DataCarrier getDataCarrier() {
+		return dataCarrier;
 	}
 
-	public void setUtilities(NSCUtilities utilities) {
-		this.utilities = utilities;
+	public void setDataCarrier(DataCarrier utilities) {
+		this.dataCarrier = utilities;
 	}
 
 	public Rectangle getBackground() {

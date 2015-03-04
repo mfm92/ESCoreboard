@@ -14,13 +14,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import scoreboard.Scoreboard;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,11 +27,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -45,6 +39,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import model.InputDataModel;
 import model.ParticipantData;
+import scoreboard.Scoreboard;
 
 public class CoreUI extends Application implements Initializable {
 	
@@ -67,7 +62,6 @@ public class CoreUI extends Application implements Initializable {
 	@FXML TableColumn<ParticipantData, String> statusCol;
 	
 	@FXML Button addEntryButton;
-	@FXML Button editEntryButton;
 	@FXML Button removeEntryButton;
 	@FXML Button setVotesButton;
 	@FXML Button flagDirButton;
@@ -80,6 +74,7 @@ public class CoreUI extends Application implements Initializable {
 	@FXML MenuItem saveMenuItem;
 	@FXML MenuItem undoMI;
 	@FXML MenuItem redoMI;
+	@FXML MenuItem clearMI;
 	@FXML MenuItem closeMI;
 	
 	@FXML TextField editionName;
@@ -98,7 +93,6 @@ public class CoreUI extends Application implements Initializable {
 	
 	VoteRegistrator voteRegistrator = new VoteRegistrator ();
 	EntryAdder entryAdder = new EntryAdder ();
-	EntryEditor entryEditor = new EntryEditor ();
 	
 	private Stage primaryStage;
 	
@@ -134,12 +128,12 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void setScene (Scene scene) {
-		scene.addEventHandler (KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.isControlDown () && event.getCode () == KeyCode.Z) undo();
-				else if (event.isControlDown () && event.getCode () == KeyCode.Y) redo();
-			}
+		scene.addEventHandler (KeyEvent.KEY_RELEASED, event -> {
+			if (event.isControlDown () && event.getCode () == KeyCode.Z) undo();
+			else if (event.isControlDown () && event.getCode () == KeyCode.Y) redo();
+			else if (event.isControlDown () && event.getCode () == KeyCode.L) load();
+			else if (event.isControlDown () && event.getCode () == KeyCode.S) save();
+			else if (event.isControlDown () && event.getCode () == KeyCode.BACK_SPACE) clear();
 		});
 	}
 	
@@ -184,6 +178,44 @@ public class CoreUI extends Application implements Initializable {
 			}
 		}
 	}
+	
+	private void clear () {
+		for (ParticipantData pData : inputData.getParticipants()) {
+			inputData.removeVotes (pData);
+			inputData.removeParticipant (pData);
+		}
+	}
+	
+	private void load () {
+		DirectoryChooser fileChooser = new DirectoryChooser ();
+		fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+		fileChooser.setTitle ("Choose participants file...");
+		File selected = fileChooser.showDialog (null);
+		
+		File participantsFile = new File (selected + "\\participants.txt");
+		File votesFile = new File (selected + "\\votes.txt");
+		File paramsFile = new File (selected + "\\params.txt");
+
+		try {
+			readInParticipants (participantsFile);
+			readInVotes (votesFile);
+			readInParams (paramsFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void save () {
+		DirectoryChooser dirChooser = new DirectoryChooser ();
+		dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+		dirChooser.setTitle ("where to write out that shit...");
+		
+		try {
+			writeOut (dirChooser.showDialog (null));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void setUpTableView () {
 		
@@ -201,7 +233,7 @@ public class CoreUI extends Application implements Initializable {
 		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("grid"));
 		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("status"));
 		
-		nationNameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		nationNameCol.setCellFactory (textCentralizer);
 		shortnameCol.setCellFactory (textCentralizer);
 		artistCol.setCellFactory (textCentralizer);
 		titleCol.setCellFactory (textCentralizer);
@@ -210,11 +242,8 @@ public class CoreUI extends Application implements Initializable {
 		gridCol.setCellFactory (intCentralizer);
 		statusCol.setCellFactory (textCentralizer);
 		
-		nationNameCol.setOnEditCommit (new EventHandler<TableColumn.CellEditEvent<ParticipantData,String>>() {
-			@Override public void handle (CellEditEvent<ParticipantData, String> event) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());
-				
-			}
+		nationNameCol.setOnEditCommit (event -> {
+			((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());
 		});
 
 		table.itemsProperty ().bind (inputData.getParticipantsProperty ());
@@ -224,175 +253,77 @@ public class CoreUI extends Application implements Initializable {
 	
 	private void setUpButtons () {
 		
-		flagDirButton.setOnMouseClicked (new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event event) {
-				DirectoryChooser dirChooser = new DirectoryChooser ();
-				dirChooser.setInitialDirectory (new File (inputData.getFlagDirectory ().equals("null") ?
-						System.getProperty("user.dir") : inputData.getFlagDirectory ()));
-				dirChooser.setTitle ("Folder that contains the flags...");
-				
-				File selected = dirChooser.showDialog (null);
-				
-				inputData.setFlagDirectory (selected == null ? null : selected.getAbsolutePath ());
+		flagDirButton.setOnMouseClicked (event -> {
+			DirectoryChooser dirChooser = new DirectoryChooser ();
+			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+			dirChooser.setTitle ("Folder that contains the flags...");
+			
+			File selected = dirChooser.showDialog (null);
+			
+			inputData.setFlagDirectory (selected == null ? null : selected.getAbsolutePath ());
+		});
+		
+		entryDirButton.setOnMouseClicked (event -> {
+			DirectoryChooser dirChooser = new DirectoryChooser ();
+			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+			dirChooser.setTitle ("Folder that contains the entries...");
+			
+			File selectedFile = dirChooser.showDialog (null);
+			
+			inputData.setEntriesDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
+		});
+		
+		prettyFlagDirButton.setOnMouseClicked (event -> {
+			DirectoryChooser dirChooser = new DirectoryChooser ();
+			dirChooser.setInitialDirectory (new File (System.getProperty ("user.dir")));
+			dirChooser.setTitle ("Folder that contains the pretty flags...");
+			
+			File selectedFile = dirChooser.showDialog (null);
+			
+			inputData.setPrettyFlagDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
+		});
+		
+		addEntryButton.setOnAction (event -> {
+			try {
+				entryAdder.init (new Stage());
+			} catch (Exception e) {
+				e.printStackTrace ();
 			}
 		});
 		
-		entryDirButton.setOnMouseClicked (new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event event) {
-				DirectoryChooser dirChooser = new DirectoryChooser ();
-				dirChooser.setInitialDirectory (new File 
-						(inputData.getEntriesDirectory ().equals("null") ? System.getProperty("user.dir") :
-							inputData.getEntriesDirectory ()));
-				dirChooser.setTitle ("Folder that contains the entries...");
-				
-				File selectedFile = dirChooser.showDialog (null);
-				
-				inputData.setEntriesDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
+		removeEntryButton.setOnAction (event -> {
+			ParticipantData toDelete = inputData.getSelectedParticipant ();
+			inputData.removeParticipant (toDelete);
+			commandLog.put (++nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
+				(CoreUI.Command.DELETE, toDelete));
+			commandPtr = nrOfCommands;
+		});
+		
+		setVotesButton.setOnAction (event -> {
+			try {
+				voteRegistrator.start (new Stage());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 		
-		prettyFlagDirButton.setOnMouseClicked (new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event event) {
-				DirectoryChooser dirChooser = new DirectoryChooser ();
-				dirChooser.setInitialDirectory (new File 
-						(inputData.getPrettyFlagDirectory ().equals("null") ? 
-						System.getProperty("user.dir") : inputData.getPrettyFlagDirectory ()));
-				dirChooser.setTitle ("Folder that contains the pretty flags...");
-				
-				File selectedFile = dirChooser.showDialog (null);
-				
-				inputData.setPrettyFlagDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
-			}
-		});
-		
-		addEntryButton.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle (ActionEvent event) {
-				try {
-					entryAdder.init (new Stage());
-				} catch (Exception e) {
-					e.printStackTrace ();
-				}
-			}
-		});
-		
-		editEntryButton.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					entryEditor.init (new Stage());
-				} catch (Exception e) {
-					e.printStackTrace ();
-				}
-			}
-		});
-		
-		removeEntryButton.setOnAction (new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				ParticipantData toDelete = inputData.getSelectedParticipant ();
-				inputData.removeParticipant (toDelete);
-				commandLog.put (++nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
-					(CoreUI.Command.DELETE, toDelete));
-				commandPtr = nrOfCommands;
-			}
-		});
-		
-		setVotesButton.setOnAction (new EventHandler<ActionEvent>() {
-			public void handle (ActionEvent event) {
-				try {
-					voteRegistrator.start (new Stage());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		startButton.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle (ActionEvent event) {
-				try {	
-					Scoreboard sc = new Scoreboard();
-					sc.start (new Stage());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		startButton.setOnAction (event -> {
+			try {	
+				Scoreboard sc = new Scoreboard();
+				sc.start (new Stage());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 	
 	private void setUpMenu () {
-		loadMenuItem.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				DirectoryChooser fileChooser = new DirectoryChooser ();
-				fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
-				fileChooser.setTitle ("Choose participants file...");
-				File selected = fileChooser.showDialog (null);
-				
-				File participantsFile = new File (selected + "\\participants.txt");
-				File votesFile = new File (selected + "\\votes.txt");
-				File paramsFile = new File (selected + "\\params.txt");
-
-				try {
-					readInParticipants (participantsFile);
-					readInVotes (votesFile);
-					readInParams (paramsFile);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		saveMenuItem.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				DirectoryChooser dirChooser = new DirectoryChooser ();
-				dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
-				dirChooser.setTitle ("where to write out that shit...");
-				
-				try {
-					writeOut (dirChooser.showDialog (null));
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		undoMI.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				undo();
-			}
-		});
-		
-		redoMI.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				redo();
-			}
-		});
-		
-		closeMI.setOnAction (new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				primaryStage.hide ();
-			}
-		});
+		loadMenuItem.setOnAction (event -> load());
+		saveMenuItem.setOnAction (event -> save());
+		undoMI.setOnAction (event -> undo());
+		redoMI.setOnAction (event -> redo());
+		clearMI.setOnAction (event -> clear());
+		closeMI.setOnAction (event -> primaryStage.hide ());
 	}
 	
 	private void setUpTextFields () {

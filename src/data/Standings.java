@@ -7,14 +7,14 @@ import java.util.Collections;
 
 import nations.Participant;
 import nations.Votes;
-import utilities.NSCUtilities;
+import utilities.DataCarrier;
 
 public class Standings {
 
 	private ArrayList<Participant> standings;
 	private ArrayList<Votes> votes;
 
-	public Standings(NSCUtilities utilities) throws FileNotFoundException,
+	public Standings(DataCarrier utilities) throws FileNotFoundException,
 			IOException {
 		setStandings (new ArrayList<Participant> ());
 		String[] finalists = utilities.getListOfNames ();

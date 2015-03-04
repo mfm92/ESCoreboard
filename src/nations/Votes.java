@@ -1,6 +1,6 @@
 package nations;
 
-import utilities.NSCUtilities;
+import utilities.DataCarrier;
 
 public class Votes {
 
@@ -9,7 +9,7 @@ public class Votes {
 
 	public Votes(String voter, String P1, String P2, String P3, String P4,
 			String P5, String P6, String P7, String P8, String P10, String P12,
-			NSCUtilities utilities) {
+			DataCarrier utilities) {
 		this.voter = utilities.getRosterNationByShortName (voter);
 		receivers[0] = utilities.getRosterNationByShortName (P1);
 		receivers[1] = utilities.getRosterNationByShortName (P2);

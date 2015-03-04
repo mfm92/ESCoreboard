@@ -24,7 +24,7 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		iR1.setHeight (1080);
 		iR1.setId ("background");
 		iR1.setId ("redBack");
-		iR1.setFill (new ImagePattern (scoreboard.getUtilities().backgroundRed));
+		iR1.setFill (new ImagePattern (scoreboard.getDataCarrier().backgroundRed));
 
 		scoreboard.getRoot().getChildren ().add (iR1);
 		
@@ -34,7 +34,7 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		iR2.setId ("12Strip");
 		iR2.setWidth (1920);
 		iR2.setHeight (270);
-		iR2.setFill (new ImagePattern (scoreboard.getUtilities().ppraisbg));
+		iR2.setFill (new ImagePattern (scoreboard.getDataCarrier().ppraisbg));
 		
 		scoreboard.getRoot().getChildren ().add (iR2);
 		
@@ -44,7 +44,7 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		iR3.setX (100);
 		iR3.setY (830);
 		iR3.setId ("12D");
-		iR3.setFill (new ImagePattern (scoreboard.getUtilities().pprais));
+		iR3.setFill (new ImagePattern (scoreboard.getDataCarrier().pprais));
 		
 		scoreboard.getRoot().getChildren ().add (iR3);
 

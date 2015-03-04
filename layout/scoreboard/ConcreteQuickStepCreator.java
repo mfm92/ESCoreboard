@@ -49,7 +49,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		iR.setHeight (1080);
 		iR.setId ("background");
 		iR.setId ("redBack");
-		iR.setFill (new ImagePattern (scoreboard.getUtilities().backgroundBlue));
+		iR.setFill (new ImagePattern (scoreboard.getDataCarrier().backgroundBlue));
 		to7Group.getChildren ().add (iR);
 
 		int entryX = 100;
@@ -94,7 +94,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 						rect.setWidth (scoreboard.getColumnWidthTransition());
 						rect.setX (scoreboard.getTransitionXOffset() - scoreboard.getColumnWidthTransition() * ((i+1) / transSNum));
 						rect.setY (scoreboard.getTransitionYOffset() - transSDen * ((i+1) % transSNum));
-						rect.setFill (new ImagePattern (scoreboard.getUtilities().nationTileBackground));
+						rect.setFill (new ImagePattern (scoreboard.getDataCarrier().nationTileBackground));
 						rects.add (rect);
 
 						ImageView viewFlag = new ImageView();
@@ -134,7 +134,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 						ImageView pointView = new ImageView();
 						pointView.setFitHeight (scoreboard.getPointTokenHeightTransition ());
 						pointView.setFitWidth (scoreboard.getPointTokenWidthTransition ());
-						pointView.setImage (scoreboard.getUtilities ().getPointsTokens ().get (i));
+						pointView.setImage (scoreboard.getDataCarrier ().getPointsTokens ().get (i));
 						pointView.setX(scoreboard.getPointTokenXOffsetTransition() + i *
 								scoreboard.getPointTokenWidthTransition());
 						pointView.setY (scoreboard.getPointTokenYOffsetTransition());
@@ -175,13 +175,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 				public void run() {
 					final int save = scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
 					Platform.runLater (new VoteAdder (standings, scoreboard,
-							scoreboard.getUtilities(), save, tradVP));
+							scoreboard.getDataCarrier(), save, tradVP));
 				}
 			});	
 		} else {
 			final int save = scoreboard.inCountryCounter;
 			Platform.runLater (new VoteAdder (standings, scoreboard,
-					scoreboard.getUtilities(), save, tradVP));
+					scoreboard.getDataCarrier(), save, tradVP));
 		}
 	}
 

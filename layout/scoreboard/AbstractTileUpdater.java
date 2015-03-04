@@ -30,8 +30,8 @@ public abstract class AbstractTileUpdater extends TileUpdater {
 			base.setLayoutY (0);
 			base.setId ("base");
 			base.setFill (new ImagePattern (
-							(position < scoreboard.getSpecialBorder() ? scoreboard.getUtilities().nationTileBackgroundPQ
-									: scoreboard.getUtilities().nationTileBackground)));
+							(position < scoreboard.getSpecialBorder() ? scoreboard.getDataCarrier().nationTileBackgroundPQ
+									: scoreboard.getDataCarrier().nationTileBackground)));
 
 			group.getChildren ().remove (group.getChildren ().get (0));
 			group.getChildren ().add (0, base);
