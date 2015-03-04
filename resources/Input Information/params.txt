@@ -1,15 +1,15 @@
 CURRENT_FILE_PATH = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Input Information
 
 NAME_EDITION = Nation Song Contest
-EDITION_NR = 156
+EDITION_NR = 160
 
-FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\banners
-PRETTY_FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\scoreboards
-ENTRIES_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\editor
+FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Participant Flags
+PRETTY_FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Diamond Flags
+ENTRIES_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Entries Videos
 
 CREATE_BANNERS = true
-USE_FULLSCREEN = false
+USE_FULLSCREEN = true
 USE_PRETTY_FLAGS = true
 TRADITIONAL_VOTING = false
 
-SPEED_SHOW = 56.25
+SPEED_SHOW = 62.5

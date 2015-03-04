@@ -72,6 +72,7 @@ public class CoreUI extends Application implements Initializable {
 	
 	@FXML MenuItem loadMenuItem;
 	@FXML MenuItem saveMenuItem;
+	@FXML MenuItem saveAsMI;
 	@FXML MenuItem undoMI;
 	@FXML MenuItem redoMI;
 	@FXML MenuItem clearMI;
@@ -95,6 +96,7 @@ public class CoreUI extends Application implements Initializable {
 	EntryAdder entryAdder = new EntryAdder ();
 	
 	private Stage primaryStage;
+	private File currentSaveFile;
 	
 	public static void main (String[] args) {
 		launch (args);
@@ -132,7 +134,7 @@ public class CoreUI extends Application implements Initializable {
 			if (event.isControlDown () && event.getCode () == KeyCode.Z) undo();
 			else if (event.isControlDown () && event.getCode () == KeyCode.Y) redo();
 			else if (event.isControlDown () && event.getCode () == KeyCode.L) load();
-			else if (event.isControlDown () && event.getCode () == KeyCode.S) save();
+			else if (event.isControlDown () && event.getCode () == KeyCode.S) save (false);
 			else if (event.isControlDown () && event.getCode () == KeyCode.BACK_SPACE) clear();
 		});
 	}
@@ -205,13 +207,24 @@ public class CoreUI extends Application implements Initializable {
 		}
 	}
 	
-	private void save () {
-		DirectoryChooser dirChooser = new DirectoryChooser ();
-		dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
-		dirChooser.setTitle ("where to write out that shit...");
+	private void save (boolean saveAs) {
+		File toSave = null;
+		
+		System.out.println ("called!");
+		
+		if (currentSaveFile == null || saveAs) {
+			System.out.println ("not me :)");
+			DirectoryChooser dirChooser = new DirectoryChooser ();
+			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+			dirChooser.setTitle ("where to write out that shit...");
+			toSave = dirChooser.showDialog (null);
+			currentSaveFile = toSave;
+		} else {
+			toSave = currentSaveFile;
+		}
 		
 		try {
-			writeOut (dirChooser.showDialog (null));
+			writeOut (toSave);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -319,7 +332,8 @@ public class CoreUI extends Application implements Initializable {
 	
 	private void setUpMenu () {
 		loadMenuItem.setOnAction (event -> load());
-		saveMenuItem.setOnAction (event -> save());
+		saveMenuItem.setOnAction (event -> save(false));
+		saveAsMI.setOnAction (event -> save(true));
 		undoMI.setOnAction (event -> undo());
 		redoMI.setOnAction (event -> redo());
 		clearMI.setOnAction (event -> clear());
