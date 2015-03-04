@@ -24,7 +24,7 @@ public class InputDataModel {
 	/*
 	 * Votes are ordered as follows: ArrayList<String>.get(0) returns 12 pointer, etc.
 	 */
-	Property<HashMap<ParticipantData, ArrayList<String>>> votes = new SimpleObjectProperty<> ();
+	Property<HashMap<ParticipantData, ArrayList<StringProperty>>> votes = new SimpleObjectProperty<> ();
 	
 	StringProperty nameOfEdition = new SimpleStringProperty ();
 	StringProperty editionNr = new SimpleStringProperty ();
@@ -44,7 +44,7 @@ public class InputDataModel {
 	
 	public InputDataModel () {
 		participants.setValue (FXCollections.<ParticipantData> observableArrayList ());
-		votes.setValue (new HashMap<ParticipantData, ArrayList<String>>());
+		votes.setValue (new HashMap<ParticipantData, ArrayList<StringProperty>>());
 	}
 
 	public ArrayList<ParticipantData> getParticipants() {
@@ -106,32 +106,41 @@ public class InputDataModel {
 		return participants.getValue ().get (selectedIndex.get ()).clone();
 	}
 	
-	public HashMap<ParticipantData, ArrayList<String>> getVotes () {
+	public HashMap<ParticipantData, ArrayList<StringProperty>> getVotes () {
 		return votes.getValue ();
 	}
 	
-	public Property<HashMap<ParticipantData, ArrayList<String>>> getVoteProperty () {
+	public Property<HashMap<ParticipantData, ArrayList<StringProperty>>> getVoteProperty () {
 		return votes;
 	}
 	
-	public void setVotes (HashMap<ParticipantData, ArrayList<String>> votes) {
+	public void setVotes (HashMap<ParticipantData, ArrayList<StringProperty>> votes) {
 		this.votes.setValue (votes);
 	}
 	
-	public void addVotes (ParticipantData p, ArrayList<String> votes) {
+	public void addVotes (ParticipantData p, ArrayList<StringProperty> votes) {
+		for (StringProperty sp : votes) {
+			sp.bind (findParticipantByName (sp.get ()).getNameProperty ());
+		}
 		this.votes.getValue ().put (p, votes);
 	}
 	
-	public void addVotes (String v, ArrayList<String> votes) {
-		ParticipantData voter = null;
-		
-		for (ParticipantData p : participants.getValue ()) {
-			if (p.getName ().equals (v)) voter = p;
+	public void addVotes (String v, ArrayList<StringProperty> votes) {
+		for (StringProperty sp : votes) {
+			sp.bind (findParticipantByName (sp.get ()).getNameProperty ());
 		}
 		
-		if (voter == null) return;
+		this.votes.getValue ().put (findParticipantByName (v), votes);
+	}
+	
+	public ParticipantData findParticipantByName (String name) {
+		ParticipantData participant = null;
 		
-		this.votes.getValue ().put (voter, votes);
+		for (ParticipantData p : participants.getValue ()) {
+			if (p.getName ().equals (name)) participant = p;
+		}
+		
+		return participant;
 	}
 	
 	public void removeVotes (ParticipantData p) {

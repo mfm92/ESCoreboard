@@ -32,7 +32,7 @@ public class Participant implements Comparable<Participant>, Cloneable {
 
 	public Participant(Participant p) {
 		name = new SimpleStringProperty (p.getName ());
-		shortName = p.shortName ();
+		shortName = p.getShortName ();
 		flag = p.getFlag ();
 		score = new SimpleIntegerProperty (p.getScore ());
 	}
@@ -41,7 +41,7 @@ public class Participant implements Comparable<Participant>, Cloneable {
 		return name.get ();
 	}
 
-	public String shortName() {
+	public String getShortName() {
 		return shortName;
 	}
 

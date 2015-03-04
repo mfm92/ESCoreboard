@@ -1,26 +1,27 @@
 package utilities;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
+import javafx.beans.property.StringProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 
 import javax.imageio.ImageIO;
 
-import controller.CoreUI;
+import model.ParticipantData;
 import nations.Entry;
 import nations.Participant;
 import nations.Votes;
 import bannercreator.BannerCreator;
 import bannercreator.SimpleBannerCreator;
+import controller.CoreUI;
 
 public class NSCUtilities {
 
@@ -61,7 +62,7 @@ public class NSCUtilities {
 	BannerCreator bannerCreator = new SimpleBannerCreator (130, 810);
 
 	private ArrayList<Image> pointsTokens;
-	public ArrayList<Votes> allVotes;
+	public ArrayList<Votes> allVotes = new ArrayList<>();
 	
 	String resourcesFile = System.getProperty ("user.dir") + "\\";
 
@@ -137,38 +138,23 @@ public class NSCUtilities {
 		ArrayList<Image> pToken = new ArrayList<> ();
 
 		String baseLocation = resourcesFile + "resources\\Graphics\\Point Tokens\\";
+		
+		ArrayList<String> locations = new ArrayList<>();
 
-		String P01l = baseLocation + "1P.png";
-		String P02l = baseLocation + "2P.png";
-		String P03l = baseLocation + "3P.png";
-		String P04l = baseLocation + "4P.png";
-		String P05l = baseLocation + "5P.png";
-		String P06l = baseLocation + "6P.png";
-		String P07l = baseLocation + "7P.png";
-		String P08l = baseLocation + "8P.png";
-		String P10l = baseLocation + "10P.png";
-		String P12l = baseLocation + "12P.png";
-
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P01l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P02l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P03l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P04l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P05l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P06l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P07l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P08l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P10l)),
-				null));
-		pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (P12l)),
-				null));
+		locations.add(baseLocation + "1P.png"); 
+		locations.add(baseLocation + "2P.png");
+		locations.add(baseLocation + "3P.png");
+		locations.add(baseLocation + "4P.png");
+		locations.add(baseLocation + "5P.png");
+		locations.add(baseLocation + "6P.png");
+		locations.add(baseLocation + "7P.png");
+		locations.add(baseLocation + "8P.png");
+		locations.add(baseLocation + "10P.png");
+		locations.add(baseLocation + "12P.png");
+		
+		for (String location : locations) {
+			pToken.add (SwingFXUtils.toFXImage (ImageIO.read (new File (location)), null));
+		}
 
 		setPointsTokens (pToken);
 	}
@@ -177,99 +163,73 @@ public class NSCUtilities {
 		ArrayList<Participant> nations = new ArrayList<> ();
 		nameMap = new HashMap<> ();
 
-		String nationsFile = CoreUI.inputData.getCurrentDir () + "\\participants.txt";
 		String flagFile = CoreUI.inputData.getFlagDirectory () + "\\";
 		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "\\";
-
-		try (BufferedReader bReader = new BufferedReader (new FileReader (
-				new File (nationsFile)))) {
-			String nation;
-
-			while ((nation = bReader.readLine ()) != null) {
-				String[] tokens = nation.split ("\\$");
-				Participant newNation = new Participant (tokens[0], tokens[1],
-						readImage (flagFile + tokens[0] + ".png"));
-				nations.add (newNation);
-				newNation.setVotes (voteMap.get (newNation));
-				
-				if (readDiamonds) {
-					diamondMap.put (newNation, readImage (diamondFile + "Diamond "
-							+ newNation.shortName () + ".png"));	
-				}
-				
-				nameMap.put (tokens[0], newNation);
-
-				boolean shouldBeCreated = tokens[7].equals ("P");
-
-				if (shouldBeCreated) {
-					participants.add (newNation);
-				}
+		
+		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
+			Participant newNation = new Participant (pData.getName (), pData.getShortName (), 
+					readImage (flagFile + pData.getName () + ".png"));
+			nations.add (newNation);
+			newNation.setVotes (voteMap.get (newNation));
+			
+			if (readDiamonds) {
+				diamondMap.put (newNation, readImage (diamondFile + "Diamond "
+						+ newNation.getShortName () + ".png"));	
 			}
-			return nations;
+			
+			nameMap.put (pData.getName (), newNation);
+			
+			boolean shouldBeCreated = pData.getStatus ().equals ("P");
+			
+			if (shouldBeCreated) participants.add (newNation);
 		}
+		
+		return nations;
 	}
 
-	public void createBanners() throws IOException {
-		String nationsFile = CoreUI.inputData.getCurrentDir () + "\\participants.txt";
+	public void createBanners() throws IOException {		
+		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
+			boolean shouldBeCreated = pData.getStatus ().equals ("P");
 
-		try (BufferedReader bReader = new BufferedReader (new FileReader (
-				new File (nationsFile)))) {
-			String nation;
-
-			while ((nation = bReader.readLine ()) != null) {
-				String[] tokens = nation.split ("\\$");
-				boolean shouldBeCreated = tokens[7].equals ("P");
-
-				if (shouldBeCreated) {
-					bannerCreator.createBanners (
-							getRosterNationByShortName (tokens[1]), tokens[7],
-							tokens[6]);
-				}
+			if (shouldBeCreated) {
+				bannerCreator.createBanners (getRosterNationByShortName (pData.getShortName ()), 
+						pData.getStatus (), pData.getGrid () + "");
 			}
 		}
 	}
 
 	public void readEntries() throws NumberFormatException, IOException {
-		String mediaFile = CoreUI.inputData.getCurrentDir () + "\\participants.txt";
 		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "\\";
-
-		try (BufferedReader bReader = new BufferedReader (new FileReader (
-				new File (mediaFile)))) {
-			String entry;
-			while ((entry = bReader.readLine ()) != null) {
-				String[] tokens = entry.split ("\\$");
-				Participant p = getRosterNationByShortName (tokens[1]);
-				Media entryVid = new Media (new File (mediaLocation + tokens[2]
-						+ " - " + tokens[3] + ".mp4").toURI ().toString ());
-				int start = Integer.parseInt (tokens[4]);
-				int stop = Integer.parseInt (tokens[5]);
-				p.setEntry (new Entry (tokens[2], tokens[3], entryVid, start,
-						stop, tokens[7]));
-			}
+		
+		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
+			Participant p = getRosterNationByShortName (pData.getShortName ());
+			Media entryVid = new Media (new File (mediaLocation + pData.getArtist ()
+					+ " - " + pData.getTitle () + ".mp4").toURI ().toString ());
+			p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, pData.getStart (),
+					pData.getStop (), pData.getStatus ()));
 		}
 	}
 
 	private void readVotes() throws FileNotFoundException, IOException {
-		String votesFile = CoreUI.inputData.getCurrentDir () + "\\votes.txt";
-		allVotes = new ArrayList<> ();
-
-		try (BufferedReader bReader = new BufferedReader (new FileReader (
-				new File (votesFile)))) {
-			String vote;
-
-			while ((vote = bReader.readLine ()) != null) {
-				String[] tokens = vote.split ("\\$");
-				Votes votes = new Votes (tokens[0], tokens[10].split (" ")[1],
-						tokens[9].split (" ")[1], tokens[8].split (" ")[1],
-						tokens[7].split (" ")[1], tokens[6].split (" ")[1],
-						tokens[5].split (" ")[1], tokens[4].split (" ")[1],
-						tokens[3].split (" ")[1], tokens[2].split (" ")[1],
-						tokens[1].split (" ")[1], this);
-
-				voteMap.put (getRosterNationByShortName (tokens[0]), votes);
-				getRosterNationByShortName (tokens[0]).setVotes (votes);
-				allVotes.add (votes);
-			}
+		for (Map.Entry<ParticipantData, ArrayList<StringProperty>> pair : CoreUI.inputData.getVotes ().entrySet ()) {
+			ArrayList<StringProperty> votees = pair.getValue ();
+			
+			Votes votes = new Votes (pair.getKey ().getShortName (), 
+					getRosterNationByFullName (votees.get (9).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (8).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (7).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (6).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (5).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (4).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (3).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (2).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (1).get ()).getShortName (),
+					getRosterNationByFullName (votees.get (0).get ()).getShortName (),
+					this);
+			
+			voteMap.put (getRosterNationByShortName (pair.getKey ().getShortName ()), votes);
+			getRosterNationByShortName (pair.getKey ().getShortName ()).setVotes (votes);
+			allVotes.add (votes);
 		}
 	}
 
@@ -287,7 +247,7 @@ public class NSCUtilities {
 
 	public Participant getRosterNationByShortName(String shortName) {
 		for (Participant nation : nameMap.values ()) {
-			if (nation.shortName ().equals (shortName))
+			if (nation.getShortName ().equals (shortName))
 				return nation;
 		}
 		return null;

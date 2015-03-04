@@ -2,6 +2,7 @@ package model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class ParticipantData {
 	
@@ -38,6 +39,10 @@ public class ParticipantData {
 
 	public void setName(String name) {
 		this.name = new SimpleStringProperty (name);
+	}
+	
+	public StringProperty getNameProperty () {
+		return name;
 	}
 
 	public String getShortName() {

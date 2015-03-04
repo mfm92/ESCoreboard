@@ -16,6 +16,8 @@ import java.util.ResourceBundle;
 
 import scoreboard.Scoreboard;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -33,6 +35,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -198,7 +201,7 @@ public class CoreUI extends Application implements Initializable {
 		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("grid"));
 		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("status"));
 		
-		nationNameCol.setCellFactory (textCentralizer);
+		nationNameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
 		shortnameCol.setCellFactory (textCentralizer);
 		artistCol.setCellFactory (textCentralizer);
 		titleCol.setCellFactory (textCentralizer);
@@ -459,11 +462,11 @@ public class CoreUI extends Application implements Initializable {
 		while ((line = reader.readLine ()) != null) {
 			String[] tokens = line.split ("\\$");
 			ParticipantData voter = inputData.retrieveParticipantByShortName (tokens[0]);
-			ArrayList<String> votes = new ArrayList<> ();
+			ArrayList<StringProperty> votes = new ArrayList<> ();
 			
 			for (int i = 1; i < tokens.length; i++) {
 				String[] innerTokens = tokens[i].split (" ");
-				votes.add (inputData.retrieveParticipantByShortName (innerTokens[1]).getName ());
+				votes.add (new SimpleStringProperty (inputData.retrieveParticipantByShortName (innerTokens[1]).getName ()));
 			}
 			
 			inputData.addVotes (voter, votes);
@@ -503,18 +506,18 @@ public class CoreUI extends Application implements Initializable {
 					"$" + p.getStop () + "$" + p.getGrid () + "$" + p.getStatus () + STRING_SEPARATOR);
 		}
 		
-		for (Map.Entry<ParticipantData, ArrayList<String>> vote : inputData.getVotes ().entrySet ()) {
+		for (Map.Entry<ParticipantData, ArrayList<StringProperty>> vote : inputData.getVotes ().entrySet ()) {
 			votesOut.append (vote.getKey ().getShortName () + "$"
-					+ "12 " + inputData.getShortName (vote.getValue ().get (0)) + "$"
-					+ "10 " + inputData.getShortName (vote.getValue ().get (1)) + "$"
-					+ "08 " + inputData.getShortName (vote.getValue ().get (2)) + "$"
-					+ "07 " + inputData.getShortName (vote.getValue ().get (3)) + "$"
-					+ "06 " + inputData.getShortName (vote.getValue ().get (4)) + "$"
-					+ "05 " + inputData.getShortName (vote.getValue ().get (5)) + "$"
-					+ "04 " + inputData.getShortName (vote.getValue ().get (6)) + "$"
-					+ "03 " + inputData.getShortName (vote.getValue ().get (7)) + "$"
-					+ "02 " + inputData.getShortName (vote.getValue ().get (8)) + "$"
-					+ "01 " + inputData.getShortName (vote.getValue ().get (9))
+					+ "12 " + inputData.getShortName (vote.getValue ().get (0).get ()) + "$"
+					+ "10 " + inputData.getShortName (vote.getValue ().get (1).get ()) + "$"
+					+ "08 " + inputData.getShortName (vote.getValue ().get (2).get ()) + "$"
+					+ "07 " + inputData.getShortName (vote.getValue ().get (3).get ()) + "$"
+					+ "06 " + inputData.getShortName (vote.getValue ().get (4).get ()) + "$"
+					+ "05 " + inputData.getShortName (vote.getValue ().get (5).get ()) + "$"
+					+ "04 " + inputData.getShortName (vote.getValue ().get (6).get ()) + "$"
+					+ "03 " + inputData.getShortName (vote.getValue ().get (7).get ()) + "$"
+					+ "02 " + inputData.getShortName (vote.getValue ().get (8).get ()) + "$"
+					+ "01 " + inputData.getShortName (vote.getValue ().get (9).get ())
 					+ STRING_SEPARATOR);
 		}
 		

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -81,11 +83,11 @@ public class VoteRegistrator extends Application implements Initializable {
 		
 		voteTopLabel.setText ("Votes from...: " + CoreUI.inputData.getSelectedParticipant ().getName ());
 		
-		ArrayList<String> previousVotes;
+		ArrayList<StringProperty> previousVotes;
 		
 		if ((previousVotes = CoreUI.inputData.getVotes ().get (CoreUI.inputData.getSelectedParticipant ())) != null) {
 			for (int i = 0; i < cmBoxes.size (); i++) {
-				cmBoxes.get (i).getSelectionModel ().select (previousVotes.get (i));
+				cmBoxes.get (i).getSelectionModel ().select (previousVotes.get (i).get ());
 			}	
 		}
 		
@@ -107,9 +109,9 @@ public class VoteRegistrator extends Application implements Initializable {
 			@Override
 			public void handle (ActionEvent event) {
 				if (validVotes()) {
-					ArrayList<String> votes = new ArrayList<>();
+					ArrayList<StringProperty> votes = new ArrayList<>();
 					for (ComboBox<String> cBox : cmBoxes) {
-						votes.add (cBox.getSelectionModel ().getSelectedItem ());
+						votes.add (new SimpleStringProperty (cBox.getSelectionModel ().getSelectedItem ()));
 					}
 					CoreUI.inputData.addVotes (CoreUI.inputData.getSelectedParticipant (), votes);
 					CoreUI.commandLog.put (++CoreUI.nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
