@@ -24,7 +24,7 @@ public class InputDataModel {
 	/*
 	 * Votes are ordered as follows: ArrayList<String>.get(0) returns 12 pointer, etc.
 	 */
-	Property<HashMap<ParticipantData, ArrayList<StringProperty>>> votes = new SimpleObjectProperty<> ();
+	Property<HashMap<ParticipantData, ArrayList<ParticipantData>>> votes = new SimpleObjectProperty<> ();
 	
 	StringProperty nameOfEdition = new SimpleStringProperty ();
 	StringProperty editionNr = new SimpleStringProperty ();
@@ -40,11 +40,9 @@ public class InputDataModel {
 	
 	DoubleProperty showSpeed = new SimpleDoubleProperty ();
 	
-	String currentFilePath;
-	
 	public InputDataModel () {
 		participants.setValue (FXCollections.<ParticipantData> observableArrayList ());
-		votes.setValue (new HashMap<ParticipantData, ArrayList<StringProperty>>());
+		votes.setValue (new HashMap<ParticipantData, ArrayList<ParticipantData>>());
 	}
 
 	public ArrayList<ParticipantData> getParticipants() {
@@ -106,34 +104,27 @@ public class InputDataModel {
 		return participants.getValue ().get (selectedIndex.get ()).clone();
 	}
 	
-	public HashMap<ParticipantData, ArrayList<StringProperty>> getVotes () {
+	public HashMap<ParticipantData, ArrayList<ParticipantData>> getVotes () {
 		return votes.getValue ();
 	}
 	
-	public Property<HashMap<ParticipantData, ArrayList<StringProperty>>> getVoteProperty () {
+	public Property<HashMap<ParticipantData, ArrayList<ParticipantData>>> getVoteProperty () {
 		return votes;
 	}
 	
-	public void setVotes (HashMap<ParticipantData, ArrayList<StringProperty>> votes) {
+	public void setVotes (HashMap<ParticipantData, ArrayList<ParticipantData>> votes) {
 		this.votes.setValue (votes);
 		
 		// TODO: Set votes for everyone
 	}
 	
-	public void addVotes (ParticipantData p, ArrayList<StringProperty> votes) {
-		for (StringProperty sp : votes) {
-			sp.bind (findParticipantByName (sp.get ()).getNameProperty ());
-		}
+	public void addVotes (ParticipantData p, ArrayList<ParticipantData> votes) {
 		this.votes.getValue ().put (p, votes);
 		
 		// TODO: Set votes
 	}
 	
-	public void addVotes (String v, ArrayList<StringProperty> votes) {
-		for (StringProperty sp : votes) {
-			sp.bind (findParticipantByName (sp.get ()).getNameProperty ());
-		}
-		
+	public void addVotes (String v, ArrayList<ParticipantData> votes) {		
 		this.votes.getValue ().put (findParticipantByName (v), votes);
 		
 		// TODO: Set votes
@@ -273,13 +264,5 @@ public class InputDataModel {
 	
 	public void setShowSpeed (double speed) {
 		showSpeed.set (speed);
-	}
-	
-	public String getCurrentDir () {
-		return currentFilePath;
-	}
-	
-	public void setCurrentDir (String dir) {
-		currentFilePath = dir;
 	}
 }

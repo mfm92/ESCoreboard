@@ -6,16 +6,18 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 
-import controller.CoreUI;
-import javafx.beans.property.StringProperty;
 import model.ParticipantData;
+import controller.CoreUI;
 
 public class EntryWriter {
 	
-	public void writeOut (File outputFile) throws FileNotFoundException {
-		PrintStream participantsOut = new PrintStream (new File (outputFile + "\\participants.txt"));
-		PrintStream votesOut = new PrintStream (new File (outputFile + "\\votes.txt"));
-		PrintStream paramsOut = new PrintStream (new File (outputFile + "\\params.txt"));
+	public void writeOut (String saveName) throws FileNotFoundException {
+		PrintStream participantsOut = new PrintStream (new File 
+				(System.getProperty("user.dir") + "\\resources\\save\\participants_" + saveName + ".txt"));
+		PrintStream votesOut = new PrintStream (new File 
+				(System.getProperty("user.dir") + "\\resources\\save\\votes_" + saveName + ".txt"));
+		PrintStream paramsOut = new PrintStream (new File 
+				(System.getProperty("user.dir") + "\\resources\\save\\params_" + saveName + ".txt"));
 		
 		final String STRING_SEPARATOR = System.lineSeparator ();
 		
@@ -25,27 +27,25 @@ public class EntryWriter {
 					"$" + p.getStop () + "$" + p.getGrid () + "$" + p.getStatus () + STRING_SEPARATOR);
 		}
 		
-		for (Map.Entry<ParticipantData, ArrayList<StringProperty>> vote : CoreUI.inputData.getVotes ().entrySet ()) {
+		for (Map.Entry<ParticipantData, ArrayList<ParticipantData>> vote : CoreUI.inputData.getVotes ().entrySet ()) {
 			votesOut.append (vote.getKey ().getShortName () + "$"
-					+ "12 " + CoreUI.inputData.getShortName (vote.getValue ().get (0).get ()) + "$"
-					+ "10 " + CoreUI.inputData.getShortName (vote.getValue ().get (1).get ()) + "$"
-					+ "08 " + CoreUI.inputData.getShortName (vote.getValue ().get (2).get ()) + "$"
-					+ "07 " + CoreUI.inputData.getShortName (vote.getValue ().get (3).get ()) + "$"
-					+ "06 " + CoreUI.inputData.getShortName (vote.getValue ().get (4).get ()) + "$"
-					+ "05 " + CoreUI.inputData.getShortName (vote.getValue ().get (5).get ()) + "$"
-					+ "04 " + CoreUI.inputData.getShortName (vote.getValue ().get (6).get ()) + "$"
-					+ "03 " + CoreUI.inputData.getShortName (vote.getValue ().get (7).get ()) + "$"
-					+ "02 " + CoreUI.inputData.getShortName (vote.getValue ().get (8).get ()) + "$"
-					+ "01 " + CoreUI.inputData.getShortName (vote.getValue ().get (9).get ())
+					+ "12 " + vote.getValue ().get (0).getShortName () + "$"
+					+ "10 " + vote.getValue ().get (1).getShortName () + "$"
+					+ "08 " + vote.getValue ().get (2).getShortName () + "$"
+					+ "07 " + vote.getValue ().get (3).getShortName () + "$"
+					+ "06 " + vote.getValue ().get (4).getShortName () + "$"
+					+ "05 " + vote.getValue ().get (5).getShortName () + "$"
+					+ "04 " + vote.getValue ().get (6).getShortName () + "$"
+					+ "03 " + vote.getValue ().get (7).getShortName () + "$"
+					+ "02 " + vote.getValue ().get (8).getShortName () + "$"
+					+ "01 " + vote.getValue ().get (9).getShortName ()
 					+ STRING_SEPARATOR);
 		}
 		
-		String currentDir = outputFile.getAbsolutePath ().replace ("\\", "\\\\");
 		String flagsDirectory = CoreUI.inputData.getFlagDirectory ().replace ("\\", "\\\\");
 		String prettyFlagDirectory = CoreUI.inputData.getPrettyFlagDirectory ().replace ("\\", "\\\\");
 		String entriesDirectory = CoreUI.inputData.getEntriesDirectory ().replace ("\\", "\\\\");
 		
-		paramsOut.append ("CURRENT_FILE_PATH = " + currentDir + STRING_SEPARATOR + STRING_SEPARATOR);
 		paramsOut.append ("NAME_EDITION = " + CoreUI.inputData.getNameOfEdition () + STRING_SEPARATOR);
 		paramsOut.append ("EDITION_NR = " + CoreUI.inputData.getEditionNr () + STRING_SEPARATOR + STRING_SEPARATOR);
 		paramsOut.append ("FLAGS_DIR = " + flagsDirectory + STRING_SEPARATOR);

@@ -122,4 +122,8 @@ public class ParticipantData {
 	public void setVotes (List<ParticipantData> votes) {
 		this.votes.set ((ObservableList<ParticipantData>) votes);
 	}
+	
+	public String toString () {
+		return name.get ();
+	}
 }

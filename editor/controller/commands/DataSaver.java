@@ -3,9 +3,11 @@ package controller.commands;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import javafx.stage.DirectoryChooser;
+import org.apache.commons.io.FilenameUtils;
 
-public class DataSaver implements Saver {
+import javafx.stage.FileChooser;
+
+public class DataSaver {
 
 	EntryWriter writer;
 	File destination;
@@ -15,24 +17,24 @@ public class DataSaver implements Saver {
 		this.destination = destination;
 	}
 
-	@Override
-	public void save() {
+	public void save (boolean saveAs) {
 		File toSave = null;
 		
-		if (destination == null) {
-			DirectoryChooser dirChooser = new DirectoryChooser ();
-			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
-			dirChooser.setTitle ("where to write out that shit...");
-			toSave = dirChooser.showDialog (null);
+		if (destination == null || saveAs) {
+			FileChooser fileChooser = new FileChooser();
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("XSCO Data (*.xsco)", "*.xsco");
+			fileChooser.getExtensionFilters ().add (extFilter);
+			fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+			fileChooser.setTitle ("where to write out that shit...");
+			
+			toSave = fileChooser.showOpenDialog (null);
 			destination = toSave;
 		} else {
 			toSave = destination;
 		}
 		
-		if (toSave == null) return;
-		
 		try {
-			writer.writeOut (toSave);
+			writer.writeOut (FilenameUtils.removeExtension (toSave.getName()));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

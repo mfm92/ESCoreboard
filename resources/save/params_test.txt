@@ -1,7 +1,5 @@
-CURRENT_FILE_PATH = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Input Information
-
 NAME_EDITION = Nation Song Contest 2
-EDITION_NR = 157
+EDITION_NR = 156
 
 FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Participant Flags
 PRETTY_FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Diamond Flags

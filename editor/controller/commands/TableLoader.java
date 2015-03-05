@@ -8,11 +8,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import controller.CoreUI;
+import javafx.stage.FileChooser;
 import model.ParticipantData;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.stage.DirectoryChooser;
+
+import org.apache.commons.io.FilenameUtils;
+
+import controller.CoreUI;
 
 public class TableLoader {
 	
@@ -23,14 +24,17 @@ public class TableLoader {
 	}
 
 	public void execute() {
-		DirectoryChooser fileChooser = new DirectoryChooser ();
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("XSCO Data (*.xsco)", "*.xsco");
+		fileChooser.getExtensionFilters ().add (extFilter);
 		fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
 		fileChooser.setTitle ("Choose participants file...");
-		File selected = fileChooser.showDialog (null);
 		
-		File participantsFile = new File (selected + "\\participants.txt");
-		File votesFile = new File (selected + "\\votes.txt");
-		File paramsFile = new File (selected + "\\params.txt");
+		String selected = FilenameUtils.removeExtension(fileChooser.showOpenDialog (null).getName ());
+		
+		File participantsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\participants_" + selected + ".txt");
+		File votesFile = new File (System.getProperty("user.dir") + "\\resources\\save\\votes_" + selected + ".txt");
+		File paramsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\params_" + selected + ".txt");
 
 		try {
 			readInParticipants (participantsFile);
@@ -67,11 +71,11 @@ public class TableLoader {
 		while ((line = reader.readLine ()) != null) {
 			String[] tokens = line.split ("\\$");
 			ParticipantData voter = CoreUI.inputData.retrieveParticipantByShortName (tokens[0]);
-			ArrayList<StringProperty> votes = new ArrayList<> ();
+			ArrayList<ParticipantData> votes = new ArrayList<> ();
 			
 			for (int i = 1; i < tokens.length; i++) {
 				String[] innerTokens = tokens[i].split (" ");
-				votes.add (new SimpleStringProperty (CoreUI.inputData.retrieveParticipantByShortName (innerTokens[1]).getName ()));
+				votes.add (CoreUI.inputData.retrieveParticipantByShortName (innerTokens[1]));
 			}
 			
 			CoreUI.inputData.addVotes (voter, votes);
@@ -90,7 +94,6 @@ public class TableLoader {
 		CoreUI.inputData.setFlagDirectory (paramFile.getProperty ("FLAGS_DIR"));
 		CoreUI.inputData.setPrettyFlagDirectory (paramFile.getProperty ("PRETTY_FLAGS_DIR"));
 		CoreUI.inputData.setEntriesDirectory (paramFile.getProperty ("ENTRIES_DIR"));
-		CoreUI.inputData.setCurrentDir (paramFile.getProperty ("CURRENT_FILE_PATH"));
 		coreUI.createBannersBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("CREATE_BANNERS")));
 		coreUI.fullScreenBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_FULLSCREEN")));
 		coreUI.prettyFlagsBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_PRETTY_FLAGS")));

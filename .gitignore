@@ -17,5 +17,8 @@ banners/
 .*
 !.gitignore
 
+#no .xscos
+*.xsco
+
 #thumbs
 */Thumbs.db

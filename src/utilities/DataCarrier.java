@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.beans.property.StringProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -211,20 +210,20 @@ public class DataCarrier {
 	}
 
 	private void readVotes() throws FileNotFoundException, IOException {
-		for (Map.Entry<ParticipantData, ArrayList<StringProperty>> pair : CoreUI.inputData.getVotes ().entrySet ()) {
-			ArrayList<StringProperty> votees = pair.getValue ();
+		for (Map.Entry<ParticipantData, ArrayList<ParticipantData>> pair : CoreUI.inputData.getVotes ().entrySet ()) {
+			ArrayList<ParticipantData> votees = pair.getValue ();
 			
 			Votes votes = new Votes (pair.getKey ().getShortName (), 
-					getRosterNationByFullName (votees.get (9).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (8).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (7).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (6).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (5).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (4).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (3).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (2).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (1).get ()).getShortName (),
-					getRosterNationByFullName (votees.get (0).get ()).getShortName (),
+					votees.get(9).getShortName (),
+					votees.get(8).getShortName (),
+					votees.get(7).getShortName (),
+					votees.get(6).getShortName (),
+					votees.get(5).getShortName (),
+					votees.get(4).getShortName (),
+					votees.get(3).getShortName (),
+					votees.get(2).getShortName (),
+					votees.get(1).getShortName (),
+					votees.get(0).getShortName (),
 					this);
 			
 			voteMap.put (getRosterNationByShortName (pair.getKey ().getShortName ()), votes);

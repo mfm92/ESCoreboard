@@ -30,13 +30,11 @@ import model.InputDataModel;
 import model.ParticipantData;
 import scoreboard.Scoreboard;
 import controller.commands.DataSaver;
-import controller.commands.DataSaverAs;
 import controller.commands.EntryCommand;
 import controller.commands.EntryRemover;
 import controller.commands.EntryWriter;
 import controller.commands.HelpDisplayer;
 import controller.commands.MacroCommand;
-import controller.commands.Saver;
 import controller.commands.TableClearer;
 import controller.commands.TableLoader;
 
@@ -193,9 +191,8 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void save (boolean saveAs) {
-		EntryWriter eWriter = new EntryWriter();
-		Saver saver = saveAs ? new DataSaverAs (eWriter) : new DataSaver (eWriter, currentSaveFile);
-		saver.save ();
+		DataSaver dataSaver = new DataSaver (new EntryWriter(), currentSaveFile);
+		dataSaver.save (saveAs);
 	}
 	
 	private void help () {

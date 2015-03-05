@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,27 +28,28 @@ public class VoteRegistrator extends Application implements Initializable {
 	@FXML
 	Button voteConfirmButton;
 	@FXML
-	ComboBox<String> combo12;
+	ComboBox<ParticipantData> combo12;
 	@FXML
-	ComboBox<String> combo10;
+	ComboBox<ParticipantData> combo10;
 	@FXML
-	ComboBox<String> combo8;
+	ComboBox<ParticipantData> combo8;
 	@FXML
-	ComboBox<String> combo7;
+	ComboBox<ParticipantData> combo7;
 	@FXML
-	ComboBox<String> combo6;
+	ComboBox<ParticipantData> combo6;
 	@FXML
-	ComboBox<String> combo5;
+	ComboBox<ParticipantData> combo5;
 	@FXML
-	ComboBox<String> combo4;
+	ComboBox<ParticipantData> combo4;
 	@FXML
-	ComboBox<String> combo3;
+	ComboBox<ParticipantData> combo3;
 	@FXML
-	ComboBox<String> combo2;
+	ComboBox<ParticipantData> combo2;
 	@FXML
-	ComboBox<String> combo1;
+	ComboBox<ParticipantData> combo1;
 	
-	List<ComboBox<String>> cmBoxes;
+	List<ComboBox<ParticipantData>> cmBoxes;
+	ObservableList<ParticipantData> ps = FXCollections.observableArrayList ();
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -82,33 +81,48 @@ public class VoteRegistrator extends Application implements Initializable {
 		
 		voteTopLabel.setText ("Votes from...: " + CoreUI.inputData.getSelectedParticipant ().getName ());
 		
-		ArrayList<StringProperty> previousVotes;
+		for (ParticipantData p : CoreUI.inputData.getParticipants ()) {
+			if (p.getStatus ().equals ("P")) ps.add (p);
+		}
+		
+		ArrayList<ParticipantData> previousVotes;
 		
 		if ((previousVotes = CoreUI.inputData.getVotes ().get (CoreUI.inputData.getSelectedParticipant ())) != null) {
 			for (int i = 0; i < cmBoxes.size (); i++) {
-				cmBoxes.get (i).getSelectionModel ().select (previousVotes.get (i).get ());
+				cmBoxes.get (i).getSelectionModel ().select (previousVotes.get (i));
+//				ps.remove (previousVotes.get (i));
 			}	
-		}
-		
-		ObservableList<String> ps = FXCollections.observableArrayList ();
-		
-		for (ParticipantData p : CoreUI.inputData.getParticipants ()) {
-			ps.add (p.getName ());
 		}
 		
 		ps.remove (CoreUI.inputData.getSelectedParticipant ().getName ());
 
-		for (ComboBox<String> box : cmBoxes) {
+		for (ComboBox<ParticipantData> box : cmBoxes) {
 			box.setItems (ps);
+//			box.getSelectionModel ().selectedItemProperty ().addListener ((observable, oldValue, newValue) -> {
+//				ps.clear ();
+//				
+//				for (ParticipantData p : CoreUI.inputData.getParticipants ()) {
+//					if (p.getStatus ().equals ("P")) ps.add (p);
+//				}
+//				
+//				ps.remove (CoreUI.inputData.getSelectedParticipant());
+//				
+//				for (ComboBox<ParticipantData> boxI : cmBoxes) {
+//					ps.remove (boxI.getSelectionModel().getSelectedItem());
+//				}
+//				for (ComboBox<ParticipantData> boxI : cmBoxes) {
+//					boxI.setItems (ps);
+//				}
+//			});
 		}
 	}
 	
 	private void setUpConfirmButton () {
 		voteConfirmButton.setOnAction (event -> {
 			if (validVotes()) {
-				ArrayList<StringProperty> votes = new ArrayList<>();
-				for (ComboBox<String> cBox : cmBoxes) {
-					votes.add (new SimpleStringProperty (cBox.getSelectionModel ().getSelectedItem ()));
+				ArrayList<ParticipantData> votes = new ArrayList<>();
+				for (ComboBox<ParticipantData> cBox : cmBoxes) {
+					votes.add (cBox.getSelectionModel ().getSelectedItem ());
 				}
 				
 				VoteSetter voteSetter = new VoteSetter (CoreUI.inputData.getSelectedParticipant (), votes);
@@ -120,26 +134,26 @@ public class VoteRegistrator extends Application implements Initializable {
 	}
 	
 	private boolean validVotes() {
-		ArrayList<String> votees = new ArrayList<>();
+		ArrayList<ParticipantData> votees = new ArrayList<>();
 		
-		for (ComboBox<String> cBox : cmBoxes) {
-			String votee = cBox.getSelectionModel ().getSelectedItem ();
+		for (ComboBox<ParticipantData> cBox : cmBoxes) {
+			ParticipantData votee = cBox.getSelectionModel ().getSelectedItem ();
 			if (votee == null) return false;
 			votees.add (votee);
 		}
 		
-		for (String s : votees) {
-			if (appearsMoreThanOnce (votees, s)) return false;
+		for (ParticipantData pData : votees) {
+			if (appearsMoreThanOnce (votees, pData)) return false;
 		}
 		
 		return true;
 	}
 	
-	private boolean appearsMoreThanOnce (ArrayList<String> list, String searched) {
+	private boolean appearsMoreThanOnce (ArrayList<ParticipantData> votees, ParticipantData searched) {
 		int numCount = 0;
 		
-		for (String s : list) {
-			if (s.equals(searched)) numCount++;
+		for (ParticipantData pData : votees) {
+			if (pData.getName ().equals (searched.getName ())) numCount++;
 		}
 		
 		return numCount > 1;
