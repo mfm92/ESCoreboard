@@ -42,9 +42,7 @@ import controller.commands.TableLoader;
 
 /*
  * TODO: File Management (*.xsco data?)
- * TODO: Reset add/remove buttons
  * TODO: Update items of combo boxes depending on votees already picked
- * TODO: Change Listeners for buttons
  * TODO: Previewer?
  */
 public class CoreUI extends Application implements Initializable {
@@ -77,6 +75,9 @@ public class CoreUI extends Application implements Initializable {
 	@FXML MenuItem loadMenuItem;
 	@FXML MenuItem saveMenuItem;
 	@FXML MenuItem saveAsMI;
+	@FXML MenuItem addP_MI;
+	@FXML MenuItem removeP_MI;
+	@FXML MenuItem setVotesMI;
 	@FXML MenuItem undoMI;
 	@FXML MenuItem redoMI;
 	@FXML MenuItem clearMI;
@@ -138,8 +139,38 @@ public class CoreUI extends Application implements Initializable {
 		setUpSlider ();
 	}
 	
-	private void undo () {
+	private void addEntry () {
+		try {
+			entryAdder.init (new Stage());
+		} catch (Exception e) {
+			e.printStackTrace ();
+		}
+	}
+	
+	private void removeEntry () {
+		MacroCommand macroCommand = new MacroCommand (null);
 		
+		System.out.println("Part of macro: ");
+		for (ParticipantData pData : table.getSelectionModel ().getSelectedItems ()) {
+			System.out.println(pData.getName());
+			EntryRemover remover = new EntryRemover (pData);
+			macroCommand.getCommands ().add (remover);
+		}
+		
+		macroCommand.execute ();
+		commandLog.put (++nrOfCommands, macroCommand);
+		commandPtr = nrOfCommands;
+	}
+	
+	private void setVotes() {
+		try {
+			voteRegistrator.start (new Stage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void undo () {
 		if (commandPtr < 1) return;
 		else commandLog.get (commandPtr).undo ();
 	}
@@ -216,7 +247,6 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void setUpButtons () {
-		
 		flagDirButton.setOnMouseClicked (event -> {
 			DirectoryChooser dirChooser = new DirectoryChooser ();
 			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
@@ -225,6 +255,24 @@ public class CoreUI extends Application implements Initializable {
 			File selected = dirChooser.showDialog (null);
 			
 			inputData.setFlagDirectory (selected == null ? null : selected.getAbsolutePath ());
+		});
+		
+		flagDirButton.setOnMouseEntered (event -> {
+			flagDirButton.setText ("Add the folder containing the flag images here!");
+		});
+		
+		flagDirButton.setOnMouseExited (event -> {
+			flagDirButton.setText ("Flag Directory");
+		});
+		
+		flagDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
+			if (inputData.getFlagDirectory() != null) {
+				String destination = inputData.getFlagDirectory ();
+				String[] tokens = destination.split ("\\\\");
+				String show = ".../" + tokens[tokens.length-3] + "/" + 
+						tokens[tokens.length-2] + "/" + tokens[tokens.length-1];
+				flagDirButton.setText ("Flag Directory set to: " + show + " \u2713");
+			}
 		});
 		
 		entryDirButton.setOnMouseClicked (event -> {
@@ -237,6 +285,23 @@ public class CoreUI extends Application implements Initializable {
 			inputData.setEntriesDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
 		});
 		
+		entryDirButton.setOnMouseEntered (event -> {
+			entryDirButton.setText ("Add the folder containing the entry video files here!");
+		});
+		
+		entryDirButton.setOnMouseExited (event -> {
+			entryDirButton.setText ("Entries Directory");
+		});
+		
+		entryDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
+			if (inputData.getEntriesDirectory() != null) {
+				String destination = inputData.getEntriesDirectory ();
+				String[] tokens = destination.split ("\\\\");
+				String show = ".../" + tokens[tokens.length-2] + "/" + tokens[tokens.length-1];
+				entryDirButton.setText ("Entries Directory set to: " + show + " \u2713");
+			}
+		});
+		
 		prettyFlagDirButton.setOnMouseClicked (event -> {
 			DirectoryChooser dirChooser = new DirectoryChooser ();
 			dirChooser.setInitialDirectory (new File (System.getProperty ("user.dir")));
@@ -247,36 +312,26 @@ public class CoreUI extends Application implements Initializable {
 			inputData.setPrettyFlagDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ());
 		});
 		
-		addEntryButton.setOnAction (event -> {
-			try {
-				entryAdder.init (new Stage());
-			} catch (Exception e) {
-				e.printStackTrace ();
+		prettyFlagDirButton.setOnMouseEntered (event -> {
+			prettyFlagDirButton.setText ("Add the folder containing the pretty flag images here!");
+		});
+		
+		prettyFlagDirButton.setOnMouseExited (event -> {
+			prettyFlagDirButton.setText ("Pretty Flag Directory");
+		});
+		
+		prettyFlagDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
+			if (inputData.getPrettyFlagDirectory() != null) {
+				String destination = inputData.getPrettyFlagDirectory ();
+				String[] tokens = destination.split ("\\\\");
+				String show = ".../" + tokens[tokens.length-2] + "/" + tokens[tokens.length-1];
+				prettyFlagDirButton.setText ("Pretty flag directory set to: " + show + " \u2713");
 			}
 		});
 		
-		removeEntryButton.setOnAction (event -> {
-			MacroCommand macroCommand = new MacroCommand (null);
-			
-			System.out.println("Part of macro: ");
-			for (ParticipantData pData : table.getSelectionModel ().getSelectedItems ()) {
-				System.out.println(pData.getName());
-				EntryRemover remover = new EntryRemover (pData);
-				macroCommand.getCommands ().add (remover);
-			}
-			
-			macroCommand.execute ();
-			commandLog.put (++nrOfCommands, macroCommand);
-			commandPtr = nrOfCommands;
-		});
-		
-		setVotesButton.setOnAction (event -> {
-			try {
-				voteRegistrator.start (new Stage());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
+		addEntryButton.setOnAction (event -> addEntry());
+		removeEntryButton.setOnAction (event -> removeEntry());
+		setVotesButton.setOnAction (event -> setVotes());
 		
 		startButton.setOnAction (event -> {
 			try {	
@@ -294,6 +349,9 @@ public class CoreUI extends Application implements Initializable {
 		saveAsMI.setOnAction (event -> save(true));
 		undoMI.setOnAction (event -> undo());
 		redoMI.setOnAction (event -> redo());
+		addP_MI.setOnAction (event -> addEntry());
+		removeP_MI.setOnAction (event -> removeEntry ());
+		setVotesMI.setOnAction (event -> setVotes());
 		clearMI.setOnAction (event -> clear());
 		closeMI.setOnAction (event -> primaryStage.hide ());
 		aboutMI.setOnAction (event -> help());

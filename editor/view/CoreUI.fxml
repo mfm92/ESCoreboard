@@ -28,7 +28,7 @@
                   <MenuItem fx:id="saveAsMI" mnemonicParsing="false" text="Save As..." />
                   <MenuItem fx:id="clearMI" mnemonicParsing="false" text="Clear">
                      <accelerator>
-                        <KeyCodeCombination alt="UP" code="BACK_SPACE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        <KeyCodeCombination alt="DOWN" code="BACK_SPACE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
@@ -42,6 +42,20 @@
             </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
+                  <MenuItem fx:id="addP_MI" mnemonicParsing="false" text="Add participant...">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="PLUS" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="removeP_MI" mnemonicParsing="false" text="Remove participant(s)...">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="BACK_SPACE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem fx:id="setVotesMI" mnemonicParsing="false" text="Set votes of participant...">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="ENTER" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="undoMI" mnemonicParsing="false" text="Undo">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
