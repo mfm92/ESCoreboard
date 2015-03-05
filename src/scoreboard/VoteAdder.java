@@ -70,10 +70,6 @@ public class VoteAdder implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			addVotes ();
-		} catch (InterruptedException e) {
-			e.printStackTrace ();
-		}
+		addVotes();
 	}
 }

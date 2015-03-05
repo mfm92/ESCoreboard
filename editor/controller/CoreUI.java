@@ -140,28 +140,15 @@ public class CoreUI extends Application implements Initializable {
 	
 	private void undo () {
 		
-		System.out.println("Step2: " + commandPtr);
-		
-		if (commandPtr < 1) {
-			return;
-		}
-		else {
-			System.out.println("Step3: " + commandPtr);
-			System.out.println ("Calling UNDO: " + commandLog.get (commandPtr));
-			System.out.println("Step4prev: " + CoreUI.commandPtr);
-			commandLog.get (commandPtr).undo ();
-			System.out.println("Step7: " + CoreUI.commandPtr);
-		}
+		if (commandPtr < 1) return;
+		else commandLog.get (commandPtr).undo ();
 	}
 	
 	private void redo() {
 		commandPtr++;
 		
-		if (commandPtr > commandLog.size ()) {
-			return;
-		} else {
-			commandLog.get (commandPtr).execute ();
-		}
+		if (commandPtr > commandLog.size ()) return;
+		else commandLog.get (commandPtr).execute ();
 	}
 	
 	private void clear () {
