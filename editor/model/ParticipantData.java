@@ -2,9 +2,7 @@ package model;
 
 import java.util.List;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -16,23 +14,23 @@ public class ParticipantData {
 	StringProperty shortName;
 	StringProperty artist;
 	StringProperty title;
-	IntegerProperty start;
-	IntegerProperty stop;
-	IntegerProperty grid;
+	StringProperty start;
+	StringProperty stop;
+	StringProperty grid;
 	StringProperty status;
 	
 	ListProperty<ParticipantData> votes;
 	
 	public ParticipantData (String name, String shortName, String artist,
-			String title, int start, int stop, int grid, String status) {
+			String title, String start, String stop, String grid, String status) {
 
 		this.name = new SimpleStringProperty(name);
 		this.shortName = new SimpleStringProperty(shortName);
 		this.artist = new SimpleStringProperty(artist);
 		this.title = new SimpleStringProperty(title);
-		this.start = new SimpleIntegerProperty (start);
-		this.stop = new SimpleIntegerProperty (stop);
-		this.grid = new SimpleIntegerProperty (grid);
+		this.start = new SimpleStringProperty (start);
+		this.stop = new SimpleStringProperty (stop);
+		this.grid = new SimpleStringProperty (grid);
 		this.status = new SimpleStringProperty (status);
 		
 		votes = new SimpleListProperty<> ();
@@ -79,28 +77,28 @@ public class ParticipantData {
 		this.title = new SimpleStringProperty(title);
 	}
 
-	public int getStart() {
+	public String getStart() {
 		return start.get();
 	}
 
-	public void setStart(int start) {
-		this.start = new SimpleIntegerProperty(start);
+	public void setStart(String start) {
+		this.start = new SimpleStringProperty(start);
 	}
 
-	public int getStop() {
+	public String getStop() {
 		return stop.get();
 	}
 
-	public void setStop(int stop) {
-		this.stop = new SimpleIntegerProperty(stop);
+	public void setStop(String stop) {
+		this.stop = new SimpleStringProperty(stop);
 	}
 
-	public int getGrid() {
+	public String getGrid() {
 		return grid.get();
 	}
 
-	public void setGrid(int grid) {
-		this.grid = new SimpleIntegerProperty(grid);
+	public void setGrid(String grid) {
+		this.grid = new SimpleStringProperty(grid);
 	}
 
 	public String getStatus() {

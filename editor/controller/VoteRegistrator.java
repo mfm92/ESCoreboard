@@ -90,7 +90,6 @@ public class VoteRegistrator extends Application implements Initializable {
 		if ((previousVotes = CoreUI.inputData.getVotes ().get (CoreUI.inputData.getSelectedParticipant ())) != null) {
 			for (int i = 0; i < cmBoxes.size (); i++) {
 				cmBoxes.get (i).getSelectionModel ().select (previousVotes.get (i));
-//				ps.remove (previousVotes.get (i));
 			}	
 		}
 		
@@ -98,22 +97,6 @@ public class VoteRegistrator extends Application implements Initializable {
 
 		for (ComboBox<ParticipantData> box : cmBoxes) {
 			box.setItems (ps);
-//			box.getSelectionModel ().selectedItemProperty ().addListener ((observable, oldValue, newValue) -> {
-//				ps.clear ();
-//				
-//				for (ParticipantData p : CoreUI.inputData.getParticipants ()) {
-//					if (p.getStatus ().equals ("P")) ps.add (p);
-//				}
-//				
-//				ps.remove (CoreUI.inputData.getSelectedParticipant());
-//				
-//				for (ComboBox<ParticipantData> boxI : cmBoxes) {
-//					ps.remove (boxI.getSelectionModel().getSelectedItem());
-//				}
-//				for (ComboBox<ParticipantData> boxI : cmBoxes) {
-//					boxI.setItems (ps);
-//				}
-//			});
 		}
 	}
 	

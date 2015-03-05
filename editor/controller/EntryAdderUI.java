@@ -59,9 +59,9 @@ public class EntryAdderUI implements Initializable {
 								shortNameField.getText (), 
 								artistField.getText (), 
 								titleField.getText (), 
-								Integer.parseInt (startTimeField.getText ()), 
-								Integer.parseInt (endTimeField.getText ()), 
-								Integer.parseInt (startField.getText ()), 
+								startTimeField.getText (), 
+								endTimeField.getText (), 
+								startField.getText (), 
 								statusField.getText ());
 				
 				EntryAdder adder = new EntryAdder (target);

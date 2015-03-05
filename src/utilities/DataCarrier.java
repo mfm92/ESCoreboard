@@ -204,8 +204,8 @@ public class DataCarrier {
 			Participant p = getRosterNationByShortName (pData.getShortName ());
 			Media entryVid = new Media (new File (mediaLocation + pData.getArtist ()
 					+ " - " + pData.getTitle () + ".mp4").toURI ().toString ());
-			p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, pData.getStart (),
-					pData.getStop (), pData.getStatus ()));
+			p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, Integer.parseInt (pData.getStart ()),
+					Integer.parseInt (pData.getStop ()), pData.getStatus ()));
 		}
 	}
 

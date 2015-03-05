@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +17,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -24,7 +25,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import model.InputDataModel;
 import model.ParticipantData;
@@ -38,11 +38,6 @@ import controller.commands.MacroCommand;
 import controller.commands.TableClearer;
 import controller.commands.TableLoader;
 
-/*
- * TODO: File Management (*.xsco data?)
- * TODO: Update items of combo boxes depending on votees already picked
- * TODO: Previewer?
- */
 public class CoreUI extends Application implements Initializable {
 	
 	public static int nrOfCommands;
@@ -56,9 +51,9 @@ public class CoreUI extends Application implements Initializable {
 	@FXML TableColumn<ParticipantData, String> shortnameCol;
 	@FXML TableColumn<ParticipantData, String> artistCol;
 	@FXML TableColumn<ParticipantData, String> titleCol;
-	@FXML TableColumn<ParticipantData, Integer> startCol;
-	@FXML TableColumn<ParticipantData, Integer> stopCol;
-	@FXML TableColumn<ParticipantData, Integer> gridCol;
+	@FXML TableColumn<ParticipantData, String> startCol;
+	@FXML TableColumn<ParticipantData, String> stopCol;
+	@FXML TableColumn<ParticipantData, String> gridCol;
 	@FXML TableColumn<ParticipantData, String> statusCol;
 	
 	@FXML Button addEntryButton;
@@ -200,10 +195,7 @@ public class CoreUI extends Application implements Initializable {
 		helper.execute ();
 	}
 
-	private void setUpTableView () {
-		
-		CellCentralizer<Integer> intCentralizer = new CellCentralizer<> ();
-		
+	private void setUpTableView () {		
 		table.setEditable (true);
 		table.getSelectionModel ().setSelectionMode (SelectionMode.MULTIPLE);
 		
@@ -211,18 +203,18 @@ public class CoreUI extends Application implements Initializable {
 		shortnameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("shortName"));
 		artistCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("artist"));
 		titleCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("title"));
-		startCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("start"));
-		stopCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("stop"));
-		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("grid"));
+		startCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String>("start"));
+		stopCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String>("stop"));
+		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String>("grid"));
 		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("status"));
 		
 		nationNameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
 		shortnameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
 		artistCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
 		titleCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		startCol.setCellFactory (intCentralizer);
-		stopCol.setCellFactory (intCentralizer);
-		gridCol.setCellFactory (intCentralizer);
+		startCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		stopCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		gridCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
 		statusCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
 		
 		nationNameCol.setStyle ("-fx-alignment: center;");
@@ -235,7 +227,62 @@ public class CoreUI extends Application implements Initializable {
 		statusCol.setStyle ("-fx-alignment: center;");
 		
 		nationNameCol.setOnEditCommit (event -> {
-			((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());
+			if (checkNoDuplicateName(event.getNewValue())) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());	
+			} else {
+				// TODO: pop-up...
+			}
+		});
+		
+		shortnameCol.setOnEditCommit (event -> {
+			String newCode = event.getNewValue ();
+			
+			if (newCode.length () == 3 && checkIfUpperCase (newCode) && checkNoDuplicateShortName(newCode)) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setShortName (newCode);
+			} else {
+				// TODO: pop-up...
+			}
+		});
+		
+		artistCol.setOnEditCommit (event -> {
+			if (checkNoDuplicateArtist(event.getNewValue())) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setArtist (event.getNewValue ());
+			} else {
+				// TODO: pop-up...
+			}
+		});
+		
+		titleCol.setOnEditCommit (event -> {
+			((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setTitle (event.getNewValue ());
+		});
+		
+		startCol.setOnEditCommit (event -> {
+			if (NumberUtils.isNumber (event.getNewValue ())) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setStart (
+						event.getNewValue ());
+			}
+		});
+		
+		stopCol.setOnEditCommit (event -> {
+			if (NumberUtils.isNumber (event.getNewValue ())) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setStop (
+						event.getNewValue ());
+			}
+		});
+		
+		gridCol.setOnEditCommit (event -> {
+			if (NumberUtils.isNumber (event.getNewValue ()) && checkNoDuplicateGrid (event.getNewValue())) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setGrid (
+						event.getNewValue ());
+			} else {
+				// TODO: pop-up...
+			}
+		});
+		
+		statusCol.setOnEditCommit (event -> {
+			if (event.getNewValue().equals("P") || event.getNewValue().equals("")) {
+				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setStatus (event.getNewValue ());
+			}
 		});
 
 		table.itemsProperty ().bind (inputData.getParticipantsProperty ());
@@ -395,23 +442,38 @@ public class CoreUI extends Application implements Initializable {
 		});
 	}
 	
-	private class CellCentralizer <T> implements Callback<TableColumn<ParticipantData, T>, TableCell<ParticipantData, T>> {
-
-		@Override public TableCell<ParticipantData, T> call (TableColumn<ParticipantData, T> tc) {
-			TableCell<ParticipantData, T> cell = new TableCell<ParticipantData, T>() {
-				
-				@Override public void updateItem (T item, boolean empty) {
-					super.updateItem(item, empty);
-					setText(empty ? null : getString());
-				}
-
-				private String getString() {
-					return getItem() == null ? "" : getItem().toString();
-				}
-			};
-
-            cell.setStyle("-fx-alignment: CENTER;");
-            return cell;
+	private boolean checkNoDuplicateName (String newValue) {
+		for (ParticipantData pData : inputData.getParticipants ()) {
+			if (pData.getName ().equals (newValue)) return false;
 		}
+		return true;
+	}
+	
+	private boolean checkNoDuplicateShortName (String newValue) {
+		for (ParticipantData pData : inputData.getParticipants ()) {
+			if (pData.getShortName ().equals (newValue)) return false;
+		}
+		return true;
+	}
+	
+	private boolean checkNoDuplicateArtist (String newValue) {
+		for (ParticipantData pData : inputData.getParticipants ()) {
+			if (pData.getArtist ().equals (newValue)) return false;
+		}
+		return true;
+	}
+	
+	private boolean checkNoDuplicateGrid (String newValue) {
+		for (ParticipantData pData : inputData.getParticipants ()) {
+			if (pData.getGrid ().equals(newValue)) return false;
+		}
+		return true;
+	}
+	
+	private boolean checkIfUpperCase (String newCode) {
+		for (char c : newCode.toCharArray ()) {
+			if (!Character.isUpperCase (c)) return false;
+		}
+		return true;
 	}
 }
