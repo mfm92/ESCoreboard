@@ -116,6 +116,8 @@ public class InputDataModel {
 	
 	public void setVotes (HashMap<ParticipantData, ArrayList<StringProperty>> votes) {
 		this.votes.setValue (votes);
+		
+		// TODO: Set votes for everyone
 	}
 	
 	public void addVotes (ParticipantData p, ArrayList<StringProperty> votes) {
@@ -123,6 +125,8 @@ public class InputDataModel {
 			sp.bind (findParticipantByName (sp.get ()).getNameProperty ());
 		}
 		this.votes.getValue ().put (p, votes);
+		
+		// TODO: Set votes
 	}
 	
 	public void addVotes (String v, ArrayList<StringProperty> votes) {
@@ -131,6 +135,8 @@ public class InputDataModel {
 		}
 		
 		this.votes.getValue ().put (findParticipantByName (v), votes);
+		
+		// TODO: Set votes
 	}
 	
 	public ParticipantData findParticipantByName (String name) {
@@ -145,6 +151,8 @@ public class InputDataModel {
 	
 	public void removeVotes (ParticipantData p) {
 		votes.getValue ().remove (p);
+		
+		// TODO: Remove votes
 	}
 	
 	public String getNameOfEdition () {

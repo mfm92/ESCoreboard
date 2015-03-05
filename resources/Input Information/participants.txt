@@ -25,8 +25,6 @@ Luzinia$LUZ$Belle & Sebastian$Nobody's Empire$53$73$13$P
 Moisantia$MOI$Belle & Sebastian$Nobody's Empire$53$73$13$P
 New Acadia$NAC$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Noizeland$NOZ$Belle & Sebastian$Nobody's Empire$53$73$13$P
-Ölanda$OLA$Belle & Sebastian$Nobody's Empire$53$73$13$P
-Öösingimaed$OOS$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Orangualia$ORA$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Oussou Empire$OUS$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Paper & INK$PAI$Belle & Sebastian$Nobody's Empire$53$73$13$V
@@ -38,12 +36,12 @@ Reignland$RGN$Belle & Sebastian$Nobody's Empire$53$73$13$P
 Reym-L-Dneurb$RLD$Belle & Sebastian$Nobody's Empire$53$73$13$P
 Roseland$ROS$Belle & Sebastian$Nobody's Empire$53$73$6$P
 Rumia$RUM$Belle & Sebastian$Nobody's Empire$53$73$13$V
-SmileyLand & Folegandria$SLF$Belle & Sebastian$Nobody's Empire$53$73$13$V
 SR Indiria$SRI$Belle & Sebastian$Nobody's Empire$53$73$13$V
+SmileyLand & Folegandria$SLF$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Srivijaya & Sasentia$SRS$Belle & Sebastian$Nobody's Empire$53$73$13$V
-Tír an Abhainn$TAA$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Trash Canyon$TRC$Belle & Sebastian$Nobody's Empire$53$73$13$P
 Trollheimr$TRO$Belle & Sebastian$Nobody's Empire$53$73$13$P
+Tír an Abhainn$TAA$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Ugaly$UGA$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Ujedinjeni Gvozd$UJG$Belle & Sebastian$Nobody's Empire$53$73$13$P
 United Huts of Haustor$UHH$Belle & Sebastian$Nobody's Empire$53$73$13$V
@@ -58,3 +56,5 @@ Zaprya$ZAP$Belle & Sebastian$Nobody's Empire$53$73$13$V
 Zechonia$ZCH$Belle & Sebastian$Nobody's Empire$53$73$13$P
 Zombira$ZOM$Belle & Sebastian$Nobody's Empire$53$73$13$P
 Zumkotzen$ZUM$Belle & Sebastian$Nobody's Empire$53$73$13$P
+Ölanda$OLA$Belle & Sebastian$Nobody's Empire$53$73$13$P
+Öösingimaed$OOS$Belle & Sebastian$Nobody's Empire$53$73$13$V

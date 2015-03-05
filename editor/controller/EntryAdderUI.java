@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import model.ParticipantData;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,17 +12,26 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import controller.commands.EntryAdder;
 
-public class EntryAdder implements Initializable {
+public class EntryAdderUI implements Initializable {
 	
-	@FXML TextField nameField;
-	@FXML TextField artistField;
-	@FXML TextField titleField;
-	@FXML TextField shortNameField;
-	@FXML TextField startField;
-	@FXML TextField startTimeField;
-	@FXML TextField endTimeField;
-	@FXML TextField statusField;
+	@FXML
+	public TextField nameField;
+	@FXML
+	public TextField artistField;
+	@FXML
+	public TextField titleField;
+	@FXML
+	public TextField shortNameField;
+	@FXML
+	public TextField startField;
+	@FXML
+	public TextField startTimeField;
+	@FXML
+	public TextField endTimeField;
+	@FXML
+	public TextField statusField;
 
 	@FXML Button confirmButton;
 	
@@ -35,31 +42,32 @@ public class EntryAdder implements Initializable {
 		primaryStage.show ();
 	}
 	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		setUp();
+	}
+
 	private void setUp () {
 		setUpConfirmButton ();
 	}
 	
 	private void setUpConfirmButton () {
-		confirmButton.setOnAction (new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle (ActionEvent event) {
-				if (checkValidity ()) {
-					ParticipantData nParticipant = new ParticipantData 
-							(nameField.getText (), 
-							shortNameField.getText (), 
-							artistField.getText (), 
-							titleField.getText (), 
-							Integer.parseInt (startTimeField.getText ()), 
-							Integer.parseInt (endTimeField.getText ()), 
-							Integer.parseInt (startField.getText ()), 
-							statusField.getText ());
-					
-					CoreUI.inputData.addParticipant (nParticipant);
-					CoreUI.commandLog.put (++CoreUI.nrOfCommands, new Pair<CoreUI.Command, ParticipantData> 
-						(CoreUI.Command.ADD, nParticipant));
-					CoreUI.commandPtr = CoreUI.nrOfCommands;
-				}
+		confirmButton.setOnAction (event -> {
+			if (checkValidity()) {
+				ParticipantData target = new ParticipantData 
+						(nameField.getText (), 
+								shortNameField.getText (), 
+								artistField.getText (), 
+								titleField.getText (), 
+								Integer.parseInt (startTimeField.getText ()), 
+								Integer.parseInt (endTimeField.getText ()), 
+								Integer.parseInt (startField.getText ()), 
+								statusField.getText ());
+				
+				EntryAdder adder = new EntryAdder (target);
+				adder.execute ();
+				CoreUI.commandLog.put (++CoreUI.nrOfCommands, adder);
+				CoreUI.commandPtr = CoreUI.nrOfCommands;
 			}
 		});
 	}
@@ -75,10 +83,5 @@ public class EntryAdder implements Initializable {
 		if (shortNameField.getText ().equals ("")) return false;
 		
 		return true;
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		setUp();
 	}
 }

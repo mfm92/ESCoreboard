@@ -11,8 +11,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.ParticipantData;
+import controller.commands.VoteSetter;
 
 public class VoteRegistrator extends Application implements Initializable {
 	
@@ -105,19 +104,17 @@ public class VoteRegistrator extends Application implements Initializable {
 	}
 	
 	private void setUpConfirmButton () {
-		voteConfirmButton.setOnAction (new EventHandler<ActionEvent>() {
-			@Override
-			public void handle (ActionEvent event) {
-				if (validVotes()) {
-					ArrayList<StringProperty> votes = new ArrayList<>();
-					for (ComboBox<String> cBox : cmBoxes) {
-						votes.add (new SimpleStringProperty (cBox.getSelectionModel ().getSelectedItem ()));
-					}
-					CoreUI.inputData.addVotes (CoreUI.inputData.getSelectedParticipant (), votes);
-					CoreUI.commandLog.put (++CoreUI.nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
-						(CoreUI.Command.SET_VOTES, CoreUI.inputData.getSelectedParticipant ().clone ()));
-					CoreUI.commandPtr = CoreUI.nrOfCommands;
+		voteConfirmButton.setOnAction (event -> {
+			if (validVotes()) {
+				ArrayList<StringProperty> votes = new ArrayList<>();
+				for (ComboBox<String> cBox : cmBoxes) {
+					votes.add (new SimpleStringProperty (cBox.getSelectionModel ().getSelectedItem ()));
 				}
+				
+				VoteSetter voteSetter = new VoteSetter (CoreUI.inputData.getSelectedParticipant (), votes);
+				voteSetter.execute ();
+				CoreUI.commandLog.put (++CoreUI.nrOfCommands, voteSetter);
+				CoreUI.commandPtr = CoreUI.nrOfCommands;
 			}
 		});
 	}

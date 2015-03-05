@@ -1,7 +1,7 @@
 CURRENT_FILE_PATH = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Input Information
 
 NAME_EDITION = Nation Song Contest 2
-EDITION_NR = 160
+EDITION_NR = 157
 
 FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Participant Flags
 PRETTY_FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Diamond Flags
@@ -12,4 +12,4 @@ USE_FULLSCREEN = true
 USE_PRETTY_FLAGS = true
 TRADITIONAL_VOTING = false
 
-SPEED_SHOW = 62.5
+SPEED_SHOW = 56.25

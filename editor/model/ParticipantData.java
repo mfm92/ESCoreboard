@@ -1,9 +1,14 @@
 package model;
 
+import java.util.List;
+
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 public class ParticipantData {
 	
@@ -16,6 +21,8 @@ public class ParticipantData {
 	IntegerProperty grid;
 	StringProperty status;
 	
+	ListProperty<ParticipantData> votes;
+	
 	public ParticipantData (String name, String shortName, String artist,
 			String title, int start, int stop, int grid, String status) {
 
@@ -27,6 +34,8 @@ public class ParticipantData {
 		this.stop = new SimpleIntegerProperty (stop);
 		this.grid = new SimpleIntegerProperty (grid);
 		this.status = new SimpleStringProperty (status);
+		
+		votes = new SimpleListProperty<> ();
 	}
 	
 	public ParticipantData clone() {
@@ -100,5 +109,17 @@ public class ParticipantData {
 
 	public void setStatus(String status) {
 		this.status = new SimpleStringProperty(status);
+	}
+	
+	public List<ParticipantData> getVotes () {
+		return votes.get ();
+	}
+	
+	public ListProperty<ParticipantData> getVoteProperty () {
+		return votes;
+	}
+	
+	public void setVotes (List<ParticipantData> votes) {
+		this.votes.set ((ObservableList<ParticipantData>) votes);
 	}
 }

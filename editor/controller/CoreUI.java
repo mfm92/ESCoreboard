@@ -1,23 +1,11 @@
 package controller;
 
-import java.awt.Desktop;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,14 +13,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -41,13 +29,28 @@ import javafx.util.StringConverter;
 import model.InputDataModel;
 import model.ParticipantData;
 import scoreboard.Scoreboard;
+import controller.commands.DataSaver;
+import controller.commands.DataSaverAs;
+import controller.commands.EntryCommand;
+import controller.commands.EntryRemover;
+import controller.commands.EntryWriter;
+import controller.commands.HelpDisplayer;
+import controller.commands.MacroCommand;
+import controller.commands.Saver;
+import controller.commands.TableClearer;
+import controller.commands.TableLoader;
 
+/*
+ * TODO: File Management (*.xsco data?)
+ * TODO: Reset add/remove buttons
+ * TODO: Update items of combo boxes depending on votees already picked
+ * TODO: Change Listeners for buttons
+ * TODO: Previewer?
+ */
 public class CoreUI extends Application implements Initializable {
 	
-	enum Command {ADD, DELETE, SET_VOTES};
-	
-	static int nrOfCommands;
-	static int commandPtr;
+	public static int nrOfCommands;
+	public static int commandPtr;
 	
 	@FXML Pane content;
 	
@@ -80,25 +83,30 @@ public class CoreUI extends Application implements Initializable {
 	@FXML MenuItem closeMI;
 	@FXML MenuItem aboutMI;
 	
-	@FXML TextField editionName;
-	@FXML TextField editionNumberField;
+	@FXML
+	public TextField editionName;
+	@FXML
+	public TextField editionNumberField;
+	@FXML
+	public CheckBox createBannersBox;
+	@FXML
+	public CheckBox traditionalVotingCheckBox;
+	@FXML
+	public CheckBox fullScreenBox;
+	@FXML
+	public CheckBox prettyFlagsBox;
 	
-	@FXML CheckBox createBannersBox;
-	@FXML CheckBox traditionalVotingCheckBox;
-	@FXML CheckBox fullScreenBox;
-	@FXML CheckBox prettyFlagsBox;
-	
-	@FXML Slider speedSlider;
+	@FXML
+	public Slider speedSlider;
 	
 	public static InputDataModel inputData = new InputDataModel();
-	
-	static HashMap<Integer, Pair<Command, ParticipantData>> commandLog = new HashMap<>();
+	public static HashMap<Integer, EntryCommand> commandLog = new HashMap<>();
 	
 	VoteRegistrator voteRegistrator = new VoteRegistrator ();
-	EntryAdder entryAdder = new EntryAdder ();
+	EntryAdderUI entryAdder = new EntryAdderUI ();
 	
 	private Stage primaryStage;
-	private File currentSaveFile;
+	File currentSaveFile;
 	
 	public static void main (String[] args) {
 		launch (args);
@@ -113,7 +121,6 @@ public class CoreUI extends Application implements Initializable {
 		content = (Pane) loader.load ();
 		
 		Scene scene = new Scene (content);
-		setScene (scene);
 		
 		primaryStage.setResizable (false);
 		primaryStage.setScene (scene);
@@ -131,35 +138,19 @@ public class CoreUI extends Application implements Initializable {
 		setUpSlider ();
 	}
 	
-	private void setScene (Scene scene) {
-		scene.addEventHandler (KeyEvent.KEY_RELEASED, event -> {
-			if (event.isControlDown () && event.getCode () == KeyCode.Z) undo();
-			else if (event.isControlDown () && event.getCode () == KeyCode.Y) redo();
-			else if (event.isControlDown () && event.getCode () == KeyCode.L) load();
-			else if (event.isControlDown () && event.getCode () == KeyCode.S) save (false);
-			else if (event.isControlDown () && event.getCode () == KeyCode.BACK_SPACE) clear();
-		});
-	}
-	
 	private void undo () {
+		
+		System.out.println("Step2: " + commandPtr);
+		
 		if (commandPtr < 1) {
 			return;
 		}
 		else {
-			ParticipantData pcData = commandLog.get (commandPtr).getRight ();
-			
-			switch (commandLog.get (commandPtr).getLeft ()) {
-				case ADD: 
-					inputData.removeParticipant (pcData);
-					break;
-				case DELETE: 
-					inputData.addParticipant (pcData);
-					break;
-				case SET_VOTES: 
-					inputData.removeVotes (pcData);
-					break;
-			}
-			commandPtr--;
+			System.out.println("Step3: " + commandPtr);
+			System.out.println ("Calling UNDO: " + commandLog.get (commandPtr));
+			System.out.println("Step4prev: " + CoreUI.commandPtr);
+			commandLog.get (commandPtr).undo ();
+			System.out.println("Step7: " + CoreUI.commandPtr);
 		}
 	}
 	
@@ -169,88 +160,37 @@ public class CoreUI extends Application implements Initializable {
 		if (commandPtr > commandLog.size ()) {
 			return;
 		} else {
-			ParticipantData pcData = commandLog.get (commandPtr).getRight ();
-			
-			switch (commandLog.get (commandPtr).getLeft ()) {						
-				case ADD: 
-					inputData.addParticipant (pcData);
-					break;
-				case DELETE: 
-					inputData.removeParticipant (pcData);
-					break;
-				default: break;
-			}
+			commandLog.get (commandPtr).execute ();
 		}
 	}
 	
 	private void clear () {
-		for (ParticipantData pData : inputData.getParticipants()) {
-			inputData.removeVotes (pData);
-			inputData.removeParticipant (pData);
-		}
+		TableClearer clearer = new TableClearer ();
+		clearer.execute ();
 	}
 	
 	private void load () {
-		DirectoryChooser fileChooser = new DirectoryChooser ();
-		fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
-		fileChooser.setTitle ("Choose participants file...");
-		File selected = fileChooser.showDialog (null);
-		
-		File participantsFile = new File (selected + "\\participants.txt");
-		File votesFile = new File (selected + "\\votes.txt");
-		File paramsFile = new File (selected + "\\params.txt");
-
-		try {
-			readInParticipants (participantsFile);
-			readInVotes (votesFile);
-			readInParams (paramsFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		TableLoader loader = new TableLoader (this);
+		loader.execute ();
 	}
 	
 	private void save (boolean saveAs) {
-		File toSave = null;
-		
-		System.out.println ("called!");
-		System.out.println (currentSaveFile == null);
-		System.out.println (saveAs);
-		
-		if (currentSaveFile == null || saveAs) {
-			System.out.println ("Inner call!");
-			DirectoryChooser dirChooser = new DirectoryChooser ();
-			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
-			dirChooser.setTitle ("where to write out that shit...");
-			toSave = dirChooser.showDialog (null);
-			currentSaveFile = toSave;
-		} else {
-			toSave = currentSaveFile;
-		}
-		
-		if (toSave == null) return;
-		
-		try {
-			writeOut (toSave);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		EntryWriter eWriter = new EntryWriter();
+		Saver saver = saveAs ? new DataSaverAs (eWriter) : new DataSaver (eWriter, currentSaveFile);
+		saver.save ();
 	}
 	
 	private void help () {
-		File pdfFile = new File (System.getProperty ("user.dir") + "\\resources\\About.pdf");
-		try {
-			Desktop.getDesktop ().open (pdfFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		HelpDisplayer helper = new HelpDisplayer ();
+		helper.execute ();
 	}
 
 	private void setUpTableView () {
 		
 		CellCentralizer<Integer> intCentralizer = new CellCentralizer<> ();
-		CellCentralizer<String> textCentralizer = new CellCentralizer<> ();
 		
 		table.setEditable (true);
+		table.getSelectionModel ().setSelectionMode (SelectionMode.MULTIPLE);
 		
 		nationNameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("name"));
 		shortnameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("shortName"));
@@ -261,14 +201,23 @@ public class CoreUI extends Application implements Initializable {
 		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, Integer>("grid"));
 		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("status"));
 		
-		nationNameCol.setCellFactory (textCentralizer);
-		shortnameCol.setCellFactory (textCentralizer);
-		artistCol.setCellFactory (textCentralizer);
-		titleCol.setCellFactory (textCentralizer);
+		nationNameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		shortnameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		artistCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		titleCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
 		startCol.setCellFactory (intCentralizer);
 		stopCol.setCellFactory (intCentralizer);
 		gridCol.setCellFactory (intCentralizer);
-		statusCol.setCellFactory (textCentralizer);
+		statusCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		
+		nationNameCol.setStyle ("-fx-alignment: center;");
+		shortnameCol.setStyle ("-fx-alignment: center;");
+		artistCol.setStyle ("-fx-alignment: center;");
+		titleCol.setStyle ("-fx-alignment: center;");
+		startCol.setStyle ("-fx-alignment: center;");
+		stopCol.setStyle ("-fx-alignment: center;");
+		gridCol.setStyle ("-fx-alignment: center;");
+		statusCol.setStyle ("-fx-alignment: center;");
 		
 		nationNameCol.setOnEditCommit (event -> {
 			((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());
@@ -320,10 +269,17 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		removeEntryButton.setOnAction (event -> {
-			ParticipantData toDelete = inputData.getSelectedParticipant ();
-			inputData.removeParticipant (toDelete);
-			commandLog.put (++nrOfCommands, new Pair<CoreUI.Command, ParticipantData>
-				(CoreUI.Command.DELETE, toDelete));
+			MacroCommand macroCommand = new MacroCommand (null);
+			
+			System.out.println("Part of macro: ");
+			for (ParticipantData pData : table.getSelectionModel ().getSelectedItems ()) {
+				System.out.println(pData.getName());
+				EntryRemover remover = new EntryRemover (pData);
+				macroCommand.getCommands ().add (remover);
+			}
+			
+			macroCommand.execute ();
+			commandLog.put (++nrOfCommands, macroCommand);
 			commandPtr = nrOfCommands;
 		});
 		
@@ -395,113 +351,6 @@ public class CoreUI extends Application implements Initializable {
 				return speedSlider.getValue ();
 			}
 		});
-	}
-
-	private void readInParticipants (File inputFile) throws IOException {
-		
-		String line;
-		
-		BufferedReader reader = new BufferedReader (new FileReader (inputFile));
-		while ((line = reader.readLine ()) != null) {
-			String[] tokens = line.split ("\\$");
-			
-			ParticipantData participant = new ParticipantData (tokens[0], tokens[1],
-					tokens[2], tokens[3], 
-					Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]),
-					Integer.parseInt(tokens[6]), tokens[7]);
-			inputData.addParticipant (participant);
-		}
-			
-		reader.close ();
-	}
-	
-	private void readInVotes (File inputFile) throws IOException {
-		
-		String line;
-		
-		BufferedReader reader = new BufferedReader (new FileReader (inputFile));
-		while ((line = reader.readLine ()) != null) {
-			String[] tokens = line.split ("\\$");
-			ParticipantData voter = inputData.retrieveParticipantByShortName (tokens[0]);
-			ArrayList<StringProperty> votes = new ArrayList<> ();
-			
-			for (int i = 1; i < tokens.length; i++) {
-				String[] innerTokens = tokens[i].split (" ");
-				votes.add (new SimpleStringProperty (inputData.retrieveParticipantByShortName (innerTokens[1]).getName ()));
-			}
-			
-			inputData.addVotes (voter, votes);
-		}
-			
-		reader.close ();
-	}
-	
-	private void readInParams (File inputFile) throws IOException {
-		Properties paramFile = new Properties ();
-		FileInputStream fis = new FileInputStream (inputFile);
-		paramFile.load (fis);
-		
-		editionName.setText (paramFile.getProperty ("NAME_EDITION"));
-		editionNumberField.setText (paramFile.getProperty ("EDITION_NR"));
-		inputData.setFlagDirectory (paramFile.getProperty ("FLAGS_DIR"));
-		inputData.setPrettyFlagDirectory (paramFile.getProperty ("PRETTY_FLAGS_DIR"));
-		inputData.setEntriesDirectory (paramFile.getProperty ("ENTRIES_DIR"));
-		inputData.setCurrentDir (paramFile.getProperty ("CURRENT_FILE_PATH"));
-		createBannersBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("CREATE_BANNERS")));
-		fullScreenBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_FULLSCREEN")));
-		prettyFlagsBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_PRETTY_FLAGS")));
-		traditionalVotingCheckBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("TRADITIONAL_VOTING")));
-		speedSlider.setValue (Double.parseDouble (paramFile.getProperty ("SPEED_SHOW")));
-	}
-	
-	private void writeOut (File outputFile) throws FileNotFoundException {
-		PrintStream participantsOut = new PrintStream (new File (outputFile + "\\participants.txt"));
-		PrintStream votesOut = new PrintStream (new File (outputFile + "\\votes.txt"));
-		PrintStream paramsOut = new PrintStream (new File (outputFile + "\\params.txt"));
-		
-		final String STRING_SEPARATOR = System.lineSeparator ();
-		
-		for (ParticipantData p : inputData.getParticipants ()) {
-			participantsOut.append (p.getName () + "$" + p.getShortName () + "$" + 
-					p.getArtist () + "$" + p.getTitle () + "$" + p.getStart () +
-					"$" + p.getStop () + "$" + p.getGrid () + "$" + p.getStatus () + STRING_SEPARATOR);
-		}
-		
-		for (Map.Entry<ParticipantData, ArrayList<StringProperty>> vote : inputData.getVotes ().entrySet ()) {
-			votesOut.append (vote.getKey ().getShortName () + "$"
-					+ "12 " + inputData.getShortName (vote.getValue ().get (0).get ()) + "$"
-					+ "10 " + inputData.getShortName (vote.getValue ().get (1).get ()) + "$"
-					+ "08 " + inputData.getShortName (vote.getValue ().get (2).get ()) + "$"
-					+ "07 " + inputData.getShortName (vote.getValue ().get (3).get ()) + "$"
-					+ "06 " + inputData.getShortName (vote.getValue ().get (4).get ()) + "$"
-					+ "05 " + inputData.getShortName (vote.getValue ().get (5).get ()) + "$"
-					+ "04 " + inputData.getShortName (vote.getValue ().get (6).get ()) + "$"
-					+ "03 " + inputData.getShortName (vote.getValue ().get (7).get ()) + "$"
-					+ "02 " + inputData.getShortName (vote.getValue ().get (8).get ()) + "$"
-					+ "01 " + inputData.getShortName (vote.getValue ().get (9).get ())
-					+ STRING_SEPARATOR);
-		}
-		
-		String currentDir = outputFile.getAbsolutePath ().replace ("\\", "\\\\");
-		String flagsDirectory = inputData.getFlagDirectory ().replace ("\\", "\\\\");
-		String prettyFlagDirectory = inputData.getPrettyFlagDirectory ().replace ("\\", "\\\\");
-		String entriesDirectory = inputData.getEntriesDirectory ().replace ("\\", "\\\\");
-		
-		paramsOut.append ("CURRENT_FILE_PATH = " + currentDir + STRING_SEPARATOR + STRING_SEPARATOR);
-		paramsOut.append ("NAME_EDITION = " + inputData.getNameOfEdition () + STRING_SEPARATOR);
-		paramsOut.append ("EDITION_NR = " + inputData.getEditionNr () + STRING_SEPARATOR + STRING_SEPARATOR);
-		paramsOut.append ("FLAGS_DIR = " + flagsDirectory + STRING_SEPARATOR);
-		paramsOut.append ("PRETTY_FLAGS_DIR = " + prettyFlagDirectory + STRING_SEPARATOR);
-		paramsOut.append ("ENTRIES_DIR = " + entriesDirectory + STRING_SEPARATOR + STRING_SEPARATOR);
-		paramsOut.append ("CREATE_BANNERS = " + inputData.getBannerCreatorActivated () + STRING_SEPARATOR);
-		paramsOut.append ("USE_FULLSCREEN = " + inputData.getUseFullScreen () + STRING_SEPARATOR);
-		paramsOut.append ("USE_PRETTY_FLAGS = " + inputData.getUsePrettyFlags () + STRING_SEPARATOR);
-		paramsOut.append ("TRADITIONAL_VOTING = " + inputData.getTraditionalVoting () + STRING_SEPARATOR + STRING_SEPARATOR);
-		paramsOut.append ("SPEED_SHOW = " + inputData.getShowSpeed ());
-		
-		participantsOut.close ();
-		votesOut.close ();
-		paramsOut.close ();
 	}
 	
 	private class CellCentralizer <T> implements Callback<TableColumn<ParticipantData, T>, TableCell<ParticipantData, T>> {

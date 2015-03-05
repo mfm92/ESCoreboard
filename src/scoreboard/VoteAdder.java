@@ -31,7 +31,7 @@ public class VoteAdder implements Runnable {
 		this.tradVP = tradVP;
 	}
 
-	public void addVotes() throws InterruptedException {
+	public void addVotes() {
 		int nrOfPoints = 0;
 
 		if (inCountryCounter % 10 == 0)
