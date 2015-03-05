@@ -1,17 +1,29 @@
 package controller.commands;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 
 import model.ParticipantData;
+
+import org.apache.commons.io.FilenameUtils;
+
 import controller.CoreUI;
 
 public class EntryWriter {
 	
-	public void writeOut (String saveName) throws FileNotFoundException {
+	public void writeOut (File saveFile) throws IOException {
+		
+		String saveName = FilenameUtils.removeExtension (saveFile.getName ());
+		
+		if (saveFile.exists ()) saveFile.delete ();
+		FileWriter saveOut = new FileWriter (saveFile);
+		saveOut.write (saveName);
+		saveOut.close ();
+		
 		PrintStream participantsOut = new PrintStream (new File 
 				(System.getProperty("user.dir") + "\\resources\\save\\participants_" + saveName + ".txt"));
 		PrintStream votesOut = new PrintStream (new File 

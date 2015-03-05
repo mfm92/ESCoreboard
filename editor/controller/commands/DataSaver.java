@@ -1,9 +1,7 @@
 package controller.commands;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-
-import org.apache.commons.io.FilenameUtils;
+import java.io.IOException;
 
 import javafx.stage.FileChooser;
 
@@ -17,7 +15,7 @@ public class DataSaver {
 		this.destination = destination;
 	}
 
-	public void save (boolean saveAs) {
+	public void save (boolean saveAs) throws IOException {
 		File toSave = null;
 		
 		if (destination == null || saveAs) {
@@ -33,10 +31,6 @@ public class DataSaver {
 			toSave = destination;
 		}
 		
-		try {
-			writer.writeOut (FilenameUtils.removeExtension (toSave.getName()));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		writer.writeOut (toSave);
 	}
 }

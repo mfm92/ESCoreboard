@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import scoreboard.Scoreboard;
 import controller.commands.DataSaver;
 import controller.commands.EntryCommand;
+import controller.commands.EntryEditor;
 import controller.commands.EntryRemover;
 import controller.commands.EntryWriter;
 import controller.commands.HelpDisplayer;
@@ -39,6 +41,15 @@ import controller.commands.MacroCommand;
 import controller.commands.TableClearer;
 import controller.commands.TableLoader;
 
+/*
+ * TODO: File loading... what if rename?
+ * TODO: Automatic sort in table
+ * TODO: Pop-ups
+ * TODO: Do something about comboboxes...
+ * TODO: Tie Resolution Policy
+ * TODO: Write spreadshit into Excel!
+ * TODO: Previewer
+ */
 public class CoreUI extends Application implements Initializable {
 	
 	public static int nrOfCommands;
@@ -185,12 +196,22 @@ public class CoreUI extends Application implements Initializable {
 	
 	private void load () {
 		TableLoader loader = new TableLoader (this);
-		loader.execute ();
+		
+		try {
+			loader.execute ();
+		} catch (IOException ioex) {
+			ioex.printStackTrace();
+		}
 	}
 	
 	private void save (boolean saveAs) {
 		DataSaver dataSaver = new DataSaver (new EntryWriter(), currentSaveFile);
-		dataSaver.save (saveAs);
+		
+		try {
+			dataSaver.save (saveAs);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void help () {
@@ -232,9 +253,11 @@ public class CoreUI extends Application implements Initializable {
 		
 		nationNameCol.setOnEditCommit (event -> {
 			if (checkNoDuplicateName(event.getNewValue())) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());	
-				nationNameCol.setVisible (false);
-				nationNameCol.setVisible (true);
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"name", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;
 			} else {
 				// TODO: pop-up...
 			}
@@ -244,7 +267,11 @@ public class CoreUI extends Application implements Initializable {
 			String newCode = event.getNewValue ();
 			
 			if (newCode.length () == 3 && checkIfUpperCase (newCode) && checkNoDuplicateShortName(newCode)) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setShortName (newCode);
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"shortName", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;
 			} else {
 				// TODO: pop-up...
 			}
@@ -252,34 +279,51 @@ public class CoreUI extends Application implements Initializable {
 		
 		artistCol.setOnEditCommit (event -> {
 			if (checkNoDuplicateArtist(event.getNewValue())) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setArtist (event.getNewValue ());
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"artist", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;
 			} else {
 				// TODO: pop-up...
 			}
 		});
 		
 		titleCol.setOnEditCommit (event -> {
-			((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setTitle (event.getNewValue ());
+			EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+					"title", event.getOldValue (), event.getNewValue ());
+			eEditor.execute ();
+			commandLog.put (++nrOfCommands, eEditor);
+			commandPtr = nrOfCommands;
 		});
 		
 		startCol.setOnEditCommit (event -> {
 			if (NumberUtils.isNumber (event.getNewValue ())) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setStart (
-						event.getNewValue ());
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"start", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;
 			}
 		});
 		
 		stopCol.setOnEditCommit (event -> {
 			if (NumberUtils.isNumber (event.getNewValue ())) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setStop (
-						event.getNewValue ());
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"stop", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;
 			}
 		});
 		
 		gridCol.setOnEditCommit (event -> {
 			if (NumberUtils.isNumber (event.getNewValue ()) && checkNoDuplicateGrid (event.getNewValue())) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setGrid (
-						event.getNewValue ());
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"grid", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;
 			} else {
 				// TODO: pop-up...
 			}
@@ -287,8 +331,11 @@ public class CoreUI extends Application implements Initializable {
 		
 		statusCol.setOnEditCommit (event -> {
 			if (event.getNewValue().equals("P") || event.getNewValue().equals("")) {
-				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setStatus (event.getNewValue ());
-			}
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"status", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;			}
 		});
 
 		table.itemsProperty ().bind (inputData.getParticipantsProperty ());

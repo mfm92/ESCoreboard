@@ -3,6 +3,7 @@ package controller.commands;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,9 +11,6 @@ import java.util.Properties;
 
 import javafx.stage.FileChooser;
 import model.ParticipantData;
-
-import org.apache.commons.io.FilenameUtils;
-
 import controller.CoreUI;
 
 public class TableLoader {
@@ -23,18 +21,21 @@ public class TableLoader {
 		this.coreUI = coreUI;
 	}
 
-	public void execute() {
+	public void execute() throws FileNotFoundException, IOException {
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("XSCO Data (*.xsco)", "*.xsco");
 		fileChooser.getExtensionFilters ().add (extFilter);
 		fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
 		fileChooser.setTitle ("Choose participants file...");
 		
-		String selected = FilenameUtils.removeExtension(fileChooser.showOpenDialog (null).getName ());
+		String origin = null;
+		try (BufferedReader bReader = new BufferedReader (new FileReader (fileChooser.showOpenDialog (null)))) {
+			origin = bReader.readLine ();
+		}
 		
-		File participantsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\participants_" + selected + ".txt");
-		File votesFile = new File (System.getProperty("user.dir") + "\\resources\\save\\votes_" + selected + ".txt");
-		File paramsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\params_" + selected + ".txt");
+		File participantsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\participants_" + origin + ".txt");
+		File votesFile = new File (System.getProperty("user.dir") + "\\resources\\save\\votes_" + origin + ".txt");
+		File paramsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\params_" + origin + ".txt");
 
 		try {
 			readInParticipants (participantsFile);
