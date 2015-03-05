@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +26,9 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.InputDataModel;
 import model.ParticipantData;
+
+import org.apache.commons.lang3.math.NumberUtils;
+
 import scoreboard.Scoreboard;
 import controller.commands.DataSaver;
 import controller.commands.EntryCommand;
@@ -135,6 +136,10 @@ public class CoreUI extends Application implements Initializable {
 	private void addEntry () {
 		try {
 			entryAdder.init (new Stage());
+			
+			TableColumn<ParticipantData, ?> sortOrder = nationNameCol;
+			table.getSortOrder().clear();
+			table.getSortOrder().add(sortOrder);
 		} catch (Exception e) {
 			e.printStackTrace ();
 		}
@@ -143,9 +148,7 @@ public class CoreUI extends Application implements Initializable {
 	private void removeEntry () {
 		MacroCommand macroCommand = new MacroCommand (null);
 		
-		System.out.println("Part of macro: ");
 		for (ParticipantData pData : table.getSelectionModel ().getSelectedItems ()) {
-			System.out.println(pData.getName());
 			EntryRemover remover = new EntryRemover (pData);
 			macroCommand.getCommands ().add (remover);
 		}
@@ -197,6 +200,7 @@ public class CoreUI extends Application implements Initializable {
 
 	private void setUpTableView () {		
 		table.setEditable (true);
+		table.getSortOrder ().add (nationNameCol);
 		table.getSelectionModel ().setSelectionMode (SelectionMode.MULTIPLE);
 		
 		nationNameCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("name"));
@@ -229,6 +233,8 @@ public class CoreUI extends Application implements Initializable {
 		nationNameCol.setOnEditCommit (event -> {
 			if (checkNoDuplicateName(event.getNewValue())) {
 				((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ()))).setName (event.getNewValue ());	
+				nationNameCol.setVisible (false);
+				nationNameCol.setVisible (true);
 			} else {
 				// TODO: pop-up...
 			}
