@@ -1,5 +1,6 @@
 .root {
 	-fx-background-image: url("../../resources/Graphics/EditorBackgrounds/rootBackground.png");
+	-fx-font-family: "Segue UI";
 }
 
 #addEntryButton,
@@ -7,7 +8,7 @@
 #setVotesButton {
 	-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(77.0,51.0,153.0) 0.0, rgb(51.0,26.0,128.0) 100.0 );
 	-fx-text-fill: rgb(255.0,255.0,255.0);
-	-fx-font-family: "Calibri";
+
 	-fx-font-size: 14.0pt;
 	-fx-border-color: rgb(255.0,255.0,255.0);
 	-fx-border-width: 1.0, 1.0, 1.0, 1.0;
@@ -16,7 +17,7 @@
 .stylo {
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26.0,77.0,26.0) 0.0, rgb(77.0,128.0,77.0) 100.0);
 	-fx-text-fill: rgb(255.0,255.0,255.0);
-	-fx-font-family: "Calibri";
+
 	-fx-font-size: 14.0pt;
 	-fx-border-color: rgb(255.0,255.0,255.0);
 	-fx-border-width: 1.0, 1.0, 1.0, 1.0;
@@ -28,7 +29,7 @@
 	-fx-text-fill: rgb(255.0,255.0,255.0);
 	-fx-border-color: rgb(255.0,255.0,255.0);
 	-fx-border-width: 1.0, 1.0, 1.0, 3.0;
-	-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, repeat, rgb(26.0,51.0,153.0) 0.0, rgb(0.0,51.0,51.0) 90.0, rgb(26.0,0.0,104.0) 100.0 );
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(13,5,80) 0.0, rgb(27,5,123) 100.0);
 }
 
 #table {
@@ -41,17 +42,18 @@
 	-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(26.0,77.0,77.0) 0.0, rgb(0.0,51.0,51.0) 100.0 );
 	-fx-text-fill: rgb(219.0,219.0,219.0);
 	-fx-text-alignment: center;
+	-fx-font-size: 20.0pt;
 	-fx-border-color: rgb(255.0,255.0,255.0);
 	-fx-border-width: 1.3, 1.3, 1.3, 1.3;
-	-fx-font-family: "Inconsolata";
+
 }
 
 #startButton:hover {
 	-fx-font-size: 23.0pt;
-	-fx-font-style: oblique;
 }
 
 #ediNrLabel {
+	
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(179.0,179.0,179.0) 0.0, rgb(230.0,230.0,230.0) 100.0);
 	-fx-text-fill: rgb(55.0,55.0,55.0);
 	-fx-border-color: rgb(51.0,51.0,51.0);
@@ -59,6 +61,7 @@
 }
 
 #ediNameLabel {
+	
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26.0,26.0,26.0) 0.0, rgb(77.0,77.0,77.0) 100.0);
 	-fx-text-fill: rgb(215.0,215.0,215.0);
 	-fx-border-color: rgb(255.0,255.0,255.0);
@@ -66,6 +69,7 @@
 }
 
 #ediNrTF {
+	
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(179.0,179.0,179.0) 0.0, rgb(230.0,230.0,230.0) 100.0);
 	-fx-text-fill: rgb(55.0,55.0,55.0);
 	-fx-border-color: rgb(51.0,51.0,51.0);
@@ -83,9 +87,9 @@
 #prettyFlagsBox,
 #fullScreenBox,
 #traditionalVotingCheckBox {
-	-fx-font-family: "Consolata";
+
     -fx-font-size: 12.0pt;
-    -fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(13,5,80) 0.0, rgb(27,5,123) 100.0);
+    -fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, repeat, rgb(26.0,51.0,153.0) 0.0, rgb(0.0,51.0,51.0) 90.0, rgb(26.0,0.0,104.0) 100.0 );
     -fx-border-color: rgb(235.0,235.0,235.0);
     -fx-border-width: 1.0,1.0,1.0,1.0;
     -fx-text-fill: rgb(255.0,255.0,255.0);
@@ -95,7 +99,7 @@
 #prettyFlagsBox:selected,
 #fullScreenBox:selected,
 #traditionalVotingCheckBox:selected {
-	-fx-font-family: "Consolata";
+
     -fx-font-size: 12.0pt;
     -fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(11,139,55) 0.0, rgb(6,161,41) 100.0);
     -fx-border-width: 1.0,1.0,1.0,1.0;
@@ -124,7 +128,7 @@
 }
 
 .table-view .column-header {
-	-fx-border-color: rgb(255.0,255.0,255.0);
+	-fx-border-color: rgb(37,37,37);
     -fx-border-width: 1.0,1.0,1.0,1.0;
 }
 

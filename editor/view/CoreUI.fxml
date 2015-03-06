@@ -102,9 +102,6 @@
       </TableView>
       <Button id="addEntryButton" fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Add Entry" />
       <Button id="startButton" fx:id="startButton" layoutX="1122.0" layoutY="508.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="290.0" text="Start Show">
-         <font>
-            <Font name="Inconsolata" size="25.0" />
-         </font>
       </Button>
       <CheckBox id="traditionalVotingCheckBox" fx:id="traditionalVotingCheckBox" layoutX="22.0" layoutY="552.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="275.0" text="traditional vote presentation">
          <font>

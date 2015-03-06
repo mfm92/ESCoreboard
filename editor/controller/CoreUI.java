@@ -43,11 +43,10 @@ import controller.commands.TableClearer;
 import controller.commands.TableLoader;
 
 /*
- * TODO: Automatic sort in table
- * TODO: Do something about comboboxes...
- * TODO: Tie Resolution Policy
- * TODO: Write spreadshit into Excel!
- * TODO: Previewer
+ * TODO: Tie Resolution Policy?
+ * TODO: Write spreadsheet into Excel?
+ * TODO: Make Start/Stop/Grid non-obligatory...
+ * TODO: Previewer?
  */
 public class CoreUI extends Application implements Initializable {
 	
@@ -112,6 +111,7 @@ public class CoreUI extends Application implements Initializable {
 	
 	private Stage primaryStage;
 	File currentSaveFile;
+	Scene scene;
 	
 	public static void main (String[] args) {
 		launch (args);
@@ -127,6 +127,7 @@ public class CoreUI extends Application implements Initializable {
 		
 		Scene scene = new Scene (content);
 		scene.getStylesheets ().add ("/view/CoreUI.css");
+		this.scene = scene;
 		
 		primaryStage.setResizable (false);
 		primaryStage.setScene (scene);

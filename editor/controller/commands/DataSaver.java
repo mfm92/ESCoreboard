@@ -25,7 +25,7 @@ public class DataSaver {
 			fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
 			fileChooser.setTitle ("where to write out that shit...");
 			
-			toSave = fileChooser.showOpenDialog (null);
+			toSave = fileChooser.showSaveDialog (null);
 			destination = toSave;
 		} else {
 			toSave = destination;
