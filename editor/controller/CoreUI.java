@@ -166,7 +166,7 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void setVotes() {
-		if (table.getSelectionModel ().getSelectedItems ().size () != 1) {
+		if (table.getSelectionModel ().getSelectedItems ().size () == 1) {
 			try {
 				voteRegistrator.start (new Stage());
 			} catch (Exception e) {

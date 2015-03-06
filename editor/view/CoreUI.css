@@ -128,6 +128,13 @@
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(102,102,102) 0.0, rgb(153,153,153) 100.0)
 }
 
+.table-view .table-cell:selected {
+    -fx-background-color: brown;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background: -fx-accent;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
 .menu-bar {
 	-fx-background-color: rgb(44,44,44);
 }
@@ -153,8 +160,7 @@
     -fx-background-color: rgb(30,30,30);
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
-/*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
-    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
 }
 
 #sliderPaneArea {
