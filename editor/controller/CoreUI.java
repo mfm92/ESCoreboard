@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
@@ -126,6 +128,7 @@ public class CoreUI extends Application implements Initializable {
 		content = (Pane) loader.load ();
 		
 		Scene scene = new Scene (content);
+		scene.getStylesheets ().add ("/view/CoreUI.css");
 		
 		primaryStage.setResizable (false);
 		primaryStage.setScene (scene);
@@ -428,6 +431,37 @@ public class CoreUI extends Application implements Initializable {
 		addEntryButton.setOnAction (event -> addEntry());
 		removeEntryButton.setOnAction (event -> removeEntry());
 		setVotesButton.setOnAction (event -> setVotes());
+	
+		removeEntryButton.setOnMouseEntered (event -> {
+			int selectedNr = table.getSelectionModel().getSelectedItems().size();
+			
+			if (selectedNr == 0) return;
+			
+			if (table.getSelectionModel().getSelectedItems().size() == 1) {
+				removeEntryButton.setText ("Remove " + inputData.getSelectedParticipant() + "?");
+			} else if (table.getSelectionModel().getSelectedItems().size() < 4) {
+				StringBuffer sb = new StringBuffer ("Remove ");
+				
+				for (ParticipantData pData : table.getSelectionModel ().getSelectedItems ()) {
+					sb.append (pData.getShortName() + " ");
+				}
+				removeEntryButton.setText (sb + "?");
+			}
+		});
+		
+		setVotesButton.setOnMouseEntered (event -> {
+			if (table.getSelectionModel().getSelectedItems().size() == 1) {
+				setVotesButton.setText ("Set votes for " + inputData.getSelectedParticipant ().getName ());
+			}
+		});
+		
+		removeEntryButton.setOnMouseExited (event -> {
+			removeEntryButton.setText ("Remove Entry");
+		});
+		
+		setVotesButton.setOnMouseExited (event -> {
+			setVotesButton.setText ("Set Votes");
+		});
 		
 		startButton.setOnAction (event -> {
 			try {	
@@ -491,6 +525,17 @@ public class CoreUI extends Application implements Initializable {
 			public Double fromString(String string) {
 				return speedSlider.getValue ();
 			}
+		});
+		
+		ProgressBar pBar = new ProgressBar (0);
+		pBar.setMinWidth (100);
+		pBar.setMaxWidth (100);
+		
+		ProgressIndicator pIndie = new ProgressIndicator ();
+		
+		speedSlider.valueProperty ().addListener ((observable, oldValue, newValue) -> {
+			pBar.setProgress (newValue.doubleValue ());
+			pIndie.setProgress (newValue.doubleValue ());
 		});
 	}
 	

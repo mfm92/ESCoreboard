@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 
-public class ParticipantData {
+public class ParticipantData implements Comparable<ParticipantData> {
 	
 	StringProperty name;
 	StringProperty shortName;
@@ -123,5 +123,10 @@ public class ParticipantData {
 	
 	public String toString () {
 		return name.get ();
+	}
+
+	@Override
+	public int compareTo(ParticipantData oData) {
+		return name.get ().compareTo (oData.getName ());
 	}
 }

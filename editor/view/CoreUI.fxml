@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
@@ -13,15 +14,15 @@
 
 <Pane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="1432.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CoreUI">
    <children>
-      <MenuBar prefHeight="32.0" prefWidth="1438.0">
+      <MenuBar id="coreMenu" prefHeight="32.0" prefWidth="1461.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu id="fileMenu" mnemonicParsing="false" text="File">
             <items>
                   <MenuItem fx:id="loadMenuItem" mnemonicParsing="false" text="Load...">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" text="Save">
+                  <MenuItem id="saveMenuItem" fx:id="saveMenuItem" mnemonicParsing="false" text="Save">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
@@ -75,19 +76,19 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label alignment="CENTER_RIGHT" layoutX="757.0" layoutY="385.0" prefHeight="51.0" prefWidth="82.0" text="Name:   ">
+      <Label id="ediNameLabel" alignment="CENTER" layoutX="775.0" layoutY="395.0" prefHeight="31.0" prefWidth="87.0" text="Name" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="editionName" layoutX="862.0" layoutY="395.0" prefHeight="31.0" prefWidth="348.0" promptText="enter name of edition..." />
-      <TextField fx:id="editionNumberField" layoutX="1333.0" layoutY="395.0" prefHeight="31.0" prefWidth="79.0" promptText="edi nr ici" />
-      <Label alignment="CENTER_RIGHT" layoutX="1171.0" layoutY="385.0" prefHeight="51.0" prefWidth="152.0" text="Edition:   ">
+      <TextField id="ediNameTF" fx:id="editionName" layoutX="862.0" layoutY="395.0" prefHeight="31.0" prefWidth="348.0" promptText="enter name of edition..." />
+      <TextField id="ediNrTF" fx:id="editionNumberField" layoutX="1333.0" layoutY="395.0" prefHeight="31.0" prefWidth="79.0" promptText="edi nr ici" />
+      <Label id="ediNrLabel" alignment="CENTER" layoutX="1238.0" layoutY="396.0" prefHeight="30.0" prefWidth="95.0" text="Edition" textAlignment="RIGHT">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TableView fx:id="table" editable="true" layoutX="20.0" layoutY="51.0" prefHeight="326.0" prefWidth="1392.0" tableMenuButtonVisible="true">
+      <TableView id="table" fx:id="table" editable="true" layoutX="20.0" layoutY="51.0" prefHeight="326.0" prefWidth="1392.0" tableMenuButtonVisible="true">
         <columns>
           <TableColumn fx:id="nationNameCol" prefWidth="287.0" text="Nation Name" />
             <TableColumn fx:id="shortnameCol" prefWidth="97.0" text="Shortname" />
@@ -99,42 +100,41 @@
             <TableColumn id="statusCol" fx:id="statusCol" prefWidth="85.0" text="Status" />
         </columns>
       </TableView>
-      <Button fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Add Entry" />
-      <Button fx:id="startButton" layoutX="1122.0" layoutY="508.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="290.0" text="Start Show">
+      <Button id="addEntryButton" fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Add Entry" />
+      <Button id="startButton" fx:id="startButton" layoutX="1122.0" layoutY="508.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="290.0" text="Start Show">
          <font>
             <Font name="Inconsolata" size="25.0" />
          </font>
       </Button>
-      <CheckBox fx:id="traditionalVotingCheckBox" layoutX="22.0" layoutY="552.0" mnemonicParsing="false" text="traditional vote presentation">
+      <CheckBox id="traditionalVotingCheckBox" fx:id="traditionalVotingCheckBox" layoutX="22.0" layoutY="552.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="275.0" text="traditional vote presentation">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="createBannersBox" layoutX="22.0" layoutY="513.0" mnemonicParsing="false" text="create banners">
+      <CheckBox id="createBannersBox" fx:id="createBannersBox" layoutX="22.0" layoutY="508.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="275.0" text="create banners">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="prettyFlagsBox" layoutX="334.0" layoutY="552.0" mnemonicParsing="false" text="use pretty flags">
+      <CheckBox id="prettyFlagsBox" fx:id="prettyFlagsBox" layoutX="312.0" layoutY="552.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="275.0" text="use pretty flags">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="fullScreenBox" layoutX="334.0" layoutY="513.0" mnemonicParsing="false" text="fullscreen">
+      <CheckBox id="fullScreenBox" fx:id="fullScreenBox" layoutX="312.0" layoutY="508.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="275.0" text="fullscreen">
          <font>
             <Font size="18.0" />
          </font>
       </CheckBox>
-      <Button fx:id="flagDirButton" layoutX="22.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="497.0" text="Flag Directory" />
-      <Button fx:id="entryDirButton" layoutX="539.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="436.0" text="Entry Directory" />
-      <Button fx:id="prettyFlagDirButton" layoutX="995.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="417.0" text="Pretty Flag Directory" />
-      <Button fx:id="setVotesButton" layoutX="502.0" layoutY="390.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Set Votes" />
-      <Button fx:id="removeEntryButton" layoutX="262.0" layoutY="390.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Remove Entry" />
-      <Slider fx:id="speedSlider" layoutX="625.0" layoutY="552.0" majorTickUnit="50.0" prefHeight="27.0" prefWidth="411.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <Label alignment="CENTER" layoutX="725.0" layoutY="506.0" prefHeight="32.0" prefWidth="211.0" text="pick speed of show...">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
+      <Button id="flagDirButton" fx:id="flagDirButton" layoutX="22.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="497.0" text="Flag Directory" />
+      <Button id="entryDirButton" fx:id="entryDirButton" layoutX="539.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="436.0" text="Entry Directory" />
+      <Button id="prettyFlagDirButton" fx:id="prettyFlagDirButton" layoutX="995.0" layoutY="449.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="417.0" text="Pretty Flag Directory" />
+      <Button id="setVotesButton" fx:id="setVotesButton" layoutX="502.0" layoutY="390.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Set Votes" />
+      <Button id="removeEntryButton" fx:id="removeEntryButton" layoutX="262.0" layoutY="390.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Remove Entry" />
+      <Pane id="sliderPaneArea" layoutX="644.0" layoutY="508.0" prefHeight="76.0" prefWidth="436.0">
+         <children>
+            <Slider id="speedSlider" fx:id="speedSlider" layoutX="50.0" layoutY="20.0" majorTickUnit="50.0" prefHeight="18.0" prefWidth="336.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+         </children>
+      </Pane>
    </children>
 </Pane>
