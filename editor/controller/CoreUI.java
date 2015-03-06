@@ -44,7 +44,6 @@ import controller.commands.TableLoader;
 /*
  * TODO: File loading... what if rename?
  * TODO: Automatic sort in table
- * TODO: Pop-ups
  * TODO: Do something about comboboxes...
  * TODO: Tie Resolution Policy
  * TODO: Write spreadshit into Excel!
@@ -147,10 +146,6 @@ public class CoreUI extends Application implements Initializable {
 	private void addEntry () {
 		try {
 			entryAdder.init (new Stage());
-			
-			TableColumn<ParticipantData, ?> sortOrder = nationNameCol;
-			table.getSortOrder().clear();
-			table.getSortOrder().add(sortOrder);
 		} catch (Exception e) {
 			e.printStackTrace ();
 		}
@@ -170,10 +165,14 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void setVotes() {
-		try {
-			voteRegistrator.start (new Stage());
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (table.getSelectionModel ().getSelectedItems ().size () != 1) {
+			try {
+				voteRegistrator.start (new Stage());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
+		} else {
+			// TODO: Popup...
 		}
 	}
 	
@@ -259,7 +258,7 @@ public class CoreUI extends Application implements Initializable {
 				commandLog.put (++nrOfCommands, eEditor);
 				commandPtr = nrOfCommands;
 			} else {
-				// TODO: pop-up...
+				// TODO: Popup...
 			}
 		});
 		

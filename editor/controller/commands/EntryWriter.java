@@ -1,6 +1,7 @@
 package controller.commands;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -10,13 +11,24 @@ import java.util.Map;
 import model.ParticipantData;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import controller.CoreUI;
 
 public class EntryWriter {
 	
 	public void writeOut (File saveFile) throws IOException {
-		
+		writeOutSaves (saveFile);
+		writeSpreadSheet (saveFile);
+	}
+	
+	private void writeOutSaves (File saveFile) throws IOException {
 		String saveName = FilenameUtils.removeExtension (saveFile.getName ());
 		
 		if (saveFile.exists ()) saveFile.delete ();
@@ -74,4 +86,35 @@ public class EntryWriter {
 		paramsOut.close ();
 	}
 
+	private void writeSpreadSheet (File saveFile) throws IOException {
+		Workbook workBook = new XSSFWorkbook ();
+		Sheet sheet = workBook.createSheet();
+		
+		Row headerRow = sheet.createRow (0);
+		
+		Cell topLeftCell = headerRow.createCell (0);
+		topLeftCell.setCellValue (CoreUI.inputData.getNameOfEdition () + " //// " + CoreUI.inputData.getEditionNr ());
+		
+		int counter = 2;
+		for (ParticipantData pData : CoreUI.inputData.getParticipants()) {
+			Cell cell = headerRow.createCell (counter++);
+			cell.setCellValue (pData.getName ());
+			
+			CellStyle cS = cell.getCellStyle ();
+			cS.setRotation ((short) 45);
+			cS.setAlignment (CellStyle.ALIGN_CENTER);
+			cS.setFillBackgroundColor (HSSFColor.GREY_25_PERCENT.index);
+		}
+		
+		File os = new File (System.getProperty ("user.dir") + "\\spreadsheet\\");	
+		os.mkdirs ();
+		os = new File (System.getProperty ("user.dir") + "\\spreadsheet\\spreadsheet" + 
+				FilenameUtils.removeExtension (saveFile.getName ()) + ".xlsx");	
+		os.createNewFile ();
+		
+		FileOutputStream fos = new FileOutputStream (os);
+		workBook.write (fos);
+		fos.close ();
+		workBook.close ();
+	}
 }
