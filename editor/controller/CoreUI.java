@@ -17,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -218,6 +219,7 @@ public class CoreUI extends Application implements Initializable {
 		helper.execute ();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void setUpTableView () {		
 		table.setEditable (true);
 		table.getSortOrder ().add (nationNameCol);
@@ -232,23 +234,25 @@ public class CoreUI extends Application implements Initializable {
 		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String>("grid"));
 		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("status"));
 		
-		nationNameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		shortnameCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		artistCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		titleCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		startCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		stopCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		gridCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
-		statusCol.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+		int counter = 0;
 		
-		nationNameCol.setStyle ("-fx-alignment: center;");
-		shortnameCol.setStyle ("-fx-alignment: center;");
-		artistCol.setStyle ("-fx-alignment: center;");
-		titleCol.setStyle ("-fx-alignment: center;");
-		startCol.setStyle ("-fx-alignment: center;");
-		stopCol.setStyle ("-fx-alignment: center;");
-		gridCol.setStyle ("-fx-alignment: center;");
-		statusCol.setStyle ("-fx-alignment: center;");
+		for (TableColumn<ParticipantData, ?> column : table.getColumns()) {
+			TableColumn<ParticipantData, String> cColumn = (TableColumn<ParticipantData, String>) column;
+			cColumn.setCellFactory (TextFieldTableCell.<ParticipantData>forTableColumn ());
+			cColumn.getStyleClass ().add ((counter ++) % 2 == 0 ? "evenColumn" : "oddColumn");
+		}
+		
+		table.setRowFactory (tv -> {
+			TableRow<ParticipantData> pRow = new TableRow<> ();
+			pRow.setOnMouseEntered (event -> {
+				pRow.getStyleClass ().add ("selectedRow");
+			});
+			pRow.setOnMouseExited (event -> {
+				pRow.getStyleClass ().remove ("selectedRow");
+			});
+			
+			return pRow;
+		});
 		
 		nationNameCol.setOnEditCommit (event -> {
 			if (checkNoDuplicateName(event.getNewValue())) {

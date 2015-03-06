@@ -91,20 +91,27 @@
     -fx-text-fill: rgb(255,255,255);
 }
 
-#nationNameCol,
-#artistCol,
-#startCol,
-#gridCol {
-	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26,26,26) 0.0, rgb(51,51,51) 100.0);
-	-fx-text-fill: rgb(238,238,238);	
+#createBannersBox:selected,
+#prettyFlagsBox:selected,
+#fullScreenBox:selected,
+#traditionalVotingCheckBox:selected {
+	-fx-font-family: "Consolata";
+    -fx-font-size: 12pt;
+    -fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(53,125,102) 0.0, rgb(27,143,106) 100.0);
+    -fx-border-width: 1,1,1,1;
+    -fx-text-fill: rgb(255,255,255);
 }
 
-#shortnameCol,
-#titleCol,
-#stopCol,
-#statusCol {
+.evenColumn {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26,26,26) 0.0, rgb(51,51,51) 100.0);
+	-fx-text-fill: rgb(238,238,238);	
+	-fx-alignment: center;
+}
+
+.oddColumn {
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(77,77,77) 100.0);
 	-fx-text-fill: rgb(238,238,238);
+	-fx-alignment: center;
 }
 
 .table-view .column-header .label {
@@ -117,12 +124,41 @@
     -fx-border-width: 1,1,1,1;
 }
 
-.table-row:selected {
-	-fx-background-color: aliceblue;
+.selectedRow .table-cell {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(102,102,102) 0.0, rgb(153,153,153) 100.0)
+}
+
+.menu-bar {
+	-fx-background-color: rgb(44,44,44);
+}
+
+.menu-bar .label {
+	-fx-text-fill: white;
+}
+
+.menu-item {
+    -fx-background-color: rgb(55,55,55);
+}
+
+.menu-item:focused {
+     -fx-background-color: rgb(67,67,67);
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: rgb(234,234,234);
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: rgb(30,30,30);
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+/*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
 }
 
 #sliderPaneArea {
-	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(102,128,230) 0.0, rgb(153,179,255) 100.0);
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(0,0,0) 100.0);
 	-fx-text-fill: rgb(255,255,255);
 	-fx-border-color: rgb(255,255,255);
 	-fx-border-width: 1,1,1,1;
