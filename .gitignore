@@ -13,6 +13,9 @@ scoreboards/
 #no banners either
 banners/
 
+#no spreadsheets
+spreadsheet/
+
 #Ignore Eclipse-related and other stuff
 .*
 !.gitignore
