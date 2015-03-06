@@ -250,7 +250,6 @@ public class CoreUI extends Application implements Initializable {
 			pRow.setOnMouseExited (event -> {
 				pRow.getStyleClass ().remove ("selectedRow");
 			});
-			
 			return pRow;
 		});
 		
