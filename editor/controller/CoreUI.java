@@ -14,8 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
@@ -44,7 +42,6 @@ import controller.commands.TableClearer;
 import controller.commands.TableLoader;
 
 /*
- * TODO: File loading... what if rename?
  * TODO: Automatic sort in table
  * TODO: Do something about comboboxes...
  * TODO: Tie Resolution Policy
@@ -446,6 +443,8 @@ public class CoreUI extends Application implements Initializable {
 					sb.append (pData.getShortName() + " ");
 				}
 				removeEntryButton.setText (sb + "?");
+			} else {
+				removeEntryButton.setText ("Remove " + table.getSelectionModel ().getSelectedItems ().size () + " participants?");
 			}
 		});
 		
@@ -525,17 +524,6 @@ public class CoreUI extends Application implements Initializable {
 			public Double fromString(String string) {
 				return speedSlider.getValue ();
 			}
-		});
-		
-		ProgressBar pBar = new ProgressBar (0);
-		pBar.setMinWidth (100);
-		pBar.setMaxWidth (100);
-		
-		ProgressIndicator pIndie = new ProgressIndicator ();
-		
-		speedSlider.valueProperty ().addListener ((observable, oldValue, newValue) -> {
-			pBar.setProgress (newValue.doubleValue ());
-			pIndie.setProgress (newValue.doubleValue ());
 		});
 	}
 	

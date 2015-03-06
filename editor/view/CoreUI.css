@@ -91,16 +91,34 @@
     -fx-text-fill: rgb(255,255,255);
 }
 
-#createBannersBox:selected,
-#prettyFlagsBox:selected,
-#fullScreenBox:selected,
-#traditionalVotingCheckBox:selected {
-	-fx-font-family: "Consolata";
-    -fx-font-size: 12pt;
-    -fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(51,102,51) 0.0, rgb(102,153,102) 100.0);
-    -fx-border-color: rgb(235,235,235);
+#nationNameCol,
+#artistCol,
+#startCol,
+#gridCol {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26,26,26) 0.0, rgb(51,51,51) 100.0);
+	-fx-text-fill: rgb(238,238,238);	
+}
+
+#shortnameCol,
+#titleCol,
+#stopCol,
+#statusCol {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(77,77,77) 100.0);
+	-fx-text-fill: rgb(238,238,238);
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .column-header {
+	-fx-border-color: rgb(255,255,255);
     -fx-border-width: 1,1,1,1;
-    -fx-text-fill: rgb(255,255,255);
+}
+
+.table-row:selected {
+	-fx-background-color: aliceblue;
 }
 
 #sliderPaneArea {
