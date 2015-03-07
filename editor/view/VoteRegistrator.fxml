@@ -75,10 +75,10 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <ComboBox fx:id="combo12" layoutX="103.0" layoutY="105.0" prefHeight="31.0" prefWidth="281.0" />
-      <ComboBox fx:id="combo10" layoutX="103.0" layoutY="149.0" prefHeight="31.0" prefWidth="281.0" />
+      <ComboBox fx:id="combo12" id="combo12" layoutX="103.0" layoutY="105.0" prefHeight="31.0" prefWidth="281.0" />
+      <ComboBox fx:id="combo10" id="combo10" layoutX="103.0" layoutY="149.0" prefHeight="31.0" prefWidth="281.0" />
       <ComboBox fx:id="combo7" layoutX="103.0" layoutY="237.0" prefHeight="31.0" prefWidth="281.0" />
-      <ComboBox fx:id="combo8" layoutX="103.0" layoutY="193.0" prefHeight="31.0" prefWidth="281.0" />
+      <ComboBox fx:id="combo8" id="combo8" layoutX="103.0" layoutY="193.0" prefHeight="31.0" prefWidth="281.0" />
       <ComboBox fx:id="combo5" layoutX="103.0" layoutY="325.0" prefHeight="31.0" prefWidth="281.0" />
       <ComboBox fx:id="combo6" layoutX="103.0" layoutY="281.0" prefHeight="31.0" prefWidth="281.0" />
       <ComboBox fx:id="combo3" layoutX="103.0" layoutY="413.0" prefHeight="31.0" prefWidth="281.0" />

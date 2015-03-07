@@ -208,23 +208,18 @@ public class Scoreboard extends Application {
 			final Participant voter, final Standings standings, final int save,
 			final Scoreboard scoreboard) {
 
-		return new Thread (new Runnable () {
+		return new Thread (() -> {
+			// GENERATE SCOREBOARD
+			generateImageScoreboard (getRoot(), voter);
 
-			@Override
-			public void run() {
+			// SHOW 12 PAIR
+			getTwelvePairShower().addTwelvePair (scoreboard, voter, receiver);
 
-				// GENERATE SCOREBOARD
-				generateImageScoreboard (getRoot(), voter);
+			// CREATE TABLE
+			getRoot().getChildren ().add (getSideTableCreator().createSideTable (getParticipants()));
 
-				// SHOW 12 PAIR
-				getTwelvePairShower().addTwelvePair (scoreboard, voter, receiver);
-
-				// CREATE TABLE
-				getRoot().getChildren ().add (getSideTableCreator().createSideTable (getParticipants()));
-
-				// GET THE VIDEO
-				showVideoAndDirect (receiver, standings, scoreboard);
-			}
+			// GET THE VIDEO
+			showVideoAndDirect (receiver, standings, scoreboard);
 		});
 	}
 

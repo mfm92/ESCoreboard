@@ -96,8 +96,8 @@
             <TableColumn id="titleCol" fx:id="titleCol" prefWidth="296.0" text="Title" />
           <TableColumn id="startCol" fx:id="startCol" prefWidth="109.0" text="Start" />
             <TableColumn id="stopCol" fx:id="stopCol" prefWidth="102.0" text="Stop" />
-            <TableColumn id="gridCol" fx:id="gridCol" prefWidth="114.0" text="StartGrid" />
-            <TableColumn id="statusCol" fx:id="statusCol" prefWidth="87.0" text="Status" />
+            <TableColumn id="gridCol" fx:id="gridCol" prefWidth="107.0" text="StartGrid" />
+            <TableColumn id="statusCol" fx:id="statusCol" prefWidth="94.0" text="Status" />
         </columns>
       </TableView>
       <Button id="addEntryButton" fx:id="addEntryButton" layoutX="22.0" layoutY="389.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="218.0" text="Add Entry" />

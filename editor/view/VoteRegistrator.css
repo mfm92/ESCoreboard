@@ -32,6 +32,58 @@
 	-fx-background-color: rgb(231,231,231);
 }
 
+.combo12 {
+	-fx-border-color: rgb(78,68,29);
+}
+
+.combo12 .list-cell {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(255,204,102) 0.0, rgb(230,230,77) 100.0);
+	-fx-text-fill: rgb(114,100,37);
+}
+
+.combo12 .list-cell:hover {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(230,153,77) 0.0, rgb(255,204,128) 100.0);
+}
+
+.combo10 {
+	-fx-border-color: rgb(78,68,29);
+}
+
+.combo10 .list-cell {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(153,153,153) 0.0, rgb(204,204,204) 100.0);
+	-fx-text-fill: rgb(42,42,42);
+}
+
+.combo10 .list-cell:hover {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(128,128,128) 0.0, rgb(153,153,153) 100.0);
+}
+
+.combo8 {
+	-fx-border-color: rgb(78,68,29);
+}
+
+.combo8 .list-cell {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(158,142,112) 0.0, rgb(186,157,106) 100.0);
+	-fx-text-fill: rgb(23,23,23);
+}
+
+.combo8 .list-cell:hover {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(199,170,127) 0.0, rgb(183,165,117) 100.0);
+}
+
+.combo-invalid {
+	-fx-border-color: rgb(64,0,0);
+}
+
+.combo-invalid .list-cell {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(153,0,0) 0.0, rgb(204,51,51) 100.0);
+	-fx-text-fill: white;
+}
+
+.combo-invalid .list-cell:hover {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(204,51,51) 0.0, rgb(230,77,77) 100.0);	
+}
+
 .button {
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26,26,26) 0.0, rgb(77,77,77) 100.0);
 	-fx-text-fill: rgb(254, 254, 254);
@@ -40,8 +92,18 @@
 	-fx-border-width: 1 1 1 1;
 }
 
-.button:hover {
+.buttonHover {
 	-fx-background-color: rgb(231,231,231);
 	-fx-text-fill: rgb(35,35,35);
 	-fx-border-color: rgb(23,23,23);
+}
+
+.button-invalid {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(153,0,0) 0.0, rgb(179,26,26) 100.0);
+	-fx-text-fill: white;
+}
+
+.button-valid {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(51,102,51) 0.0, rgb(102,153,102) 100.0);
+	-fx-text-fill: white;
 }

@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -50,6 +51,8 @@ public class VoteRegistrator extends Application implements Initializable {
 	
 	List<ComboBox<ParticipantData>> cmBoxes;
 	ObservableList<ParticipantData> ps = FXCollections.observableArrayList ();
+	
+	int clashes;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -81,6 +84,10 @@ public class VoteRegistrator extends Application implements Initializable {
 		cmBoxes.add (combo2);
 		cmBoxes.add (combo1);
 		
+		combo12.getStyleClass ().add ("combo12");
+		combo10.getStyleClass ().add ("combo10");
+		combo8.getStyleClass ().add ("combo8");
+		
 		voteTopLabel.setText ("Votes from...: " + CoreUI.inputData.getSelectedParticipant ().getName ());
 		
 		for (ParticipantData p : CoreUI.inputData.getParticipants ()) {
@@ -99,7 +106,32 @@ public class VoteRegistrator extends Application implements Initializable {
 
 		for (ComboBox<ParticipantData> box : cmBoxes) {
 			box.setItems (ps);
+			box.valueProperty ().addListener ((observable, oldValue, newValue) -> sweepOverBoxes());
 		}
+	}
+	
+	private void sweepOverBoxes () {
+		clashes = 0;
+		
+		for (ComboBox<?> cBox : cmBoxes) {
+			removeStyle (cBox, "combo-invalid");
+		}
+		
+		for (ComboBox<ParticipantData> box : cmBoxes) {
+			for (ComboBox<ParticipantData> iBox : cmBoxes) {
+				
+				if (box != iBox && box.getSelectionModel ().getSelectedItem () == iBox.getSelectionModel ().getSelectedItem () &&
+						box.getSelectionModel ().getSelectedItem () != null && 
+						iBox.getSelectionModel ().getSelectedItem () != null) {
+					
+					clashes++;
+					box.getStyleClass ().add ("combo-invalid");
+					iBox.getStyleClass ().add("combo-invalid");
+				}
+			}
+		} 
+		
+		clashes/=2;
 	}
 	
 	private void setUpConfirmButton () {
@@ -112,35 +144,42 @@ public class VoteRegistrator extends Application implements Initializable {
 				
 				VoteSetter voteSetter = new VoteSetter (CoreUI.inputData.getSelectedParticipant (), votes);
 				voteSetter.execute ();
+				voteConfirmButton.setText("Votes counted!");
+				voteConfirmButton.getStyleClass ().add ("button-valid");
+				
 				CoreUI.commandLog.put (++CoreUI.nrOfCommands, voteSetter);
 				CoreUI.commandPtr = CoreUI.nrOfCommands;
 			}
 		});
+		
+		voteConfirmButton.setOnMouseEntered (event -> {
+			boolean valid = validVotes();
+			String newText = valid ? "Confirm votes?" : "Invalid votes!";
+			voteConfirmButton.getStyleClass ().add (valid ? "buttonHover" : "button-invalid");
+			voteConfirmButton.setText (newText);
+		});
+		voteConfirmButton.setOnMouseExited (event -> {
+			removeStyle (voteConfirmButton, "buttonHover");
+			removeStyle (voteConfirmButton, "button-invalid");
+			removeStyle (voteConfirmButton, "button-valid");
+			voteConfirmButton.setText ("OK");
+		});
 	}
 	
-	private boolean validVotes() {
-		ArrayList<ParticipantData> votees = new ArrayList<>();
-		
+	private boolean validVotes() {		
 		for (ComboBox<ParticipantData> cBox : cmBoxes) {
-			ParticipantData votee = cBox.getSelectionModel ().getSelectedItem ();
-			if (votee == null) return false;
-			votees.add (votee);
+			if (cBox.getSelectionModel ().getSelectedItem () == null) return false;
 		}
-		
-		for (ParticipantData pData : votees) {
-			if (appearsMoreThanOnce (votees, pData)) return false;
-		}
-		
-		return true;
+		return clashes == 0;
 	}
 	
-	private boolean appearsMoreThanOnce (ArrayList<ParticipantData> votees, ParticipantData searched) {
-		int numCount = 0;
+	private void removeStyle (Control cb, String rStyle) {
+		ObservableList<String> styles = FXCollections.observableArrayList();
 		
-		for (ParticipantData pData : votees) {
-			if (pData.getName ().equals (searched.getName ())) numCount++;
+		for (String style : cb.getStyleClass ()) {
+			if (style.equals(rStyle)) styles.add(style);
 		}
 		
-		return numCount > 1;
+		cb.getStyleClass().removeAll(styles);
 	}
 }

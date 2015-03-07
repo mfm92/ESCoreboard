@@ -28,9 +28,18 @@
 	-fx-border-width: 1 1 1 1;
 }
 
+.text-field-valid {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(34,137,93) 0.0, rgb(36,162,109) 100.0);
+}
+
+.text-field-invalid {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(153,0,0) 0.0, rgb(179,26,26) 100.0);
+	-fx-font-style: oblique ;
+}
+
 .text-field:hover {
-	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(0,26,128) 0.0, rgb(51,26,128) 100.0);
-	-fx-text-fill: rgb(232,232,232);
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(204,204,204) 0.0, rgb(230,230,230) 100.0);
+	-fx-text-fill: rgb(23,23,23);
 	-fx-font-size: 11pt;
 	-fx-border-color: rgb(186,186,186);
 	-fx-border-width: 1 1 1 1;
@@ -52,7 +61,7 @@
 	-fx-border-width: 1 1 1 1;
 }
 
-.button:hover {
+.buttonHover {
 	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26,0,104) 0.0, rgb(51,26,128) 100.0);
 	-fx-text-fill: rgb(254, 254, 254);
 	-fx-font-size: 16pt;
@@ -60,10 +69,14 @@
 	-fx-border-width: 1 1 1 1;
 }
 
-.button:selected {
-	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(204,204,204) 0.0, rgb(230,230,230) 100.0);
-	-fx-text-fill: rgb(35,35,35);
-	-fx-font-size: 16pt;
-	-fx-border-color: rgb(23,23,23);
-	-fx-border-width: 1 1 1 1;
+.button-valid {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26,77,26) 0.0, rgb(77,128,77) 100.0);
+}
+
+.button-invalid {
+	-fx-background-color: radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(179,26,26) 0.0, rgb(153,0,0) 100.0 );
+}
+
+.buttonConfirmed {
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(77,128,77) 0.0, rgb(128,179,128) 100.0);
 }
