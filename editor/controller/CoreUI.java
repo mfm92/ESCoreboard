@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
@@ -212,6 +213,22 @@ public class CoreUI extends Application implements Initializable {
 			dataSaver.save (saveAs);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void voteOverview () {
+		System.out.println ("These have voted:");
+		
+		for (Map.Entry<ParticipantData, ?> mapE : inputData.getVotes ().entrySet ()) {
+			System.out.println (mapE.getKey ().getName ());
+		}
+		
+		System.out.println ("These are missing...: ");
+		
+		for (ParticipantData pData : inputData.getParticipants ()) {
+			if (!inputData.getVotes ().entrySet ().contains (pData)) {
+				System.out.println (pData.getName ());
+			}
 		}
 	}
 	
@@ -431,9 +448,15 @@ public class CoreUI extends Application implements Initializable {
 		
 		addEntryButton.setOnAction (event -> addEntry());
 		removeEntryButton.setOnAction (event -> removeEntry());
-		setVotesButton.setOnAction (event -> setVotes());
+		setVotesButton.setOnMouseClicked (event -> {
+			if (event.isControlDown()) {
+				voteOverview ();
+			} else setVotes();
+		});
 	
 		removeEntryButton.setOnMouseEntered (event -> {
+			removeEntryButton.getStyleClass ().add ("stylo");
+			
 			int selectedNr = table.getSelectionModel().getSelectedItems().size();
 			
 			if (selectedNr == 0) return;
@@ -453,12 +476,17 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		setVotesButton.setOnMouseEntered (event -> {
+			if (event.isControlDown()) {
+				setVotesButton.setText ("Who voted? Overview");
+				return;
+			}
 			if (table.getSelectionModel().getSelectedItems().size() == 1) {
 				setVotesButton.setText ("Set votes for " + inputData.getSelectedParticipant ().getName ());
 			}
 		});
 		
 		removeEntryButton.setOnMouseExited (event -> {
+			removeEntryButton.getStyleClass ().remove ("stylo");
 			removeEntryButton.setText ("Remove Entry");
 		});
 		

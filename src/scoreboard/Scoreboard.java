@@ -231,41 +231,37 @@ public class Scoreboard extends Application {
 	private void showVideoAndDirect(Participant receiver,
 			final Standings standings, final Scoreboard scoreboard) {
 		Entry recEntry = receiver.getEntry ();
-		Media entry = recEntry.getMedia ();
-		MediaPlayer entryPlayer = new MediaPlayer (entry);
-		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
-		entryPlayer.setAutoPlay (true);
-		entryPlayer.setVolume (0.5);
-		entryPlayer.setCycleCount (1);
+		
+		if (!(recEntry == null)) {
+			Media entry = recEntry.getMedia ();
+			MediaPlayer entryPlayer = new MediaPlayer (entry);
+			entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
+			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
+			entryPlayer.setAutoPlay (true);
+			entryPlayer.setVolume (0.5);
+			entryPlayer.setCycleCount (1);
 
-		MediaView entryView = new MediaView ();
-		entryView.setMediaPlayer (entryPlayer);
-		entryView.setFitHeight (2000);
-		entryView.setFitWidth (1200);
-		entryView.setX (100);
-		entryView.setY (50);
-		entryView.setId ("media");
+			MediaView entryView = new MediaView ();
+			entryView.setMediaPlayer (entryPlayer);
+			entryView.setFitHeight (2000);
+			entryView.setFitWidth (1200);
+			entryView.setX (100);
+			entryView.setY (50);
+			entryView.setId ("media");
 
-		getRoot().getChildren ().add (entryView);
-		entryPlayer.play ();
-		entryPlayer.setOnEndOfMedia (new Runnable () {
-			@Override
-			public void run() {
+			getRoot().getChildren ().add (entryView);
+			entryPlayer.play ();
+			entryPlayer.setOnEndOfMedia (() -> {
 				getRoot().getChildren ().add (0, getBackground());
 				Platform.runLater (showOneToSeven (standings, scoreboard));
-			}
-		});
+			});	
+		} else {
+			// TODO: Wait depending on duration, then continue.
+		}
 	}
 
-	private Thread showOneToSeven(final Standings standings,
-			final Scoreboard scoreboard) {
-		return new Thread (new Runnable () {
-			@Override
-			public void run() {
-				getTo7ScreenMaker().showSplitScreen (scoreboard, standings, isTraditionalVoting());
-			}
-		});
+	private Thread showOneToSeven (final Standings standings, final Scoreboard scoreboard) {
+		return new Thread (() -> getTo7ScreenMaker().showSplitScreen (scoreboard, standings, isTraditionalVoting()));
 	}
 
 	void generateImageScoreboard(Node rootNode, Participant voter) {

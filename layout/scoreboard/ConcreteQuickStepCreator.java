@@ -6,8 +6,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -81,103 +79,94 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			scoreboard.getRoot().getChildren ().add (entryView);
 			entryPlayer.play ();
 
-			entryPlayer.setOnPlaying (new Runnable () {
-				@Override
-				public void run() {
+			entryPlayer.setOnPlaying (() -> {
+				int transSNum = scoreboard.getTransParts() / scoreboard.getColumnsNrTransition() + 1;
+				int transSDen = (int) ((double) scoreboard.getHeightTransition() / (double) transSNum);
+				
+				for (int i = 0; i < scoreboard.getTransParts(); i++) {
+					Rectangle rect = new Rectangle();
+					rect.setHeight (transSDen);
+					rect.setWidth (scoreboard.getColumnWidthTransition());
+					rect.setX (scoreboard.getTransitionXOffset() - scoreboard.getColumnWidthTransition() * ((i+1) / transSNum));
+					rect.setY (scoreboard.getTransitionYOffset() - transSDen * ((i+1) % transSNum));
+					rect.setFill (new ImagePattern (scoreboard.getDataCarrier().nationTileBackground));
+					rects.add (rect);
 
-					int transSNum = scoreboard.getTransParts() / scoreboard.getColumnsNrTransition() + 1;
-					int transSDen = (int) ((double) scoreboard.getHeightTransition() / (double) transSNum);
+					ImageView viewFlag = new ImageView();
+					viewFlag.setFitHeight (scoreboard.getFlagHeightTransition ());
+					viewFlag.setFitWidth (scoreboard.getFlagWidthTransition ());
+					viewFlag.setImage (currentVoterCopy.getVotes ().getReceivers ()[i].getFlag ());
+					viewFlag.setX (rect.getX () + scoreboard.getPointTokenWidthTransition() + scoreboard.getFlagFromPTOffsetTrans() +
+									scoreboard.getPtfromEdgeOffsetTrans());
+					viewFlag.setY (rect.getY () + (rect.getHeight () - scoreboard.getFlagHeightTransition()) / 2);
 					
-					for (int i = 0; i < scoreboard.getTransParts(); i++) {
-						Rectangle rect = new Rectangle();
-						rect.setHeight (transSDen);
-						rect.setWidth (scoreboard.getColumnWidthTransition());
-						rect.setX (scoreboard.getTransitionXOffset() - scoreboard.getColumnWidthTransition() * ((i+1) / transSNum));
-						rect.setY (scoreboard.getTransitionYOffset() - transSDen * ((i+1) % transSNum));
-						rect.setFill (new ImagePattern (scoreboard.getDataCarrier().nationTileBackground));
-						rects.add (rect);
-
-						ImageView viewFlag = new ImageView();
-						viewFlag.setFitHeight (scoreboard.getFlagHeightTransition ());
-						viewFlag.setFitWidth (scoreboard.getFlagWidthTransition ());
-						viewFlag.setImage (currentVoterCopy.getVotes ().getReceivers ()[i].getFlag ());
-						viewFlag.setX (rect.getX () + scoreboard.getPointTokenWidthTransition() + scoreboard.getFlagFromPTOffsetTrans() +
-										scoreboard.getPtfromEdgeOffsetTrans());
-						viewFlag.setY (rect.getY () + (rect.getHeight () - scoreboard.getFlagHeightTransition()) / 2);
-						
-						flags.add (viewFlag);
-						
-						VBox rectVBox = new VBox();
-						rectVBox.setLayoutX (viewFlag.getX () + viewFlag.getFitWidth () + scoreboard.getTextFromFlagOffsetTrans());
-						rectVBox.setLayoutY (rect.getY ());
-						rectVBox.setPrefHeight (transSDen);
-						rectVBox.setPrefWidth (rect.getWidth () - (scoreboard.getPointTokenWidthTransition() + 
-								scoreboard.getPtfromEdgeOffsetTrans() +
-								scoreboard.getFlagFromPTOffsetTrans() +
-								scoreboard.getFlagWidthTransition() +
-								scoreboard.getTextFromFlagOffsetTrans()));
-						rectVBox.setAlignment (Pos.CENTER_LEFT);
-
-						Text recText = new Text();
-						recText.setText (currentVoterCopy.getVotes ().getReceivers ()[i].getName ());
-						recText.setFont (Font.font ("Coolvetica RG", FontWeight.MEDIUM, 33));
-						recText.setFill (Color.WHITE);
-						
-						rectVBox.getChildren().add (recText);
-						recTexts.add (rectVBox);
-					}
-
-					final ArrayList<Timeline> timelines = new ArrayList<> ();
-					final ArrayList<ImageView> pointViews = new ArrayList<> ();
+					flags.add (viewFlag);
 					
-					for (int i = 0; i < scoreboard.getTransParts(); i++) {
-						ImageView pointView = new ImageView();
-						pointView.setFitHeight (scoreboard.getPointTokenHeightTransition ());
-						pointView.setFitWidth (scoreboard.getPointTokenWidthTransition ());
-						pointView.setImage (scoreboard.getDataCarrier ().getPointsTokens ().get (i));
-						pointView.setX(scoreboard.getPointTokenXOffsetTransition() + i *
-								scoreboard.getPointTokenWidthTransition());
-						pointView.setY (scoreboard.getPointTokenYOffsetTransition());
+					VBox rectVBox = new VBox();
+					rectVBox.setLayoutX (viewFlag.getX () + viewFlag.getFitWidth () + scoreboard.getTextFromFlagOffsetTrans());
+					rectVBox.setLayoutY (rect.getY ());
+					rectVBox.setPrefHeight (transSDen);
+					rectVBox.setPrefWidth (rect.getWidth () - (scoreboard.getPointTokenWidthTransition() + 
+							scoreboard.getPtfromEdgeOffsetTrans() +
+							scoreboard.getFlagFromPTOffsetTrans() +
+							scoreboard.getFlagWidthTransition() +
+							scoreboard.getTextFromFlagOffsetTrans()));
+					rectVBox.setAlignment (Pos.CENTER_LEFT);
 
-						pointViews.add (pointView);
-						double shiftPVX = rects.get (i).getX () - pointView.getX () + scoreboard.getPtfromEdgeOffsetTrans();
-						double shiftPVY = rects.get (i).getY () - pointView.getY () + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2;
-						
-						to7Group.getChildren ().add (pointView);
-						Timeline timeline = new Timeline ();
-						timeline.getKeyFrames ().addAll (
-								new KeyFrame (scoreboard.getVoteTokenDuration(), new KeyValue (
-										pointView.translateXProperty (), shiftPVX),
-										new KeyValue (pointView.translateYProperty (), shiftPVY)));
-						timelines.add (timeline);
-					}
+					Text recText = new Text();
+					recText.setText (currentVoterCopy.getVotes ().getReceivers ()[i].getName ());
+					recText.setFont (Font.font ("Coolvetica RG", FontWeight.MEDIUM, 33));
+					recText.setFill (Color.WHITE);
+					
+					rectVBox.getChildren().add (recText);
+					recTexts.add (rectVBox);
+				}
 
-					int counter = 0;
-					for (final Timeline timeline : timelines) {
-						timeline.setDelay (Duration.seconds (counter));
-						timeline.play ();
-						final int cSave = counter++;
-						timeline.setOnFinished (new EventHandler<ActionEvent> () {
-							@Override
-							public void handle(ActionEvent event) {
-								to7Group.getChildren ().add (1, rects.get (cSave));
-								to7Group.getChildren ().add (flags.get (cSave));
-								to7Group.getChildren ().add (recTexts.get (cSave));
-								pointViews.get (cSave).toFront ();
-							}
-						});
-					}
+				final ArrayList<Timeline> timelines = new ArrayList<> ();
+				final ArrayList<ImageView> pointViews = new ArrayList<> ();
+				
+				for (int i = 0; i < scoreboard.getTransParts(); i++) {
+					ImageView pointView = new ImageView();
+					pointView.setFitHeight (scoreboard.getPointTokenHeightTransition ());
+					pointView.setFitWidth (scoreboard.getPointTokenWidthTransition ());
+					pointView.setImage (scoreboard.getDataCarrier ().getPointsTokens ().get (i));
+					pointView.setX(scoreboard.getPointTokenXOffsetTransition() + i *
+							scoreboard.getPointTokenWidthTransition());
+					pointView.setY (scoreboard.getPointTokenYOffsetTransition());
+
+					pointViews.add (pointView);
+					double shiftPVX = rects.get (i).getX () - pointView.getX () + scoreboard.getPtfromEdgeOffsetTrans();
+					double shiftPVY = rects.get (i).getY () - pointView.getY () + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2;
+					
+					to7Group.getChildren ().add (pointView);
+					Timeline timeline = new Timeline ();
+					timeline.getKeyFrames ().addAll (
+							new KeyFrame (scoreboard.getVoteTokenDuration(), new KeyValue (
+									pointView.translateXProperty (), shiftPVX),
+									new KeyValue (pointView.translateYProperty (), shiftPVY)));
+					timelines.add (timeline);
+				}
+
+				int counter = 0;
+				for (final Timeline timeline : timelines) {
+					timeline.setDelay (Duration.seconds (counter));
+					timeline.play ();
+					final int cSave = counter++;
+					timeline.setOnFinished (event -> {
+						to7Group.getChildren ().add (1, rects.get (cSave));
+						to7Group.getChildren ().add (flags.get (cSave));
+						to7Group.getChildren ().add (recTexts.get (cSave));
+						pointViews.get (cSave).toFront ();
+					});
 				}
 			});
-
-			entryPlayer.setOnEndOfMedia (new Runnable () {
-				@Override
-				public void run() {
-					final int save = scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
-					Platform.runLater (new VoteAdder (standings, scoreboard,
-							scoreboard.getDataCarrier(), save, tradVP));
-				}
-			});	
+			
+			entryPlayer.setOnEndOfMedia (() -> {
+				final int save = scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
+				Platform.runLater (new VoteAdder (standings, scoreboard,
+						scoreboard.getDataCarrier(), save, tradVP));
+			});
+			
 		} else {
 			final int save = scoreboard.inCountryCounter;
 			Platform.runLater (new VoteAdder (standings, scoreboard,
@@ -198,5 +187,4 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		root.getChildren ().remove (root.lookup ("#superText"));
 		root.getChildren ().remove (root.lookup ("#backgroundDummy"));
 	}
-
 }

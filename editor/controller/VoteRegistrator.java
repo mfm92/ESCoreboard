@@ -55,7 +55,9 @@ public class VoteRegistrator extends Application implements Initializable {
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/VoteRegistrator.fxml"));
 		Pane voteDocRoot = (Pane) loader.load ();
-		primaryStage.setScene (new Scene (voteDocRoot));
+		Scene scene = new Scene(voteDocRoot);
+		scene.getStylesheets ().add ("/view/VoteRegistrator.css");
+		primaryStage.setScene (scene);
 		primaryStage.show ();
 	}
 
@@ -93,7 +95,7 @@ public class VoteRegistrator extends Application implements Initializable {
 			}	
 		}
 		
-		ps.remove (CoreUI.inputData.getSelectedParticipant ().getName ());
+		ps.remove (CoreUI.inputData.getSelectedParticipant ());
 
 		for (ComboBox<ParticipantData> box : cmBoxes) {
 			box.setItems (ps);

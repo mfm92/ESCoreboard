@@ -38,7 +38,9 @@ public class EntryAdderUI implements Initializable {
 	public void init (Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/EntryAdder.fxml"));
 		Pane voteDocRoot = (Pane) loader.load ();
-		primaryStage.setScene (new Scene (voteDocRoot));
+		Scene addScene = new Scene (voteDocRoot);
+		addScene.getStylesheets ().add("/view/EntryAdder.css");
+		primaryStage.setScene (addScene);
 		primaryStage.show ();
 	}
 	
@@ -76,10 +78,7 @@ public class EntryAdderUI implements Initializable {
 		if (nameField.getText ().equals ("")) return false;
 		if (artistField.getText ().equals ("")) return false;
 		if (titleField.getText ().equals ("")) return false;
-		if (startField.getText ().equals ("")) return false;
 		if (endTimeField.getText ().equals ("")) return false;
-		if (startTimeField.getText ().equals ("")) return false;
-		if (statusField.getText ().equals ("")) return false;
 		if (shortNameField.getText ().equals ("")) return false;
 		
 		return true;

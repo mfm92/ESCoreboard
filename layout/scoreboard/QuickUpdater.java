@@ -9,8 +9,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -79,69 +77,63 @@ public class QuickUpdater extends UpdateAnimator {
 		for (Timeline timeline : timelines) {
 			timeline.play ();
 			if (timeline == timelines.get (timelines.size () - 1)) {
-				timeline.setOnFinished (new EventHandler<ActionEvent> () {
-					@Override
-					public void handle(ActionEvent event) {
-						// UPDATE
-						scoreboard.getTileUpdater().updateTiles (scoreboard, null);
+				timeline.setOnFinished (event -> {
+					// UPDATE
+					scoreboard.getTileUpdater().updateTiles (scoreboard, null);
 
-						// MOVE TILES
-						for (Participant participant : scoreboard.getParticipants()) {
-							int oldPos = overview.getPosition (oldStandings, participant);
-							int newPos = overview.getPosition (standings, participant);
+					// MOVE TILES
+					for (Participant participant : scoreboard.getParticipants()) {
+						int oldPos = overview.getPosition (oldStandings, participant);
+						int newPos = overview.getPosition (standings, participant);
 
-							double oldX = getXCoordByPos (oldPos, scoreboard);
-							double oldY = getYCoordByPos (oldPos, scoreboard);
-							double newX = getXCoordByPos (newPos, scoreboard);
-							double newY = getYCoordByPos (newPos, scoreboard);
+						double oldX = getXCoordByPos (oldPos, scoreboard);
+						double oldY = getYCoordByPos (oldPos, scoreboard);
+						double newX = getXCoordByPos (newPos, scoreboard);
+						double newY = getYCoordByPos (newPos, scoreboard);
 
-							double xShift = newX - oldX;
-							double yShift = newY - oldY;
+						double xShift = newX - oldX;
+						double yShift = newY - oldY;
 
-							Group nationGroup = scoreboard.getGroupNationMap()
-									.get (participant);
+						Group nationGroup = scoreboard.getGroupNationMap()
+								.get (participant);
 
-							TranslateTransition tTrans = new TranslateTransition ();
-							
-							tTrans.setNode (nationGroup);
-							tTrans.setDuration (scoreboard.getVoteTokenDuration());
-							tTrans.setByX (xShift);
-							tTrans.setByY (yShift);
-							tTrans.setAutoReverse (false);
-							tTrans.setInterpolator (Interpolator.EASE_BOTH);
-							tTrans.setCycleCount (1);
+						TranslateTransition tTrans = new TranslateTransition ();
+						
+						tTrans.setNode (nationGroup);
+						tTrans.setDuration (scoreboard.getVoteTokenDuration());
+						tTrans.setByX (xShift);
+						tTrans.setByY (yShift);
+						tTrans.setAutoReverse (false);
+						tTrans.setInterpolator (Interpolator.EASE_BOTH);
+						tTrans.setCycleCount (1);
 
-							transTrans.add (tTrans);
-						}
-						for (TranslateTransition tT : transTrans) {
-							for (int i = 0; i < scoreboard.getTransParts(); i++) {
-								scoreboard.getPointViews().get (i).toFront ();
-							}
-							tT.play ();
-							if (tT == transTrans.get (transTrans.size () - 1)) {
-								tT.setOnFinished (new EventHandler<ActionEvent> () {
-									@Override
-									public void handle(ActionEvent arg0) {
-										Collections.sort (scoreboard.getParticipants());
-										scoreboard.getTileUpdater().updateTiles (scoreboard, null);
-										
-										for (int i = 0; i < scoreboard.getTransParts(); i++) {
-											scoreboard.getRoot()
-													.getChildren ()
-													.remove (scoreboard.getPointViews().get (i));
-										}
-
-										// NEXT VOTES, PLEASE...
-										Platform.runLater (new VoteAdder (
-												overview, scoreboard,
-												scoreboard.getDataCarrier(),
-												++scoreboard.inCountryCounter, tradVP));
-										return;
-									}
-								});
-							}
-						} //woah... dat staircase
+						transTrans.add (tTrans);
 					}
+					for (TranslateTransition tT : transTrans) {
+						for (int i = 0; i < scoreboard.getTransParts(); i++) {
+							scoreboard.getPointViews().get (i).toFront ();
+						}
+						tT.play ();
+						if (tT == transTrans.get (transTrans.size () - 1)) {
+							tT.setOnFinished (eventTT -> {
+								Collections.sort (scoreboard.getParticipants());
+								scoreboard.getTileUpdater().updateTiles (scoreboard, null);
+								
+								for (int i = 0; i < scoreboard.getTransParts(); i++) {
+									scoreboard.getRoot()
+											.getChildren ()
+											.remove (scoreboard.getPointViews().get (i));
+								}
+
+								// NEXT VOTES, PLEASE...
+								Platform.runLater (new VoteAdder (
+										overview, scoreboard,
+										scoreboard.getDataCarrier(),
+										++scoreboard.inCountryCounter, tradVP));
+								return;
+							});
+						}
+					} //woah... dat staircase
 				});
 			} // jesus christ
 		}

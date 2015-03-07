@@ -47,14 +47,13 @@ public class InputDataModel {
 
 	public ArrayList<ParticipantData> getParticipants() {
 		ArrayList<ParticipantData> copy = new ArrayList<ParticipantData> (participants.getValue ());
-		System.out.println (copy.size ());
 		return copy;
 	}
 	
 	public void setParticipants (ObservableList<ParticipantData> ps) {
 		participants.setValue (ps);
 	}
-	
+
 	public Property<ObservableList<ParticipantData>> getParticipantsProperty () {
 		return participants;
 	}

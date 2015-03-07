@@ -76,7 +76,11 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			scoreVBox.getChildren ().add (scoreTest);
 
 			ImageView nationIcon = new ImageView();
-			nationIcon.setImage (scoreboard.getParticipants().get (position).getFlag ());
+			
+			if (!(scoreboard.getParticipants().get (position).getFlag () == null)) {
+				nationIcon.setImage (scoreboard.getParticipants().get (position).getFlag ());
+			}
+			
 			nationIcon.setLayoutX ((base.getHeight () - scoreboard.getFlagHeight()) / 2);
 			nationIcon.setLayoutY ((base.getHeight () - scoreboard.getFlagHeight()) / 2);
 			nationIcon.setId ("icon");

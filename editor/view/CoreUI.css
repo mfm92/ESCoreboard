@@ -15,9 +15,8 @@
 }
 
 .stylo {
-	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(26.0,77.0,26.0) 0.0, rgb(77.0,128.0,77.0) 100.0);
+	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(77,26,77) 0.0, rgb(128,77,128) 100.0);
 	-fx-text-fill: rgb(255.0,255.0,255.0);
-
 	-fx-font-size: 14.0pt;
 	-fx-border-color: rgb(255.0,255.0,255.0);
 	-fx-border-width: 1.0, 1.0, 1.0, 1.0;

@@ -14,6 +14,8 @@ import javafx.scene.media.Media;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import model.ParticipantData;
 import nations.Entry;
 import nations.Participant;
@@ -129,6 +131,10 @@ public class DataCarrier {
 
 	private Image readImage(String fileName) throws IOException {
 		BufferedImage newBuffImg = null;
+		
+		File file = new File (fileName);
+		if (!file.exists ()) return null;
+		
 		newBuffImg = ImageIO.read (new File (fileName));
 		return SwingFXUtils.toFXImage (newBuffImg, null);
 	}
@@ -201,11 +207,13 @@ public class DataCarrier {
 		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "\\";
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
-			Participant p = getRosterNationByShortName (pData.getShortName ());
-			Media entryVid = new Media (new File (mediaLocation + pData.getArtist ()
-					+ " - " + pData.getTitle () + ".mp4").toURI ().toString ());
-			p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, Integer.parseInt (pData.getStart ()),
-					Integer.parseInt (pData.getStop ()), pData.getStatus ()));
+			if (NumberUtils.isNumber (pData.getStart ()) && NumberUtils.isNumber (pData.getStop ())) {
+				Participant p = getRosterNationByShortName (pData.getShortName ());
+				Media entryVid = new Media (new File (mediaLocation + pData.getArtist ()
+						+ " - " + pData.getTitle () + ".mp4").toURI ().toString ());
+				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, Integer.parseInt (pData.getStart ()),
+						Integer.parseInt (pData.getStop ()), pData.getStatus ()));	
+			}
 		}
 	}
 
