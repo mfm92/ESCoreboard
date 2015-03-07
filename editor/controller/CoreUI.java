@@ -272,6 +272,11 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		nationNameCol.setOnEditCommit (event -> {
+			
+			for (ParticipantData pData : inputData.getParticipants ()) {
+				if (pData.getName().equals(event.getNewValue())) return;
+			}
+			
 			if (checkNoDuplicateName(event.getNewValue())) {
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"name", event.getOldValue (), event.getNewValue ());
@@ -286,6 +291,10 @@ public class CoreUI extends Application implements Initializable {
 		shortnameCol.setOnEditCommit (event -> {
 			String newCode = event.getNewValue ();
 			
+			for (ParticipantData pData : inputData.getParticipants ()) {
+				if (pData.getShortName().equals(event.getNewValue())) return;
+			}
+			
 			if (newCode.length () == 3 && checkIfUpperCase (newCode) && checkNoDuplicateShortName(newCode)) {
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"shortName", event.getOldValue (), event.getNewValue ());
@@ -298,6 +307,11 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		artistCol.setOnEditCommit (event -> {
+			
+			for (ParticipantData pData : inputData.getParticipants ()) {
+				if (pData.getArtist().equals(event.getNewValue())) return;
+			}
+			
 			if (checkNoDuplicateArtist(event.getNewValue())) {
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"artist", event.getOldValue (), event.getNewValue ());
@@ -318,7 +332,7 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		startCol.setOnEditCommit (event -> {
-			if (NumberUtils.isNumber (event.getNewValue ())) {
+			if (NumberUtils.isNumber (event.getNewValue ()) && Integer.parseInt (event.getNewValue ()) >= 0) {
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"start", event.getOldValue (), event.getNewValue ());
 				eEditor.execute ();
@@ -328,7 +342,12 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		stopCol.setOnEditCommit (event -> {
-			if (NumberUtils.isNumber (event.getNewValue ())) {
+			int number;
+			
+			if (NumberUtils.isNumber (event.getNewValue ()) && (number = Integer.parseInt (event.getNewValue ())) > 0) {
+
+				if (number - Integer.parseInt(inputData.getSelectedParticipant().getStart()) <= 0) return;
+				
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"stop", event.getOldValue (), event.getNewValue ());
 				eEditor.execute ();
@@ -338,7 +357,7 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		gridCol.setOnEditCommit (event -> {
-			if (NumberUtils.isNumber (event.getNewValue ()) && checkNoDuplicateGrid (event.getNewValue())) {
+			if (NumberUtils.isNumber (event.getNewValue ()) && Integer.parseInt (event.getNewValue ()) > 0 && checkNoDuplicateGrid (event.getNewValue())) {
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"grid", event.getOldValue (), event.getNewValue ());
 				eEditor.execute ();
@@ -350,7 +369,7 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		statusCol.setOnEditCommit (event -> {
-			if (event.getNewValue().equals("P") || event.getNewValue().equals("")) {
+			if (event.getNewValue().equals("P") || event.getNewValue().equals("O") || event.getNewValue ().equals ("V")) {
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"status", event.getOldValue (), event.getNewValue ());
 				eEditor.execute ();
