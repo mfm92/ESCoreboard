@@ -66,9 +66,14 @@ public class EntryWriter {
 					+ STRING_SEPARATOR);
 		}
 		
-		String flagsDirectory = CoreUI.inputData.getFlagDirectory ().replace ("\\", "\\\\");
-		String prettyFlagDirectory = CoreUI.inputData.getPrettyFlagDirectory ().replace ("\\", "\\\\");
-		String entriesDirectory = CoreUI.inputData.getEntriesDirectory ().replace ("\\", "\\\\");
+		String flagsDirectory = (CoreUI.inputData.getFlagDirectory () == null || CoreUI.inputData.getFlagDirectory ().equals("null")) ? 
+				"null" : CoreUI.inputData.getFlagDirectory ().replace ("\\", "\\\\");
+					
+		String prettyFlagDirectory = (CoreUI.inputData.getPrettyFlagDirectory () == null || CoreUI.inputData.getPrettyFlagDirectory ().equals ("null")) ?
+				"null" : CoreUI.inputData.getPrettyFlagDirectory ().replace ("\\", "\\\\");
+					
+		String entriesDirectory = (CoreUI.inputData.getEntriesDirectory () == null || CoreUI.inputData.getEntriesDirectory ().equals ("null")) ? 
+				"null" : CoreUI.inputData.getEntriesDirectory ().replace ("\\", "\\\\");
 		
 		paramsOut.append ("NAME_EDITION = " + CoreUI.inputData.getNameOfEdition () + STRING_SEPARATOR);
 		paramsOut.append ("EDITION_NR = " + CoreUI.inputData.getEditionNr () + STRING_SEPARATOR + STRING_SEPARATOR);

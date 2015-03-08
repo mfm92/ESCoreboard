@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import javafx.stage.FileChooser;
 import model.ParticipantData;
 import controller.CoreUI;
@@ -97,6 +99,8 @@ public class TableLoader {
 		coreUI.fullScreenBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_FULLSCREEN")));
 		coreUI.prettyFlagsBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("USE_PRETTY_FLAGS")));
 		coreUI.traditionalVotingCheckBox.setSelected (Boolean.parseBoolean (paramFile.getProperty ("TRADITIONAL_VOTING")));
-		coreUI.speedSlider.setValue (Double.parseDouble (paramFile.getProperty ("SPEED_SHOW")));
+		
+		String speed = paramFile.getProperty ("SPEED_SHOW");
+		coreUI.speedSlider.setValue (NumberUtils.isNumber (speed) ? Double.parseDouble (speed) : 0.0);
 	}
 }
