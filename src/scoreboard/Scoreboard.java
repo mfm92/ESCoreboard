@@ -238,7 +238,7 @@ public class Scoreboard extends Application {
 		MediaView entryView = new MediaView ();
 		entryView.setPreserveRatio (false);
 		entryView.setMediaPlayer (entryPlayer);
-		entryView.setFitHeight (900 - getHeightTransition ());
+		entryView.setFitHeight (674);
 		entryView.setFitWidth (1200);
 		entryView.setX (100);
 		entryView.setY (50);

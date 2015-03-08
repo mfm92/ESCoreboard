@@ -43,10 +43,6 @@ import controller.commands.MacroCommand;
 import controller.commands.TableClearer;
 import controller.commands.TableLoader;
 
-/*
- * TODO: Write spreadsheet into Excel?
- * TODO: Previewer?
- */
 public class CoreUI extends Application implements Initializable {
 	
 	public static int nrOfCommands;

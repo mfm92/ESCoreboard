@@ -75,8 +75,8 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			entryView.setX (entryX);
 			entryView.setY (entryY);
 			entryView.setId ("media");
-			entryView.setFitHeight (1080 - entryX - scoreboard.getHeightTransition () - 50);
-			entryView.setFitWidth (1200);
+			entryView.setFitHeight (scoreboard.getTransitionYOffset () - scoreboard.getHeightTransition () - 60);
+			entryView.setFitWidth (scoreboard.getColumnWidthTransition () * 2);
 			scoreboard.getRoot().getChildren ().add (entryView);
 			entryPlayer.play ();
 
