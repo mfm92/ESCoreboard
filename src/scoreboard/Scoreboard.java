@@ -227,32 +227,29 @@ public class Scoreboard extends Application {
 			final Standings standings, final Scoreboard scoreboard) {
 		Entry recEntry = receiver.getEntry ();
 		
-		if (!(recEntry == null)) {
-			Media entry = recEntry.getMedia ();
-			MediaPlayer entryPlayer = new MediaPlayer (entry);
-			entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
-			entryPlayer.setAutoPlay (true);
-			entryPlayer.setVolume (0.5);
-			entryPlayer.setCycleCount (1);
+		Media entry = recEntry.getMedia ();
+		MediaPlayer entryPlayer = new MediaPlayer (entry);
+		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
+		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
+		entryPlayer.setAutoPlay (true);
+		entryPlayer.setVolume (0);
+		entryPlayer.setCycleCount (1);
 
-			MediaView entryView = new MediaView ();
-			entryView.setMediaPlayer (entryPlayer);
-			entryView.setFitHeight (2000);
-			entryView.setFitWidth (1200);
-			entryView.setX (100);
-			entryView.setY (50);
-			entryView.setId ("media");
+		MediaView entryView = new MediaView ();
+		entryView.setPreserveRatio (false);
+		entryView.setMediaPlayer (entryPlayer);
+		entryView.setFitHeight (900 - getHeightTransition ());
+		entryView.setFitWidth (1200);
+		entryView.setX (100);
+		entryView.setY (50);
+		entryView.setId ("media");
 
-			getRoot().getChildren ().add (entryView);
-			entryPlayer.play ();
-			entryPlayer.setOnEndOfMedia (() -> {
-				getRoot().getChildren ().add (0, getBackground());
-				Platform.runLater (showOneToSeven (standings, scoreboard));
-			});	
-		} else {
-			// TODO: Wait depending on duration, then continue.
-		}
+		getRoot().getChildren ().add (entryView);
+		entryPlayer.play ();
+		entryPlayer.setOnEndOfMedia (() -> {
+			getRoot().getChildren ().add (0, getBackground());
+			Platform.runLater (showOneToSeven (standings, scoreboard));
+		});	
 	}
 
 	private Thread showOneToSeven (final Standings standings, final Scoreboard scoreboard) {

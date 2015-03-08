@@ -44,9 +44,7 @@ import controller.commands.TableClearer;
 import controller.commands.TableLoader;
 
 /*
- * TODO: Tie Resolution Policy?
  * TODO: Write spreadsheet into Excel?
- * TODO: Make Start/Stop/Grid non-obligatory...
  * TODO: Previewer?
  */
 public class CoreUI extends Application implements Initializable {
@@ -346,7 +344,7 @@ public class CoreUI extends Application implements Initializable {
 			
 			if (NumberUtils.isNumber (event.getNewValue ()) && (number = Integer.parseInt (event.getNewValue ())) > 0) {
 
-				if (number - Integer.parseInt(inputData.getSelectedParticipant().getStart()) <= 0) return;
+				if (number - Integer.parseInt(inputData.getSelectedParticipant().getStart()) <= 10) return;
 				
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"stop", event.getOldValue (), event.getNewValue ());

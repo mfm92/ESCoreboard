@@ -58,6 +58,10 @@ public class DataCarrier {
 
 	public ArrayList<Participant> participants = new ArrayList<Participant> ();
 	
+	private Media dummyMedia;
+	private Image dummyFlag;
+	private Image dummyPrettyFlag;
+	
 	boolean readDiamonds;
 
 	BannerCreator bannerCreator = new SimpleBannerCreator (130, 810);
@@ -78,6 +82,7 @@ public class DataCarrier {
 		diamondMap = new HashMap<> ();
 
 		readUtilImages ();
+		readDummies ();
 		readPtsTokens ();
 		readNations ();
 		readVotes ();
@@ -128,6 +133,17 @@ public class DataCarrier {
 		voteCounterULSmall = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounterSmall.png");
 		ptHolder = readImage (resourcesFile + "Graphics\\SideBarTokens\\PTHolder.png");
 	}
+	
+	private void readDummies () throws IOException {
+		String dummyLocation = System.getProperty ("user.dir") + "\\resources\\Nation Info\\"
+				+ "Entries Videos\\Dummy.mp4";
+		File file = new File (dummyLocation);
+		dummyMedia = new Media (file.toURI ().toString ());
+		
+		dummyFlag = readImage (System.getProperty ("user.dir") + "\\resources\\Nation Info\\"
+				+ "Participants Flags\\EmptyEmptyEmpty.png");
+		dummyPrettyFlag = dummyFlag;
+	}
 
 	private Image readImage(String fileName) throws IOException {
 		BufferedImage newBuffImg = null;
@@ -172,14 +188,18 @@ public class DataCarrier {
 		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "\\";
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
+			
+			Image flag = readImage (flagFile + pData.getName () + ".png");
+			
 			Participant newNation = new Participant (pData.getName (), pData.getShortName (), 
-					readImage (flagFile + pData.getName () + ".png"));
+					flag == null ? dummyFlag : flag);	
+			
 			nations.add (newNation);
 			newNation.setVotes (voteMap.get (newNation));
 			
 			if (readDiamonds) {
-				diamondMap.put (newNation, readImage (diamondFile + "Diamond "
-						+ newNation.getShortName () + ".png"));	
+				Image dFlag = readImage (diamondFile + "Diamond " + newNation.getShortName () + ".png");
+				diamondMap.put (newNation, dFlag == null ? dummyPrettyFlag : dFlag);	
 			}
 			
 			nameMap.put (pData.getName (), newNation);
@@ -207,12 +227,16 @@ public class DataCarrier {
 		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "\\";
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
-			if (NumberUtils.isNumber (pData.getStart ()) && NumberUtils.isNumber (pData.getStop ())) {
-				Participant p = getRosterNationByShortName (pData.getShortName ());
-				Media entryVid = new Media (new File (mediaLocation + pData.getArtist ()
-						+ " - " + pData.getTitle () + ".mp4").toURI ().toString ());
+			Participant p = getRosterNationByShortName (pData.getShortName ());
+			
+			File mediaFile = new File (mediaLocation + pData.getArtist () + " - " + pData.getTitle () + ".mp4");
+			
+			if (mediaFile.exists() && NumberUtils.isNumber (pData.getStart ()) && NumberUtils.isNumber (pData.getStop ())) {
+				Media entryVid = new Media ((mediaFile).toURI ().toString ());
 				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, Integer.parseInt (pData.getStart ()),
-						Integer.parseInt (pData.getStop ()), pData.getStatus ()));	
+					Integer.parseInt (pData.getStop ()), pData.getStatus ()));	
+			} else {
+				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), dummyMedia, 13, 33, pData.getStatus ()));
 			}
 		}
 	}

@@ -101,17 +101,22 @@ public class SimpleBannerCreator extends BannerCreator {
 		partName.setFont (Font.font ("Coolvetica RG", partName.getText ()
 				.length () > 16 ? 28 : 36));
 
-		Text artistName = new Text (p.getEntry ().getArtist ());
+		Text artistName = new Text ();
 		artistName.setLayoutX (250);
 		artistName.setLayoutY (80);
 		artistName.setFill (textColor);
 		artistName.setFont (Font.font ("Inconsolata", 27));
 
-		Text titleName = new Text (p.getEntry ().getTitle ());
+		Text titleName = new Text ();
 		titleName.setLayoutX (225);
 		titleName.setLayoutY (105);
 		titleName.setFill (textColor);
 		titleName.setFont (Font.font ("Inconsolata", FontPosture.ITALIC, 27));
+		
+		if (p.getEntry () != null) {
+			artistName.setText(p.getEntry().getArtist ());
+			titleName.setText(p.getEntry().getTitle());
+		}
 
 		VBox partVBox = new VBox ();
 		partVBox.setAlignment (Pos.CENTER);

@@ -14,14 +14,6 @@
 	-fx-border-width: 1.0, 1.0, 1.0, 1.0;
 }
 
-.stylo {
-	-fx-background-color: linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(77,26,77) 0.0, rgb(128,77,128) 100.0);
-	-fx-text-fill: rgb(255.0,255.0,255.0);
-	-fx-font-size: 14.0pt;
-	-fx-border-color: rgb(255.0,255.0,255.0);
-	-fx-border-width: 1.0, 1.0, 1.0, 1.0;
-}
-
 #entryDirButton,
 #flagDirButton,
 #prettyFlagDirButton {
@@ -149,6 +141,8 @@
 
 .menu-bar {
 	-fx-background-color: rgb(44.0,44.0,44.0);
+	-fx-border-color: white;
+	-fx-border-width: 0 0 1 0;
 }
 
 .menu-bar .label {

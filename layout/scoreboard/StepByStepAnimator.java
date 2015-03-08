@@ -68,8 +68,19 @@ public class StepByStepAnimator extends UpdateAnimator {
 						new KeyValue (pointView.yProperty (), newPosY
 								- nationGroupL.getLayoutY ())));
 
-		scoreboard.getGroupNationMap().get (scoreboard.getParticipants().get (sizeDenom - 1)).toFront ();		
+		
 		timeline.play ();
+		
+		ArrayList<Participant> parts = new ArrayList<>(scoreboard.getGroupNationMap ().keySet ());
+		Collections.sort (parts);
+		
+		for (Participant p : parts) scoreboard.getGroupNationMap ().get (p).toBack ();
+		
+		for (int i = 1; i <= scoreboard.getColumnsNr () - 1; i++) {
+			scoreboard.getGroupNationMap().get (scoreboard.getParticipants().get (i * sizeDenom - 1)).toFront ();
+		}
+		
+		scoreboard.getGroupNationMap().get (receiver).toFront();
 
 		final Participant rece = receiver;
 		timeline.setOnFinished (event -> {

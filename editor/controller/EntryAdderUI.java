@@ -286,7 +286,7 @@ public class EntryAdderUI implements Initializable {
 	private boolean validStartOrStop (String start, String stop) {
 		return (NumberUtils.isNumber (start) && NumberUtils.isNumber (stop) &&
 				Integer.parseInt (start) >= 0 && Integer.parseInt(stop) > 0 &&
-				Integer.parseInt (stop) - Integer.parseInt(start) > 0);
+				Integer.parseInt (stop) - Integer.parseInt(start) > 10);
 	}
 	
 	private boolean validGrid (String grid) {

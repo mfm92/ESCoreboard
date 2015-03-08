@@ -54,7 +54,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		int entryY = 100;
 		
 		scoreboard.getRightSideBar().makeSideOfScoreboard (to7Group, currentVoterCopy, scoreboard, 900, entryX);
-
+		
 		if (!tradVP) {
 			final ArrayList<Rectangle> rects = new ArrayList<> ();
 			final ArrayList<ImageView> flags = new ArrayList<> ();
@@ -71,10 +71,11 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 
 			MediaView entryView = new MediaView ();
 			entryView.setMediaPlayer (entryPlayer);
+			entryView.setPreserveRatio (false);
 			entryView.setX (entryX);
 			entryView.setY (entryY);
 			entryView.setId ("media");
-			entryView.setFitHeight (2000);
+			entryView.setFitHeight (1080 - entryX - scoreboard.getHeightTransition () - 50);
 			entryView.setFitWidth (1200);
 			scoreboard.getRoot().getChildren ().add (entryView);
 			entryPlayer.play ();
@@ -174,7 +175,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		}
 	}
 
-	private void clear(Group root) {
+	private void clear (Group root) {
 		root.getChildren ().remove (root.lookup ("#12Strip"));
 		root.getChildren ().remove (root.lookup ("#12Content"));
 		root.getChildren ().remove (root.lookup ("#12Text"));
