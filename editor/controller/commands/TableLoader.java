@@ -18,9 +18,11 @@ import controller.CoreUI;
 public class TableLoader {
 	
 	CoreUI coreUI;
+	TableClearer clearer;
 	
-	public TableLoader (CoreUI coreUI) {
+	public TableLoader (CoreUI coreUI, TableClearer clearer) {
 		this.coreUI = coreUI;
+		this.clearer = clearer;
 	}
 
 	public void execute() throws FileNotFoundException, IOException {
@@ -40,6 +42,7 @@ public class TableLoader {
 		File paramsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\params_" + origin + ".txt");
 
 		try {
+			clearer.execute ();
 			readInParticipants (participantsFile);
 			readInVotes (votesFile);
 			readInParams (paramsFile);

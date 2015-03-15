@@ -23,7 +23,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 	@Override
 	public void makeSideOfScoreboard(Group group, Participant voter,
-			Scoreboard scoreboard, int underlayHeight, int underlayY) {
+			Scoreboard scoreboard) {
 
 		nrOfCalled++;
 
@@ -33,7 +33,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 		// VOTING CALL
 		Rectangle voteUnderlay = RectangleBuilder.create ().width (scoreboard.getRightBarWidth())
-				.height (0.2 * underlayHeight).x (scoreboard.getRightBarX()).y (underlayY)
+				.height (0.2 * scoreboard.rightBarHeight).x (scoreboard.getRightBarX()).y (scoreboard.rightBarY)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteUnderlay))
 				.build ();
 
@@ -52,9 +52,9 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		Rectangle voteFlagUnderlay = RectangleBuilder
 				.create ()
 				.width (voteUnderlay.getWidth ())
-				.height (0.5 * underlayHeight)
+				.height (0.5 * scoreboard.rightBarHeight)
 				.x (voteUnderlay.getX ())
-				.y (underlayY + 0.2 * underlayHeight)
+				.y (scoreboard.rightBarY + 0.2 * scoreboard.rightBarHeight)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteFlagUnderlay))
 				.build ();
 
@@ -75,7 +75,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		diamondVBox.setLayoutX (voteUnderlay.getX ());
 		diamondVBox.setLayoutY (voteUnderlay.getY ()
 				+ voteUnderlay.getHeight ());
-		diamondVBox.setPrefHeight (0.5 * underlayHeight);
+		diamondVBox.setPrefHeight (0.5 * scoreboard.rightBarHeight);
 		diamondVBox.setPrefWidth (voteUnderlay.getWidth ());
 		diamondVBox.setAlignment (Pos.CENTER);
 		diamondVBox.getChildren ().add (voterFlag);
@@ -84,9 +84,9 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		Rectangle currentVoterUnderlay = RectangleBuilder
 				.create ()
 				.width (voteUnderlay.getWidth ())
-				.height (0.2 * underlayHeight)
+				.height (0.2 * scoreboard.rightBarHeight)
 				.x (voteUnderlay.getX ())
-				.y (underlayY + 0.7 * underlayHeight)
+				.y (scoreboard.rightBarY + 0.7 * scoreboard.rightBarHeight)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteNameUnderlay))
 				.build ();
 
@@ -99,15 +99,15 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 		VBox currentVoterVBox = VBoxBuilder.create ()
 				.layoutX (voteUnderlay.getX ())
-				.layoutY (underlayY + 0.7 * underlayHeight)
-				.prefHeight (0.2 * underlayHeight)
+				.layoutY (scoreboard.rightBarY + 0.7 * scoreboard.rightBarHeight)
+				.prefHeight (0.2 * scoreboard.rightBarHeight)
 				.prefWidth (voteUnderlay.getWidth ()).children (currentVoter)
 				.alignment (Pos.CENTER).build ();
 
 		// ADD COUNTER
 		Rectangle counterUnderlay = RectangleBuilder.create ()
-				.width (voteUnderlay.getWidth ()).height (0.1 * underlayHeight)
-				.x (voteUnderlay.getX ()).y (underlayY + 0.9 * underlayHeight)
+				.width (voteUnderlay.getWidth ()).height (0.1 * scoreboard.rightBarHeight)
+				.x (voteUnderlay.getX ()).y (scoreboard.rightBarY + 0.9 * scoreboard.rightBarHeight)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteCounterUL))
 				.build ();
 

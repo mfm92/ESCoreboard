@@ -1,0 +1,13 @@
+NAME_EDITION = Eurovision Song Contest Semifinal 2
+EDITION_NR = 2015
+
+FLAGS_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\resources\\Nation Info\\Participant Flags
+PRETTY_FLAGS_DIR = null
+ENTRIES_DIR = C:\\Users\\MM92\\Desktop\\Study Folder\\Software Engineering\\ESCoreboard\\scoreboards
+
+CREATE_BANNERS = false
+USE_FULLSCREEN = true
+USE_PRETTY_FLAGS = true
+TRADITIONAL_VOTING = false
+
+SPEED_SHOW = 56.25

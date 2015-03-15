@@ -61,22 +61,27 @@ public abstract class UpdateAnimator {
 					.remove (scoreboard.getGroupNationMap().get (finalist).lookup ("#ptsProof"));
 		}
 		
-		if (scoreboard.getColumnsNr() > 2) {
-			scoreboard.getBottomSideBar().makeSideOfScoreboard (scoreboard.getRoot(),
-					voter, scoreboard, scoreboard.getBottomBarWidth(), scoreboard.getBottomBarX());
-		} else {
-			scoreboard.getRightSideBar().makeSideOfScoreboard (scoreboard.getRoot(), voter, scoreboard, 
-					scoreboard.getHeight(), scoreboard.getGlobalYOffset());
-		}
+		(scoreboard.getColumnsNr () > 2 ? scoreboard.getBottomSideBar() : scoreboard.getRightSideBar ()).
+			makeSideOfScoreboard (scoreboard.getRoot (), voter, scoreboard);
 	}
 
-	double getXCoordByPos(int position, Scoreboard scoreboard) {
-		return scoreboard.getGlobalXOffset() + scoreboard.getColumnWidth() * 
-				((position - 1) / ((int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr())));
+	static double getXCoordByPos(int position, Scoreboard scoreboard) {
+		return (((double) scoreboard.getScreenWidth() - (double) scoreboard.getBackgroundWidth()) / 2d
+				+ scoreboard.getWidthFromLeftOffset () 
+				+ scoreboard.getColumnWidth() * 
+					((position - 1) / 
+					((int) Math.ceil ((double) scoreboard.getParticipants().size () / 
+							(double) scoreboard.getColumnsNr()))));
 	}
 
-	double getYCoordByPos(int position, Scoreboard scoreboard) {
-		return scoreboard.getGlobalYOffset() + (scoreboard.getHeight() / ((int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr())))
-				* ((position - 1) % ((int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr())));
+	static double getYCoordByPos(int position, Scoreboard scoreboard) {
+		return (scoreboard.getHeightFromTopOffset () 
+				+ ((double) scoreboard.getScreenHeight () - (double) scoreboard.getBackgroundHeight ()) / 2d 
+				+ (scoreboard.getScoreboardHeight() 
+						/ ((int) Math.ceil ((double) scoreboard.getParticipants().size () / 
+								(double) scoreboard.getColumnsNr()))) * 
+								((position - 1) % 
+										((int) Math.ceil ((double) scoreboard.getParticipants().size () / 
+												(double) scoreboard.getColumnsNr()))));
 	}
 }

@@ -6,7 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -14,12 +19,13 @@ import javafx.scene.media.Media;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import model.ParticipantData;
 import nations.Entry;
 import nations.Participant;
 import nations.Votes;
+
+import org.apache.commons.lang3.math.NumberUtils;
+
 import bannercreator.BannerCreator;
 import bannercreator.SimpleBannerCreator;
 import controller.CoreUI;
@@ -73,65 +79,130 @@ public class DataCarrier {
 
 	public DataCarrier(boolean readDiamonds) throws IOException {
 		this.readDiamonds = readDiamonds;
-		initialize ();
 	}
 
-	public void initialize() throws IOException {
+	public void initialize() throws IOException, InterruptedException {
 		nameMap = new HashMap<String, Participant> ();
 		voteMap = new HashMap<Participant, Votes> ();
 		diamondMap = new HashMap<> ();
 
+//		ExecutorService exeService = Executors.newFixedThreadPool (6);
+//		List<Runnable> runs = new ArrayList<>();
+		
+		long longM = System.nanoTime ();
+		readNations();
+		long longE = System.nanoTime ();
+		System.out.println ("readNations: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
+		
+		longM = System.nanoTime ();
 		readUtilImages ();
+		longE = System.nanoTime ();
+		System.out.println ("readUtilImages: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
+		
+		longM = System.nanoTime ();
 		readDummies ();
+		longE = System.nanoTime ();
+		System.out.println ("readDummies: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
+		
+		longM = System.nanoTime ();
 		readPtsTokens ();
-		readNations ();
-		readVotes ();
+		longE = System.nanoTime ();
+		System.out.println ("readPtsTokens: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
+		
+		longM = System.nanoTime ();
 		readEntries ();
+		longE = System.nanoTime ();
+		System.out.println ("readEntries: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
+		
+		longM = System.nanoTime ();
+		readVotes ();
+		longE = System.nanoTime ();
+		System.out.println ("readVotes: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
 		
 		if (CoreUI.inputData.getBannerCreatorActivated ()) {
+			longM = System.nanoTime ();
 			createBanners ();
+			longE = System.nanoTime ();
+			System.out.println ("readCreateBanners: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));	
 		}
 	}
 
-	public void readUtilImages() throws IOException {
+	private void readUtilImages() throws IOException, InterruptedException {
 		String resourcesFile = this.resourcesFile + "resources\\";
-
-		nationTileBackground = readImage (resourcesFile
-				+ "Graphics\\Scoreboard Single Nation Backgrounds\\BG.png");
-		nationTileBackgroundScored = readImage (resourcesFile
-				+ "Graphics\\Scoreboard Single Nation Backgrounds\\Scored_BG.png");
-		nationTileBackgroundPQ = readImage (resourcesFile
-				+ "Graphics\\Scoreboard Single Nation Backgrounds\\PQ_BG.png");
-		nationTileBackgroundPQScored = readImage (resourcesFile
-				+ "Graphics\\Scoreboard Single Nation Backgrounds\\PQ_Scored_BG.png");
-		nationTileBackgroundVoter = readImage (resourcesFile
-				+ "Graphics\\Scoreboard Single Nation Backgrounds\\Voter_BG.png");
-
-		pointsTileBackground = readImage (resourcesFile
-				+ "Graphics\\Point Tokens\\BluePtsBG.png");
-		pointsTileBackgroundPQ = readImage (resourcesFile
-				+ "Graphics\\Point Tokens\\RedPtsBG.png");
-
-		backgroundWhite = readImage (resourcesFile
-				+ "Graphics\\Global Backgrounds\\Scoreboard BG BW.png");
-		backgroundBlue = readImage (resourcesFile
-				+ "Graphics\\Global Backgrounds\\Scoreboard BG Blue.png");
-		backgroundRed = readImage (resourcesFile
-				+ "Graphics\\Global Backgrounds\\Scoreboard BG Red.png");
-
-		pprais = readImage (resourcesFile + "Graphics\\Point Tokens\\12PPrais.png");
-		ppraisbg = readImage (resourcesFile
-				+ "Graphics\\Scoreboard Single Nation Backgrounds\\Praise_BG.png");
-
-		voterPointToken = readImage (resourcesFile
-				+ "Graphics\\Point Tokens\\Calling.png");
+		List<Callable<Void>> exes = new ArrayList<> ();
+		ExecutorService exeService = Executors.newFixedThreadPool (4);
 		
-		voteUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGVoter.png");
-		voteFlagUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGFlag.png");
-		voteNameUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGName.png");
-		voteCounterUL = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounter.png");
-		voteCounterULSmall = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounterSmall.png");
-		ptHolder = readImage (resourcesFile + "Graphics\\SideBarTokens\\PTHolder.png");
+		exes.add (() -> {
+			try {
+				nationTileBackground = readImage (resourcesFile
+						+ "Graphics\\Scoreboard Single Nation Backgrounds\\BG.png");
+				nationTileBackgroundScored = readImage (resourcesFile
+						+ "Graphics\\Scoreboard Single Nation Backgrounds\\Scored_BG.png");
+				nationTileBackgroundPQ = readImage (resourcesFile
+						+ "Graphics\\Scoreboard Single Nation Backgrounds\\PQ_BG.png");
+				nationTileBackgroundPQScored = readImage (resourcesFile
+						+ "Graphics\\Scoreboard Single Nation Backgrounds\\PQ_Scored_BG.png");
+				nationTileBackgroundVoter = readImage (resourcesFile
+						+ "Graphics\\Scoreboard Single Nation Backgrounds\\Voter_BG.png");
+			} catch (Exception e) {
+				e.printStackTrace ();
+			}
+			
+			return null;
+		});
+
+		exes.add (() -> {
+			try {
+				pointsTileBackground = readImage (resourcesFile
+						+ "Graphics\\Point Tokens\\BluePtsBG.png");
+				pointsTileBackgroundPQ = readImage (resourcesFile
+						+ "Graphics\\Point Tokens\\RedPtsBG.png");
+
+				backgroundWhite = readImage (resourcesFile
+						+ "Graphics\\Global Backgrounds\\Scoreboard BG BW.png");
+				backgroundBlue = readImage (resourcesFile
+						+ "Graphics\\Global Backgrounds\\Scoreboard BG Blue.png");
+				backgroundRed = readImage (resourcesFile
+						+ "Graphics\\Global Backgrounds\\Scoreboard BG Red.png");
+			} catch (Exception e) {
+				e.printStackTrace ();
+			}
+			return null;
+		});
+
+		exes.add (() -> {
+			try {
+				pprais = readImage (resourcesFile + "Graphics\\Point Tokens\\12PPrais.png");
+				ppraisbg = readImage (resourcesFile
+						+ "Graphics\\Scoreboard Single Nation Backgrounds\\Praise_BG.png");
+
+				voterPointToken = readImage (resourcesFile
+						+ "Graphics\\Point Tokens\\Calling.png");
+				
+				voteUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGVoter.png");
+			} catch (Exception e) {
+				e.printStackTrace ();
+			}
+			
+			return null;
+		});
+		
+		exes.add(() -> {
+			try {
+				voteFlagUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGFlag.png");
+				voteNameUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGName.png");
+				voteCounterUL = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounter.png");
+				voteCounterULSmall = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGCounterSmall.png");
+				ptHolder = readImage (resourcesFile + "Graphics\\SideBarTokens\\PTHolder.png");
+			} catch (Exception e) {
+				e.printStackTrace ();
+			}
+			return null;
+		});
+		
+		exeService.invokeAll (exes);
+		exeService.shutdown ();
+		exeService.awaitTermination (3, TimeUnit.SECONDS);
 	}
 	
 	private void readDummies () throws IOException {
@@ -155,7 +226,7 @@ public class DataCarrier {
 		return SwingFXUtils.toFXImage (newBuffImg, null);
 	}
 
-	public void readPtsTokens() throws IOException {
+	private void readPtsTokens() throws IOException {
 		ArrayList<Image> pToken = new ArrayList<> ();
 
 		String baseLocation = resourcesFile + "resources\\Graphics\\Point Tokens\\";
@@ -180,39 +251,53 @@ public class DataCarrier {
 		setPointsTokens (pToken);
 	}
 
-	public ArrayList<Participant> readNations() throws IOException {
+	private ArrayList<Participant> readNations() throws IOException, InterruptedException {
 		ArrayList<Participant> nations = new ArrayList<> ();
 		nameMap = new HashMap<> ();
 
 		String flagFile = CoreUI.inputData.getFlagDirectory () + "\\";
 		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "\\";
 		
+		ExecutorService exeService = Executors.newCachedThreadPool ();
+		List<Callable<Void>> exes = new ArrayList<> ();
+		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
-			
-			Image flag = readImage (flagFile + pData.getName () + ".png");
-			
-			Participant newNation = new Participant (pData.getName (), pData.getShortName (), 
-					flag == null ? dummyFlag : flag);	
-			
-			nations.add (newNation);
-			newNation.setVotes (voteMap.get (newNation));
-			
-			if (readDiamonds) {
-				Image dFlag = readImage (diamondFile + "Diamond " + newNation.getShortName () + ".png");
-				diamondMap.put (newNation, dFlag == null ? dummyPrettyFlag : dFlag);	
-			}
-			
-			nameMap.put (pData.getName (), newNation);
-			
-			boolean shouldBeCreated = pData.getStatus ().equals ("P");
-			
-			if (shouldBeCreated) participants.add (newNation);
+			exes.add (() -> {
+				try {
+					Image flag = readImage (flagFile + pData.getName () + ".png");
+					Participant newNation = new Participant (pData.getName (), pData.getShortName (),
+						flag == null ? dummyFlag : flag);
+					
+					nations.add (newNation);
+					newNation.setVotes (voteMap.get (newNation));
+							
+					if (readDiamonds) {
+						Image dFlag = readImage (diamondFile + "Diamond " + newNation.getShortName () + ".png");
+						diamondMap.put (newNation, dFlag == null ? dummyPrettyFlag : dFlag);
+					}
+					
+					nameMap.put (pData.getName (), newNation);
+					
+					boolean shouldBeCreated = pData.getStatus ().equals ("P");
+					
+					if (shouldBeCreated) participants.add (newNation);
+				} catch (Exception e) {
+					e.printStackTrace ();
+				}
+				
+				return null;
+			});
 		}
+		
+		exeService.invokeAll (exes);
+		exeService.shutdown ();
+		exeService.awaitTermination ((long)(CoreUI.inputData.getParticipants ().size () * 28), 
+				TimeUnit.SECONDS);
 		
 		return nations;
 	}
 
-	public void createBanners() throws IOException {		
+	private void createBanners() throws IOException {		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
 			boolean shouldBeCreated = pData.getStatus ().equals ("P");
 
@@ -223,7 +308,7 @@ public class DataCarrier {
 		}
 	}
 
-	public void readEntries() throws NumberFormatException, IOException {
+	private void readEntries() throws NumberFormatException, IOException {
 		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "\\";
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
@@ -294,8 +379,9 @@ public class DataCarrier {
 
 	public String[] getListOfNames() {
 		String[] namesArray = new String[participants.size ()];
-		for (int i = 0; i < participants.size (); i++)
-			namesArray[i] = participants.get (i).getName ();
+		for (int i = 0; i < participants.size (); i++) {
+			namesArray[i] = participants.get (i).getName ();	
+		}
 		return namesArray;
 	}
 

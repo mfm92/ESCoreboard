@@ -22,7 +22,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 
 	@Override
 	public void makeSideOfScoreboard(Group group, Participant voter,
-			Scoreboard scoreboard, int underlayWidth, int underlayX) {
+			Scoreboard scoreboard) {
 
 		nrOfCalled++;
 
@@ -33,9 +33,9 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 		// VOTER'S FLAG
 		Rectangle voteFlagUnderlay = RectangleBuilder
 				.create ()
-				.width (0.2 * underlayWidth)
+				.width (0.2 * scoreboard.getRightBarWidth ())
 				.height (scoreboard.getBottomBarHeight())
-				.x (underlayX)
+				.x (scoreboard.getRightBarX())
 				.y (scoreboard.getBottomBarY())
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteFlagUnderlay))
 				.build ();
@@ -49,9 +49,9 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 
 		// VOTE NAME
 		Rectangle currentVoterUnderlay = RectangleBuilder.create ()
-				.width (0.65 * underlayWidth)
+				.width (0.65 * scoreboard.getRightBarWidth())
 				.height (voteFlagUnderlay.getHeight ())
-				.x (voteFlagUnderlay.getX () + 0.2 * underlayWidth)
+				.x (voteFlagUnderlay.getX () + 0.2 * scoreboard.getRightBarWidth())
 				.y (voteFlagUnderlay.getY ())
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteUnderlay))
 				.build ();
@@ -71,9 +71,9 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 		// ADD COUNTER
 		Rectangle counterUnderlay = RectangleBuilder
 				.create ()
-				.width (0.15 * underlayWidth)
+				.width (0.15 * scoreboard.getRightBarWidth())
 				.height (voteFlagUnderlay.getHeight ())
-				.x (underlayX + 0.85 * underlayWidth)
+				.x (scoreboard.getRightBarX() + 0.85 * scoreboard.getRightBarWidth())
 				.y (voteFlagUnderlay.getY ())
 				.fill (new ImagePattern (
 						scoreboard.getDataCarrier().voteCounterULSmall)).build ();

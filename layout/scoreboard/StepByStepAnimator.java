@@ -6,6 +6,8 @@ import java.util.Collections;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -30,46 +32,46 @@ public class StepByStepAnimator extends UpdateAnimator {
 			scoreboard.getTileUpdater().updateBackgroundOnly (scoreboard);
 		}
 		
-		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
+		ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
 		int sizeDenom = (int) Math.ceil ((double) scoreboard.getParticipants().size () / (double) scoreboard.getColumnsNr());
 		
 		// PLACE POINT NODE
 		Rectangle pointView = scoreboard.getPointViews().get ((scoreboard.inCountryCounter - 1) % 10);
-		pointView.setHeight (0.7 * (scoreboard.getHeight()/sizeDenom));
+		pointView.setId ("tmpPts");
+		pointView.toFront ();
+		
 		Votes votes = scoreboard.getDataCarrier().voteMap.get (voter);
+		
 		Participant receiver = votes.getReceivers ()[(scoreboard.inCountryCounter - 1) % 10];
 		receiver.setTmpScore (scoreboard.indicesToPoints ((scoreboard.inCountryCounter - 1) % 10));
 		receiver.setScoredFlag (true);
+		
 		Group nationGroupL = scoreboard.getGroupNationMap().get (receiver);
-		pointView.setId ("tmpPts");
 		scoreboard.getRoot().getChildren ().remove (pointView);
 		nationGroupL.getChildren ().remove (pointView);
 		nationGroupL.getChildren ().add (pointView);
-
-		double newPosX = getXCoordByPos (
-				overview.getPosition (oldStandings, receiver), scoreboard) + 
-				(((scoreboard.getHeight() / sizeDenom) - scoreboard.getFlagHeight()) / 2);
-		double newPosY = getYCoordByPos (
-				overview.getPosition (oldStandings, receiver), scoreboard) + 
-				(((scoreboard.getHeight() / sizeDenom) - scoreboard.getFlagHeight()) / 2);
 		
-		double oldPosX = pointView.getX ();
-		double oldPosY = pointView.getY ();
+		ScaleTransition scTransPV = new ScaleTransition (scoreboard.getVoteTokenDuration ());
+		scTransPV.setNode (pointView);
+		scTransPV.setByX (((double) scoreboard.getFlagWidth () - (double) pointView.getWidth ()) / (double) pointView.getWidth ());
+		scTransPV.setByY (((double) scoreboard.getFlagHeight () - (double) pointView.getHeight ()) / (double) pointView.getHeight ());
+		
+		KeyFrame dZ = new KeyFrame (Duration.ZERO,
+				new KeyValue (pointView.xProperty (), pointView.getX () - nationGroupL.getLayoutX ()),
+				new KeyValue (pointView.yProperty (), pointView.getY () - nationGroupL.getLayoutY ()));
+		
+		KeyFrame dF = new KeyFrame (scoreboard.getVoteTokenDuration (),
+				new KeyValue (pointView.xProperty (), nationGroupL.lookup ("#icon").getLayoutX () +
+						((pointView.getWidth () * (scTransPV.getByX () + 1) - pointView.getWidth ()) / 2)),
+				new KeyValue (pointView.yProperty (), nationGroupL.lookup ("#icon").getLayoutY () +
+						(pointView.getHeight () * (scTransPV.getByY () + 1) - pointView.getHeight ()) / 2));
 
 		Timeline timeline = new Timeline ();
-		timeline.getKeyFrames ().addAll (
-				new KeyFrame (Duration.ZERO, new KeyValue (
-						pointView.xProperty (), oldPosX
-								- nationGroupL.getLayoutX ()), new KeyValue (
-						pointView.yProperty (), oldPosY
-								- nationGroupL.getLayoutY ())),
-				new KeyFrame (scoreboard.getVoteTokenDuration(), new KeyValue (pointView
-						.xProperty (), newPosX - nationGroupL.getLayoutX ()),
-						new KeyValue (pointView.yProperty (), newPosY
-								- nationGroupL.getLayoutY ())));
-
-		
+		timeline.getKeyFrames ().addAll (dZ, dF);
 		timeline.play ();
+		
+		ParallelTransition pTrans = new ParallelTransition (scTransPV);
+		pTrans.play ();
 		
 		ArrayList<Participant> parts = new ArrayList<>(scoreboard.getGroupNationMap ().keySet ());
 		Collections.sort (parts);
@@ -79,13 +81,13 @@ public class StepByStepAnimator extends UpdateAnimator {
 		for (int i = 1; i <= scoreboard.getColumnsNr () - 1; i++) {
 			scoreboard.getGroupNationMap().get (scoreboard.getParticipants().get (i * sizeDenom - 1)).toFront ();
 		}
-		
 		scoreboard.getGroupNationMap().get (receiver).toFront();
 
-		final Participant rece = receiver;
-		timeline.setOnFinished (event -> {
+		pTrans.setOnFinished (event -> {
+			scoreboard.getRoot().getChildren ().remove (pointView);	
+			
 			// COUNT UP SCORE
-			countUpScore (scoreboard, rece);
+			countUpScore (scoreboard, receiver);
 
 			// MOVE TILES
 			for (Participant participant : scoreboard.getParticipants()) {
@@ -120,18 +122,18 @@ public class StepByStepAnimator extends UpdateAnimator {
 				if (tT == transTrans.get (transTrans.size () - 1)) {
 					tT.setOnFinished (eventTTFinished -> {
 						Collections.sort (scoreboard.getParticipants());								
-						scoreboard.getTileUpdater().updateTiles (scoreboard, rece);
+						scoreboard.getTileUpdater().updateTiles (scoreboard, receiver);
 
 						// GET RID OF THAT
 						scoreboard.getGroupNationMap()
-								.get (rece)
+								.get (receiver)
 								.getChildren ()
-								.remove (scoreboard.getGroupNationMap().get (rece).lookup ("#tmpPts"));
+								.remove (scoreboard.getGroupNationMap().get (receiver).lookup ("#tmpPts"));
 
 						// SHOW 12 POINTER MEZZO
 						if (scoreboard.inCountryCounter % 10 == 1
 								&& scoreboard.inCountryCounter != 1) {
-							Platform.runLater (scoreboard.showAndPraise12Pointer (rece, 
+							Platform.runLater (scoreboard.showAndPraise12Pointer (receiver, 
 									voter, overview, save, scoreboard));
 							return;
 						}

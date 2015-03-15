@@ -28,7 +28,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			Rectangle base = new Rectangle();
 			base.setWidth (scoreboard.getColumnNameWidth ());
-			base.setHeight (scoreboard.getHeight() / sizeDenom);
+			base.setHeight (scoreboard.getScoreboardHeight() / sizeDenom);
 			base.setLayoutX (0);
 			base.setLayoutY (0);
 			base.setId ("base");
@@ -38,7 +38,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 			Rectangle pointsBase = new Rectangle();
 			pointsBase.setWidth (scoreboard.getColumnWidth() - scoreboard.getColumnNameWidth());
-			pointsBase.setHeight (scoreboard.getHeight() / sizeDenom);
+			pointsBase.setHeight (scoreboard.getScoreboardHeight() / sizeDenom);
 			pointsBase.setLayoutX (scoreboard.getColumnNameWidth ());
 			pointsBase.setLayoutY (0);
 			pointsBase.setId ("pointBase");
@@ -49,7 +49,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			Text nationName = new Text();
 			nationName.setText (scoreboard.getParticipants().get (position).getName ());
 			nationName.setLayoutX (scoreboard.getFlagWidth()
-					+ scoreboard.getNameFromFlagOffset());
+					+ scoreboard.getNameFromFlagOffset() + ((scoreboard.getScoreboardHeight () / sizeDenom) - scoreboard.getFlagHeight ()) / 2);
 			nationName.setLayoutY (0.65 * pointsBase.getHeight ());
 			nationName.setId ("nationName");
 			nationName.setTextAlignment (TextAlignment.CENTER);
@@ -84,18 +84,19 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			nationIcon.setLayoutX ((base.getHeight () - scoreboard.getFlagHeight()) / 2);
 			nationIcon.setLayoutY ((base.getHeight () - scoreboard.getFlagHeight()) / 2);
 			nationIcon.setId ("icon");
-
-			nationTile.setLayoutX (scoreboard.getGlobalXOffset()
-					+ scoreboard.getColumnWidth() * (position / sizeDenom));
-			nationTile.setLayoutY (scoreboard.getGlobalYOffset()
-					+ (scoreboard.getHeight() / sizeDenom) * (position % sizeDenom));
+			
+			nationTile.setLayoutX 
+				((scoreboard.getScreenWidth() - scoreboard.getBackgroundWidth()) / 2 + 
+					scoreboard.getWidthFromLeftOffset () + scoreboard.getColumnWidth() * (position / sizeDenom));
+			nationTile.setLayoutY 
+				(scoreboard.getHeightFromTopOffset () + (scoreboard.getScreenHeight () - scoreboard.getBackgroundHeight ()) / 2
+					+ (scoreboard.getScoreboardHeight() / sizeDenom) * (position % sizeDenom));
 
 			nationIcon.setFitWidth (scoreboard.getFlagWidth());
 			nationIcon.setFitHeight (scoreboard.getFlagHeight());
 
 			nationTile.getChildren ().clear ();
-			nationTile.getChildren ().addAll (base, pointsBase, nationName,
-					scoreVBox, nationIcon);
+			nationTile.getChildren ().addAll (base, pointsBase, nationName, scoreVBox, nationIcon);
 
 			if (scoreboard.getCurrentVoter() != null) {
 				if (scoreboard.getParticipants().get (position).getName ()
@@ -145,7 +146,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 		scoreboard.getRoot().getChildren ().remove (
 				scoreboard.getRoot().lookup ("#nations"));
 		if (scoreboard.getRoot().getChildren ().size () >= 1)
-			scoreboard.getRoot().getChildren ().add (1, newSuperNations);
+			scoreboard.getRoot().getChildren ().add (newSuperNations);
 		newSuperNations.setId ("nations");
 		scoreboard.setSuperNations (newSuperNations);
 	}

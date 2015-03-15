@@ -38,7 +38,7 @@ public class QuickUpdater extends UpdateAnimator {
 		for (int i = 1; i <= scoreboard.getTransParts(); i++) {
 			// PLACE POINT NODE
 			Rectangle pointView = scoreboard.getPointViews().get ((i - 1));
-			pointView.setHeight (0.7*(scoreboard.getHeight()/sizeDenom));
+			pointView.setHeight (scoreboard.getFlagHeight ());
 			Participant receiver = votes.getReceivers ()[(i - 1)];
 			receiver.setTmpScore (scoreboard.indicesToPoints (i - 1));
 			receiver.setScoredFlag (true);
@@ -49,9 +49,9 @@ public class QuickUpdater extends UpdateAnimator {
 			nationGroup.getChildren ().add (pointView);
 
 			double newPosX = getXCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getHeight()/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getScoreboardHeight()/sizeDenom;
 			double newPosY = getYCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getHeight()/sizeDenom;
+					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getScoreboardHeight()/sizeDenom;
 			double oldPosX = pointView.getX ();
 			double oldPosY = pointView.getY ();
 
@@ -74,6 +74,7 @@ public class QuickUpdater extends UpdateAnimator {
 		}
 
 		scoreboard.getRoot().getChildren ().remove (scoreboard.getRoot().lookup ("#To7"));
+		
 		for (Timeline timeline : timelines) {
 			timeline.play ();
 			if (timeline == timelines.get (timelines.size () - 1)) {

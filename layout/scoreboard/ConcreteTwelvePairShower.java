@@ -20,8 +20,8 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		scoreboard.getRoot().getChildren ().remove (scoreboard.getBackground());
 		
 		Rectangle iR1 = new Rectangle();
-		iR1.setWidth (1920);
-		iR1.setHeight (1080);
+		iR1.setWidth (scoreboard.getScreenWidth ());
+		iR1.setHeight (scoreboard.getScreenHeight ());
 		iR1.setId ("background");
 		iR1.setId ("redBack");
 		iR1.setFill (new ImagePattern (scoreboard.getDataCarrier().backgroundRed));

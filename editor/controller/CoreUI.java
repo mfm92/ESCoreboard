@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -191,7 +193,7 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void load () {
-		TableLoader loader = new TableLoader (this);
+		TableLoader loader = new TableLoader (this, new TableClearer ());
 		
 		try {
 			loader.execute ();
@@ -213,13 +215,16 @@ public class CoreUI extends Application implements Initializable {
 	private void voteOverview () {
 		System.out.println ("These have voted:");
 		
+		Set<ParticipantData> nonVoters = new HashSet<> (inputData.getParticipants ());
+
 		for (Map.Entry<ParticipantData, ?> mapE : inputData.getVotes ().entrySet ()) {
 			System.out.println (mapE.getKey ().getName ());
+			nonVoters.remove (mapE.getKey ());
 		}
 		
 		System.out.println ("These are missing...: ");
 		
-		for (ParticipantData pData : inputData.getParticipants ()) {
+		for (ParticipantData pData : nonVoters) {
 			if (!inputData.getVotes ().entrySet ().contains (pData)) {
 				System.out.println (pData.getName ());
 			}
@@ -396,7 +401,7 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		flagDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
-			if (inputData.getFlagDirectory() != null) {
+			if (inputData.getFlagDirectory() != null && (!inputData.getFlagDirectory().equals("null"))) {
 				String destination = inputData.getFlagDirectory ();
 				String[] tokens = destination.split ("\\\\");
 				String show = ".../" + tokens[tokens.length-3] + "/" + 
@@ -424,7 +429,7 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		entryDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
-			if (inputData.getEntriesDirectory() != null) {
+			if (inputData.getEntriesDirectory() != null && (!inputData.getEntriesDirectory().equals("null"))) {
 				String destination = inputData.getEntriesDirectory ();
 				String[] tokens = destination.split ("\\\\");
 				String show = ".../" + tokens[tokens.length-2] + "/" + tokens[tokens.length-1];
@@ -451,7 +456,7 @@ public class CoreUI extends Application implements Initializable {
 		});
 		
 		prettyFlagDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
-			if (inputData.getPrettyFlagDirectory() != null) {
+			if (inputData.getPrettyFlagDirectory() != null && (!inputData.getPrettyFlagDirectory().equals("null"))) {
 				String destination = inputData.getPrettyFlagDirectory ();
 				String[] tokens = destination.split ("\\\\");
 				String show = ".../" + tokens[tokens.length-2] + "/" + tokens[tokens.length-1];

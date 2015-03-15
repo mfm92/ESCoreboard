@@ -2,9 +2,9 @@ package scoreboard;
 
 import java.util.ArrayList;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -28,37 +28,54 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 
 	@Override
 	public void showSplitScreen(final Scoreboard scoreboard,
-			final Standings standings, final boolean tradVP) {
+			final Standings standings, final boolean traditionalVoting) {
 		clear (scoreboard.getRoot());
 		createPointsArray (scoreboard);
 
 		final Group to7Group = new Group ();
 		to7Group.setId ("To7");
 		
-		if (!tradVP) {
+		if (!traditionalVoting) {
 			scoreboard.getRoot().getChildren ().add (to7Group);	
 		}
 
-		final Participant currentVoterCopy = standings.getVotes ()
-				.get (scoreboard.inCountryCounter / 10).getVoter ();
+		final Participant currentVoterCopy = standings.getVotes ().get (scoreboard.inCountryCounter / 10).getVoter ();
 
 		Rectangle iR = new Rectangle();
-		iR.setWidth (1920);
-		iR.setHeight (1080);
+		iR.setWidth (scoreboard.getScreenWidth ());
+		iR.setHeight (scoreboard.getScreenHeight ());
 		iR.setId ("background");
 		iR.setId ("redBack");
+		
+		Rectangle backgroundIntermediate = new Rectangle (scoreboard.getBackgroundWidth (), scoreboard.getBackgroundHeight ());
+		backgroundIntermediate.setLayoutX ((scoreboard.getScreenWidth () - scoreboard.getBackgroundWidth ()) / 2);
+		backgroundIntermediate.setLayoutY ((scoreboard.getScreenHeight () - scoreboard.getBackgroundHeight ()) / 2);
+		backgroundIntermediate.setFill (javafx.scene.paint.Color.BLUE);
+		backgroundIntermediate.setId ("backgroundI");
+		
+		Rectangle voteBoxRectangle = new Rectangle (scoreboard.getQuickVoteBoxWidth (), scoreboard.getQuickVoteBoxHeight ());
+		voteBoxRectangle.setLayoutX (scoreboard.getQuickVoteBoxX ());
+		voteBoxRectangle.setLayoutY (scoreboard.getQuickVoteBoxY ());
+		voteBoxRectangle.setId ("voteBox");
+		
+		Rectangle ptRect = new Rectangle();
+		
+		ptRect.setX (scoreboard.getPtUnderLayX ());
+		ptRect.setY (scoreboard.getPtUnderLayY ());
+		ptRect.setId ("ptHolder");
+		ptRect.setWidth (scoreboard.getPtUnderLayWidth());
+		ptRect.setHeight (scoreboard.getPtUnderLayHeight());
+		ptRect.setFill (new ImagePattern (scoreboard.getDataCarrier().ptHolder));
+		
 		iR.setFill (new ImagePattern (scoreboard.getDataCarrier().backgroundBlue));
-		to7Group.getChildren ().add (iR);
-
-		int entryX = 100;
-		int entryY = 100;
+		to7Group.getChildren ().add(new Group (iR, backgroundIntermediate, voteBoxRectangle, ptRect));
 		
-		scoreboard.getRightSideBar().makeSideOfScoreboard (to7Group, currentVoterCopy, scoreboard, 900, entryX);
+		scoreboard.getRightSideBar().makeSideOfScoreboard (to7Group, currentVoterCopy, scoreboard);
 		
-		if (!tradVP) {
-			final ArrayList<Rectangle> rects = new ArrayList<> ();
-			final ArrayList<ImageView> flags = new ArrayList<> ();
-			final ArrayList<VBox> recTexts = new ArrayList<> ();
+		if (!traditionalVoting) {
+			ArrayList<Rectangle> rects = new ArrayList<> ();
+			ArrayList<ImageView> flags = new ArrayList<> ();
+			ArrayList<VBox> recTexts = new ArrayList<> ();
 
 			Entry recEntry = currentVoterCopy.getEntry ();
 			Media entry = recEntry.getMedia ();
@@ -72,19 +89,21 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			MediaView entryView = new MediaView ();
 			entryView.setMediaPlayer (entryPlayer);
 			entryView.setPreserveRatio (false);
-			entryView.setX (entryX);
-			entryView.setY (entryY);
+			entryView.setX (scoreboard.getQuickEntryX ());
+			entryView.setY (scoreboard.getQuickEntryY ());
 			entryView.setId ("media");
-			entryView.setFitHeight (scoreboard.getTransitionYOffset () - scoreboard.getHeightTransition () - 60);
-			entryView.setFitWidth (scoreboard.getColumnWidthTransition () * 2);
+			entryView.setFitHeight (scoreboard.getQuickEntryHeight ());
+			entryView.setFitWidth (scoreboard.getQuickEntryWidth ());
+			
 			scoreboard.getRoot().getChildren ().add (entryView);
-			entryPlayer.play ();
+			
+			Platform.runLater(() -> entryPlayer.play ());
 
 			entryPlayer.setOnPlaying (() -> {
 				int transSNum = scoreboard.getTransParts() / scoreboard.getColumnsNrTransition() + 1;
 				int transSDen = (int) ((double) scoreboard.getHeightTransition() / (double) transSNum);
 				
-				for (int i = 0; i < scoreboard.getTransParts(); i++) {
+				for (int i = 0; i < scoreboard.getTransParts (); i++) {
 					Rectangle rect = new Rectangle();
 					rect.setHeight (transSDen);
 					rect.setWidth (scoreboard.getColumnWidthTransition());
@@ -123,37 +142,48 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					recTexts.add (rectVBox);
 				}
 
-				final ArrayList<Timeline> timelines = new ArrayList<> ();
-				final ArrayList<ImageView> pointViews = new ArrayList<> ();
+				ArrayList<ParallelTransition> transitions = new ArrayList<>();
+				ArrayList<ImageView> pointViews = new ArrayList<> ();
 				
-				for (int i = 0; i < scoreboard.getTransParts(); i++) {
+				for (int i = 0; i < 10; i++) {
 					ImageView pointView = new ImageView();
 					pointView.setFitHeight (scoreboard.getPointTokenHeightTransition ());
 					pointView.setFitWidth (scoreboard.getPointTokenWidthTransition ());
 					pointView.setImage (scoreboard.getDataCarrier ().getPointsTokens ().get (i));
-					pointView.setX(scoreboard.getPointTokenXOffsetTransition() + i *
+					pointView.setX(scoreboard.getPointTokenXOffsetTransition() + i *+
 							scoreboard.getPointTokenWidthTransition());
 					pointView.setY (scoreboard.getPointTokenYOffsetTransition());
 
 					pointViews.add (pointView);
+					to7Group.getChildren ().add (pointView);
+					
+					if (i >= scoreboard.getTransParts()) continue;
+					
 					double shiftPVX = rects.get (i).getX () - pointView.getX () + scoreboard.getPtfromEdgeOffsetTrans();
 					double shiftPVY = rects.get (i).getY () - pointView.getY () + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2;
 					
-					to7Group.getChildren ().add (pointView);
-					Timeline timeline = new Timeline ();
-					timeline.getKeyFrames ().addAll (
-							new KeyFrame (scoreboard.getVoteTokenDuration(), new KeyValue (
-									pointView.translateXProperty (), shiftPVX),
-									new KeyValue (pointView.translateYProperty (), shiftPVY)));
-					timelines.add (timeline);
+					double scaleX = ((double) scoreboard.getFlagWidthTransition () - (double) scoreboard.getPointTokenWidthTransition ()) / (double) scoreboard.getPointTokenWidthTransition ();
+					double scaleY = ((double) scoreboard.getFlagHeightTransition () - (double) scoreboard.getPointTokenHeightTransition ()) / (double) scoreboard.getPointTokenHeightTransition ();
+				
+					TranslateTransition locShift = new TranslateTransition (scoreboard.getVoteTokenDuration ());
+					locShift.setByX (shiftPVX);
+					locShift.setByY (shiftPVY);
+					locShift.setNode (pointView);
+					
+					ScaleTransition sizeShift = new ScaleTransition (scoreboard.getVoteTokenDuration ());
+					sizeShift.setByX (scaleX);
+					sizeShift.setByY (scaleY);
+					sizeShift.setNode (pointView);
+					
+					transitions.add (new ParallelTransition (locShift, sizeShift));
 				}
 
 				int counter = 0;
-				for (final Timeline timeline : timelines) {
-					timeline.setDelay (Duration.seconds (counter));
-					timeline.play ();
+				for (ParallelTransition pTrans : transitions) {
+					pTrans.setDelay (Duration.seconds (counter));
+					pTrans.play ();
 					final int cSave = counter++;
-					timeline.setOnFinished (event -> {
+					pTrans.setOnFinished (event -> {
 						to7Group.getChildren ().add (1, rects.get (cSave));
 						to7Group.getChildren ().add (flags.get (cSave));
 						to7Group.getChildren ().add (recTexts.get (cSave));
@@ -163,15 +193,14 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			});
 			
 			entryPlayer.setOnEndOfMedia (() -> {
-				final int save = scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
+				scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
 				Platform.runLater (new VoteAdder (standings, scoreboard,
-						scoreboard.getDataCarrier(), save, tradVP));
+						scoreboard.getDataCarrier(), scoreboard.inCountryCounter, traditionalVoting));
 			});
 			
 		} else {
-			final int save = scoreboard.inCountryCounter;
 			Platform.runLater (new VoteAdder (standings, scoreboard,
-					scoreboard.getDataCarrier(), save, tradVP));
+					scoreboard.getDataCarrier(), scoreboard.inCountryCounter, traditionalVoting));
 		}
 	}
 
@@ -187,5 +216,8 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		root.getChildren ().remove (root.lookup ("#Top6Text"));
 		root.getChildren ().remove (root.lookup ("#superText"));
 		root.getChildren ().remove (root.lookup ("#backgroundDummy"));
+		root.getChildren ().remove (root.lookup ("#backgroundI"));
+		root.getChildren ().remove (root.lookup ("#voteBox"));
+		root.getChildren ().remove (root.lookup ("#ptHolder"));
 	}
 }

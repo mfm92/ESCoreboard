@@ -24,6 +24,8 @@ import controller.CoreUI;
 public class EntryWriter {
 	
 	public void writeOut (File saveFile) throws IOException {
+		if (saveFile == null) return;
+		
 		writeOutSaves (saveFile);
 		writeSpreadSheet (saveFile);
 	}
