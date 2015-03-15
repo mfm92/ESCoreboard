@@ -50,12 +50,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		Rectangle backgroundIntermediate = new Rectangle (scoreboard.getBackgroundWidth (), scoreboard.getBackgroundHeight ());
 		backgroundIntermediate.setLayoutX ((scoreboard.getScreenWidth () - scoreboard.getBackgroundWidth ()) / 2);
 		backgroundIntermediate.setLayoutY ((scoreboard.getScreenHeight () - scoreboard.getBackgroundHeight ()) / 2);
-		backgroundIntermediate.setFill (javafx.scene.paint.Color.BLUE);
+		backgroundIntermediate.setFill (new ImagePattern (scoreboard.getDataCarrier ().intermediateBackground));
 		backgroundIntermediate.setId ("backgroundI");
 		
 		Rectangle voteBoxRectangle = new Rectangle (scoreboard.getQuickVoteBoxWidth (), scoreboard.getQuickVoteBoxHeight ());
 		voteBoxRectangle.setLayoutX (scoreboard.getQuickVoteBoxX ());
 		voteBoxRectangle.setLayoutY (scoreboard.getQuickVoteBoxY ());
+		voteBoxRectangle.setFill (new ImagePattern (scoreboard.getDataCarrier ().voteQuickUnderlay));
 		voteBoxRectangle.setId ("voteBox");
 		
 		Rectangle ptRect = new Rectangle();
@@ -81,12 +82,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			Media entry = recEntry.getMedia ();
 			MediaPlayer entryPlayer = new MediaPlayer (entry);
 			entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - 4));
+			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - 17));
 			entryPlayer.setAutoPlay (true);
 			entryPlayer.setVolume (0);
 			entryPlayer.setCycleCount (1);
 
 			MediaView entryView = new MediaView ();
+			entryView.setStyle ("-fx-border-color: #000033;\n-fx-border-width: 2 2 2 2;");
 			entryView.setMediaPlayer (entryPlayer);
 			entryView.setPreserveRatio (false);
 			entryView.setX (scoreboard.getQuickEntryX ());
@@ -135,8 +137,8 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 
 					Text recText = new Text();
 					recText.setText (currentVoterCopy.getVotes ().getReceivers ()[i].getName ());
-					recText.setFont (Font.font ("Coolvetica RG", FontWeight.MEDIUM, 33));
-					recText.setFill (Color.WHITE);
+					recText.setFont (Font.font ("Calibri", FontWeight.MEDIUM, 33));
+					recText.setFill (Color.BLACK);
 					
 					rectVBox.getChildren().add (recText);
 					recTexts.add (rectVBox);
@@ -165,12 +167,12 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					double scaleX = ((double) scoreboard.getFlagWidthTransition () - (double) scoreboard.getPointTokenWidthTransition ()) / (double) scoreboard.getPointTokenWidthTransition ();
 					double scaleY = ((double) scoreboard.getFlagHeightTransition () - (double) scoreboard.getPointTokenHeightTransition ()) / (double) scoreboard.getPointTokenHeightTransition ();
 				
-					TranslateTransition locShift = new TranslateTransition (scoreboard.getVoteTokenDuration ());
+					TranslateTransition locShift = new TranslateTransition (scoreboard.getVoteTokenDuration ().divide (2));
 					locShift.setByX (shiftPVX);
 					locShift.setByY (shiftPVY);
 					locShift.setNode (pointView);
 					
-					ScaleTransition sizeShift = new ScaleTransition (scoreboard.getVoteTokenDuration ());
+					ScaleTransition sizeShift = new ScaleTransition (scoreboard.getVoteTokenDuration ().divide (2));
 					sizeShift.setByX (scaleX);
 					sizeShift.setByY (scaleY);
 					sizeShift.setNode (pointView);
@@ -180,7 +182,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 
 				int counter = 0;
 				for (ParallelTransition pTrans : transitions) {
-					pTrans.setDelay (Duration.seconds (counter));
+					pTrans.setDelay (Duration.seconds (1));
 					pTrans.play ();
 					final int cSave = counter++;
 					pTrans.setOnFinished (event -> {

@@ -39,6 +39,8 @@ public class DataCarrier {
 	public Image nationTileBackgroundVoter;
 	public Image voterPointToken;
 
+	public Image intermediateBackground;
+	
 	public Image pointsTileBackground;
 	public Image pointsTileBackgroundPQ;
 	public Image pointsTileBackgroundVoter;
@@ -55,8 +57,10 @@ public class DataCarrier {
 	public Image voteNameUnderlay;
 	public Image voteCounterUL;
 	public Image voteCounterULSmall;
+	public Image voteBGPTs;
 	
 	public Image ptHolder;
+	public Image voteQuickUnderlay;
 
 	public HashMap<String, Participant> nameMap;
 	public HashMap<Participant, Votes> voteMap;
@@ -144,6 +148,9 @@ public class DataCarrier {
 						+ "Graphics\\Scoreboard Single Nation Backgrounds\\PQ_Scored_BG.png");
 				nationTileBackgroundVoter = readImage (resourcesFile
 						+ "Graphics\\Scoreboard Single Nation Backgrounds\\Voter_BG.png");
+				
+				voteQuickUnderlay = readImage (resourcesFile +
+						"Graphics\\Global Backgrounds\\VoteQuickUnderlay.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
@@ -164,6 +171,9 @@ public class DataCarrier {
 						+ "Graphics\\Global Backgrounds\\Scoreboard BG Blue.png");
 				backgroundRed = readImage (resourcesFile
 						+ "Graphics\\Global Backgrounds\\Scoreboard BG Red.png");
+				
+				voteBGPTs = readImage (resourcesFile +
+						"Graphics\\Point Tokens\\VoteBGPts.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
@@ -180,6 +190,8 @@ public class DataCarrier {
 						+ "Graphics\\Point Tokens\\Calling.png");
 				
 				voteUnderlay = readImage (resourcesFile + "Graphics\\SideBarTokens\\VotingBGVoter.png");
+				
+				intermediateBackground = readImage (resourcesFile + "Graphics\\Global Backgrounds\\IntermediateBackground.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}

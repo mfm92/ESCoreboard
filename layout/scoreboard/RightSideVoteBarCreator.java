@@ -33,13 +33,13 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 		// VOTING CALL
 		Rectangle voteUnderlay = RectangleBuilder.create ().width (scoreboard.getRightBarWidth())
-				.height (0.2 * scoreboard.rightBarHeight).x (scoreboard.getRightBarX()).y (scoreboard.rightBarY)
+				.height (0.1 * scoreboard.rightBarHeight).x (scoreboard.getRightBarX()).y (scoreboard.rightBarY)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteUnderlay))
 				.build ();
 
-		Text voteText = TextBuilder.create ().text ("voting")
+		Text voteText = TextBuilder.create ().text ("calling...")
 				.fill (Color.WHITE)
-				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, 44))
+				.font (Font.font ("Inconsolata", FontWeight.SEMI_BOLD, 44))
 				.build ();
 
 		VBox voteVBox = VBoxBuilder.create ()
@@ -52,9 +52,9 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		Rectangle voteFlagUnderlay = RectangleBuilder
 				.create ()
 				.width (voteUnderlay.getWidth ())
-				.height (0.5 * scoreboard.rightBarHeight)
+				.height (0.6 * scoreboard.rightBarHeight)
 				.x (voteUnderlay.getX ())
-				.y (scoreboard.rightBarY + 0.2 * scoreboard.rightBarHeight)
+				.y (scoreboard.rightBarY + 0.1 * scoreboard.rightBarHeight)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteFlagUnderlay))
 				.build ();
 
@@ -75,7 +75,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		diamondVBox.setLayoutX (voteUnderlay.getX ());
 		diamondVBox.setLayoutY (voteUnderlay.getY ()
 				+ voteUnderlay.getHeight ());
-		diamondVBox.setPrefHeight (0.5 * scoreboard.rightBarHeight);
+		diamondVBox.setPrefHeight (0.6 * scoreboard.rightBarHeight);
 		diamondVBox.setPrefWidth (voteUnderlay.getWidth ());
 		diamondVBox.setAlignment (Pos.CENTER);
 		diamondVBox.getChildren ().add (voterFlag);
@@ -94,7 +94,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.create ()
 				.text (voter.getName ())
 				.fill (Color.WHITE)
-				.font (Font.font ("Coolvetica RG", FontWeight.SEMI_BOLD, voter
+				.font (Font.font ("Inconsolata", FontWeight.SEMI_BOLD, voter
 						.getName ().length () < 14 ? 82 : 58)).build ();
 
 		VBox currentVoterVBox = VBoxBuilder.create ()
@@ -116,7 +116,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " out of "
 						+ scoreboard.getDataCarrier().voteMap.size ())
 				.fill (Color.WHITE)
-				.font (Font.font ("Coolvetica RG", FontWeight.LIGHT, 32))
+				.font (Font.font ("Inconsolata", FontWeight.LIGHT, 32))
 				.build ();
 
 		VBox counterVBox = VBoxBuilder.create ().layoutX (voteUnderlay.getX ())

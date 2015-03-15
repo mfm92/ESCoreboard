@@ -73,7 +73,7 @@ public class Scoreboard {
 	// ----------------------------- //
 	private int columnsNr = 2;
 	private int scWidth = (int) (0.63 * backgroundWidth);
-	private int widthFromLeftOffset = (int) (0.05 * backgroundWidth);
+	private int widthFromLeftOffset = (int) (0.03 * backgroundWidth);
 	
 	private int columnWidth = scWidth / columnsNr;
 	private int columnNameWidth = (int) (0.8 * (double)(columnWidth));
@@ -111,19 +111,19 @@ public class Scoreboard {
 	// ----------------------------- //
 	
 	// ----------------------------- //
-	private int ptUnderLayHeight = (int)(0.07*backgroundHeight);
+	private int ptUnderLayHeight = (int)(0.0775*backgroundHeight);
 	private int ptUnderLayWidth = scWidth;
 	private int ptUnderLayX = (screenWidth - backgroundWidth) / 2 + widthFromLeftOffset;
 	private int ptUnderLayY = (screenHeight - backgroundHeight) / 2 + heightFromTopOffset + height + bottomScoreboardOffset;
 	
 	private int pointTokenXOffset = ptUnderLayX;
-	private int pointTokenHeight = (int)(ptUnderLayHeight);
+	private int pointTokenHeight = (int)((9d/10d) * ptUnderLayHeight);
 	private int pointTokenYOffset = ptUnderLayY + (ptUnderLayHeight - pointTokenHeight) / 2;
 	private int pointTokenWidth = (int)((1d/10d) * ptUnderLayWidth);
 	// ----------------------------- //
 	
 	// ----------------------------- //
-	private int rightBarWidth = (int)(0.29 * backgroundWidth);
+	private int rightBarWidth = (int)(0.27 * backgroundWidth);
 	private int rightBarX = (int)(0.7 * backgroundWidth) + (screenWidth - backgroundWidth) / 2;
 	
 	int rightBarHeight = height + bottomScoreboardOffset + ptUnderLayHeight;
@@ -131,9 +131,9 @@ public class Scoreboard {
 	// ----------------------------- //
 	
 	// ----------------------------- //
-	private int quickEntryX = (screenWidth - backgroundWidth) / 2 + (int)(0.05 * backgroundWidth);
+	private int quickEntryX = (screenWidth - backgroundWidth) / 2 + widthFromLeftOffset;
 	private int quickEntryWidth = (int)(0.63 * backgroundWidth);
-	private int quickEntryY = (screenHeight - backgroundHeight) / 2 + (int)(0.05 * backgroundHeight);
+	private int quickEntryY = (screenHeight - backgroundHeight) / 2 + heightFromTopOffset;
 	private int quickEntryHeight = (int)(0.6 * backgroundHeight);
 	
 	private int quickVoteBoxX = quickEntryX;
@@ -156,8 +156,8 @@ public class Scoreboard {
 	private int transitionYOffset = (screenHeight - backgroundHeight) / 2 + heightFromTopOffset +
 			quickEntryHeight + heightTransition - rowHeightTransition;
 	
-	private int ptfromEdgeOffsetTrans = 12;
-	private int flagFromPTOffsetTrans = 12;
+	private int ptfromEdgeOffsetTrans = 0;
+	private int flagFromPTOffsetTrans = 0;
 	private int textFromFlagOffsetTrans = 12;
 	// ----------------------------- //
 	
@@ -192,7 +192,7 @@ public class Scoreboard {
 		drawScoreboard (primaryStage);
 		
 		Scene scene = new Scene (root);
-
+		
 		primaryStage.setX (Screen.getPrimary ().getVisualBounds ().getMinX ());
 		primaryStage.setY (Screen.getPrimary ().getVisualBounds ().getMinY ());
 		primaryStage.setWidth (Screen.getPrimary ().getVisualBounds ().getWidth ());

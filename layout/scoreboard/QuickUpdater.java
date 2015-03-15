@@ -6,6 +6,7 @@ import java.util.Collections;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -24,60 +25,69 @@ public class QuickUpdater extends UpdateAnimator {
 			final ArrayList<Participant> oldStandings,
 			final ArrayList<Participant> standings, final boolean tradVP) {
 
-		scoreboard.getRoot().getChildren ().remove (
-				scoreboard.getRoot().lookup ("#media"));
+		scoreboard.getRoot().getChildren ().remove (scoreboard.getRoot().lookup ("#media"));
 		final ArrayList<TranslateTransition> transTrans = new ArrayList<> ();
-		int sizeDenom = (scoreboard.getParticipants().size () + 1) / scoreboard.getColumnsNr();
+		
+		scoreboard.getRoot().getChildren().remove (scoreboard.getRoot().lookup ("#To7"));
+		
+		for (int i = 0; i < scoreboard.getPointViews ().size (); i++) {
+			scoreboard.getRoot().getChildren().remove(scoreboard.getPointViews().get(i));
+			scoreboard.getPointViews ().get (i).setX (scoreboard.getPointTokenXOffset () + i * scoreboard.getPointTokenWidth ());;
+			scoreboard.getPointViews ().get (i).setY (scoreboard.getPointTokenYOffset());
+			scoreboard.getRoot().getChildren().add(scoreboard.getPointViews().get(i));
+		}
 
 		// CLEAR AFTER FULL VOTE
 		votesClear (voter, scoreboard);
 		scoreboard.getTileUpdater().updateBackgroundOnly (scoreboard);
 		final Votes votes = scoreboard.getDataCarrier().voteMap.get (voter);
 		ArrayList<Timeline> timelines = new ArrayList<> ();
-
+		
 		for (int i = 1; i <= scoreboard.getTransParts(); i++) {
 			// PLACE POINT NODE
-			Rectangle pointView = scoreboard.getPointViews().get ((i - 1));
-			pointView.setHeight (scoreboard.getFlagHeight ());
+			Rectangle pointView = scoreboard.getPointViews().get (i - 1);
+			
 			Participant receiver = votes.getReceivers ()[(i - 1)];
 			receiver.setTmpScore (scoreboard.indicesToPoints (i - 1));
-			receiver.setScoredFlag (true);
-			Group nationGroup = scoreboard.getGroupNationMap().get (receiver);
-			pointView.setId ("tmpPts");
-			scoreboard.getRoot().getChildren ().remove (pointView);
-			nationGroup.getChildren ().remove (pointView);
-			nationGroup.getChildren ().add (pointView);
-
-			double newPosX = getXCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getScoreboardHeight()/sizeDenom;
-			double newPosY = getYCoordByPos (
-					overview.getPosition (oldStandings, receiver), scoreboard) + 0.15*scoreboard.getScoreboardHeight()/sizeDenom;
-			double oldPosX = pointView.getX ();
-			double oldPosY = pointView.getY ();
+			receiver.setScoredFlag (true);			
+			
+			Group nationGroupL = scoreboard.getGroupNationMap().get (receiver);
+			nationGroupL.getChildren ().add (pointView);
+			
+			ScaleTransition scTransPV = new ScaleTransition (scoreboard.getVoteTokenDuration ());
+			scTransPV.setNode (pointView);
+			scTransPV.setByX (((double) scoreboard.getFlagWidth () - (double) pointView.getWidth ()) / (double) pointView.getWidth ());
+			scTransPV.setByY (((double) scoreboard.getFlagHeight () - (double) pointView.getHeight ()) / (double) pointView.getHeight ());
+			
+			KeyFrame dZ = new KeyFrame (Duration.ZERO,
+					new KeyValue (pointView.xProperty (), pointView.getX() - nationGroupL.getLayoutX()),
+					new KeyValue (pointView.yProperty (), pointView.getY() - nationGroupL.getLayoutY()));
+			
+			
+			KeyFrame dMid = new KeyFrame (Duration.seconds (1.5),
+					new KeyValue (pointView.xProperty (), pointView.getX() - nationGroupL.getLayoutX()),
+					new KeyValue (pointView.yProperty (), pointView.getY() - nationGroupL.getLayoutY()));
+			
+			KeyFrame dF = new KeyFrame (scoreboard.getVoteTokenDuration ().add (dMid.getTime ()),
+					new KeyValue (pointView.xProperty (), nationGroupL.lookup ("#icon").getLayoutX () +
+							((pointView.getWidth () * (scTransPV.getByX () + 1) - pointView.getWidth ()) / 2)),
+					new KeyValue (pointView.yProperty (), nationGroupL.lookup ("#icon").getLayoutY () +
+							(pointView.getHeight () * (scTransPV.getByY () + 1) - pointView.getHeight ()) / 2));
 
 			Timeline timeline = new Timeline ();
-			timeline.getKeyFrames ().addAll (
-					new KeyFrame (Duration.ZERO, new KeyValue (
-							pointView.xProperty (), oldPosX
-									- nationGroup.getLayoutX ()), new KeyValue (
-							pointView.yProperty (), oldPosY
-									- nationGroup.getLayoutY ())),
-					new KeyFrame (scoreboard.getVoteTokenDuration(),
-							new KeyValue (pointView.xProperty (), newPosX
-									- nationGroup.getLayoutX ()), new KeyValue (
-									pointView.yProperty (), newPosY
-											- nationGroup.getLayoutY ())));
-
-			scoreboard.getGroupNationMap().get (scoreboard.getParticipants().get (sizeDenom - 2)).toFront ();
-			nationGroup.toFront ();
+			timeline.getKeyFrames ().addAll (dZ, dMid, dF);
 			timelines.add (timeline);
 		}
-
-		scoreboard.getRoot().getChildren ().remove (scoreboard.getRoot().lookup ("#To7"));
+		
+		for (Participant p : scoreboard.getParticipants()) scoreboard.getGroupNationMap ().get (p).toBack ();
+		
+		for (int i = 1; i <= scoreboard.getTransParts (); i++) {
+			scoreboard.getGroupNationMap ().get (votes.getReceivers ()[i-1]).toFront ();
+		}
 		
 		for (Timeline timeline : timelines) {
 			timeline.play ();
-			if (timeline == timelines.get (timelines.size () - 1)) {
+			if (timeline == timelines.get (timelines.size () - 1)) {				
 				timeline.setOnFinished (event -> {
 					// UPDATE
 					scoreboard.getTileUpdater().updateTiles (scoreboard, null);
@@ -95,8 +105,7 @@ public class QuickUpdater extends UpdateAnimator {
 						double xShift = newX - oldX;
 						double yShift = newY - oldY;
 
-						Group nationGroup = scoreboard.getGroupNationMap()
-								.get (participant);
+						Group nationGroup = scoreboard.getGroupNationMap().get (participant);
 
 						TranslateTransition tTrans = new TranslateTransition ();
 						
@@ -110,6 +119,7 @@ public class QuickUpdater extends UpdateAnimator {
 
 						transTrans.add (tTrans);
 					}
+					
 					for (TranslateTransition tT : transTrans) {
 						for (int i = 0; i < scoreboard.getTransParts(); i++) {
 							scoreboard.getPointViews().get (i).toFront ();
@@ -121,9 +131,7 @@ public class QuickUpdater extends UpdateAnimator {
 								scoreboard.getTileUpdater().updateTiles (scoreboard, null);
 								
 								for (int i = 0; i < scoreboard.getTransParts(); i++) {
-									scoreboard.getRoot()
-											.getChildren ()
-											.remove (scoreboard.getPointViews().get (i));
+									scoreboard.getRoot().getChildren ().remove (scoreboard.getPointViews().get (i));
 								}
 
 								// NEXT VOTES, PLEASE...

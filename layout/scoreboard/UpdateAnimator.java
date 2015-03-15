@@ -25,10 +25,8 @@ public abstract class UpdateAnimator {
 		Group nationGroup = scoreboard.getGroupNationMap().get (receiver);
 		double xProperty = nationGroup.getChildren ().get (3).getLayoutX ();
 		double yProperty = nationGroup.getChildren ().get (3).getLayoutY ();
-		double vHeight = ((VBox) (nationGroup.getChildren ().get (3)))
-				.getHeight ();
-		double vWidth = ((VBox) (nationGroup.getChildren ().get (3)))
-				.getWidth ();
+		double vHeight = ((VBox) (nationGroup.getChildren ().get (3))).getHeight ();
+		double vWidth = ((VBox) (nationGroup.getChildren ().get (3))).getWidth ();
 
 		// COUNT IT UP
 		nationGroup.getChildren ().remove (nationGroup.lookup ("#score"));

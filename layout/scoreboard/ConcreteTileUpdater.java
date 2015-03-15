@@ -54,14 +54,15 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			nationName.setId ("nationName");
 			nationName.setTextAlignment (TextAlignment.CENTER);
 			nationName.setFont (Font.font ("Harabara Mais", FontWeight.MEDIUM, 33));
-			nationName.setFill (position < scoreboard.getSpecialBorder() ? Color.RED
-					: Color.WHITE);
+			nationName.setFill (position < scoreboard.getSpecialBorder() ? Color.WHITE
+					: Color.BLACK);
 
 			Text scoreTest = new Text();
 			scoreTest.setText (new Integer (scoreboard.getParticipants().get (position)
 							.getScore ()).toString ());
 			scoreTest.setLayoutX (base.getWidth () + 46);
 			scoreTest.setLayoutY (40);
+			scoreTest.setId ("scoreTest");
 			scoreTest.setTextAlignment (TextAlignment.CENTER);
 			scoreTest.setFont (Font.font ("Inconsolata", FontWeight.MEDIUM, 41));
 			scoreTest.setFill (Color.WHITE);
@@ -104,8 +105,9 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 					nationIcon.setImage (scoreboard.getDataCarrier().voterPointToken);
 					base.setFill (new ImagePattern (
 							scoreboard.getDataCarrier().nationTileBackgroundVoter));
-					nationName.setFill (Color.LIGHTGRAY);
-					scoreTest.setFill (Color.LIGHTGRAY);
+					pointsBase.setFill (new ImagePattern (scoreboard.getDataCarrier ().voteBGPTs));
+					nationName.setFill (Color.YELLOW);
+					scoreTest.setFill (Color.WHITE);
 				}
 			}
 
@@ -119,6 +121,8 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 
 				ptsView.setFitHeight (nationIcon.getFitHeight ());
 				ptsView.setFitWidth (nationIcon.getFitWidth ());
+				
+				if (position >= scoreboard.getSpecialBorder ()) nationName.setFill (Color.BLACK);
 
 				if (scoreboard.getParticipants().get (position).getScoredFlag ()
 						&& !(nationName.getText ().endsWith (" has SCORED!") && !(nationName
