@@ -31,38 +31,21 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 		Group sidebar = new Group ();
 		sidebar.setId ("sidebar");
 
-		// VOTING CALL
-		Rectangle voteUnderlay = RectangleBuilder.create ().width (scoreboard.getRightBarWidth())
-				.height (0.1 * scoreboard.rightBarHeight).x (scoreboard.getRightBarX()).y (scoreboard.rightBarY)
-				.fill (new ImagePattern (scoreboard.getDataCarrier().voteUnderlay))
-				.build ();
-
-		Text voteText = TextBuilder.create ().text ("calling...")
-				.fill (Color.WHITE)
-				.font (Font.font ("Inconsolata", FontWeight.SEMI_BOLD, 44))
-				.build ();
-
-		VBox voteVBox = VBoxBuilder.create ()
-				.prefWidth (voteUnderlay.getWidth ())
-				.prefHeight (voteUnderlay.getHeight ())
-				.layoutX (voteUnderlay.getX ()).layoutY (voteUnderlay.getY ())
-				.children (voteText).alignment (Pos.CENTER).build ();
-
 		// VOTER'S FLAG
 		Rectangle voteFlagUnderlay = RectangleBuilder
 				.create ()
-				.width (voteUnderlay.getWidth ())
-				.height (0.6 * scoreboard.rightBarHeight)
-				.x (voteUnderlay.getX ())
-				.y (scoreboard.rightBarY + 0.1 * scoreboard.rightBarHeight)
+				.width (scoreboard.getRightBarWidth ())
+				.height (0.75 * scoreboard.rightBarHeight)
+				.x (scoreboard.getRightBarX ())
+				.y (scoreboard.rightBarY)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteFlagUnderlay))
 				.build ();
 
-		int specialFlagWidth = (int) (0.8 * scoreboard.getRightBarWidth());
-		int specialFlagHeight = (int) (0.8 * scoreboard.getRightBarWidth());
+		int specialFlagWidth = (int) (0.96 * scoreboard.getRightBarWidth());
+		int specialFlagHeight = (int) (0.96 * scoreboard.getRightBarWidth());
 
-		int normalFlagWidth = (int) (0.8 * scoreboard.getRightBarWidth());
-		int normalFlagHeight = (int) ((0.55/0.8) * normalFlagWidth);
+		int normalFlagWidth = (int) (0.955 * scoreboard.getRightBarWidth());
+		int normalFlagHeight = (int) ((0.595/0.955) * normalFlagWidth);
 
 		ImageView voterFlag = ImageViewBuilder
 				.create ()
@@ -72,21 +55,20 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.fitHeight (scoreboard.isUsingSpecialFlags() ? specialFlagHeight : normalFlagHeight).build ();
 
 		HBox diamondVBox = new HBox ();
-		diamondVBox.setLayoutX (voteUnderlay.getX ());
-		diamondVBox.setLayoutY (voteUnderlay.getY ()
-				+ voteUnderlay.getHeight ());
-		diamondVBox.setPrefHeight (0.6 * scoreboard.rightBarHeight);
-		diamondVBox.setPrefWidth (voteUnderlay.getWidth ());
+		diamondVBox.setLayoutX (voteFlagUnderlay.getX ());
+		diamondVBox.setLayoutY (voteFlagUnderlay.getY () - 1);
+		diamondVBox.setPrefHeight (0.75 * scoreboard.rightBarHeight + 5.5);
+		diamondVBox.setPrefWidth (voteFlagUnderlay.getWidth ());
 		diamondVBox.setAlignment (Pos.CENTER);
 		diamondVBox.getChildren ().add (voterFlag);
 
 		// VOTE NAME
 		Rectangle currentVoterUnderlay = RectangleBuilder
 				.create ()
-				.width (voteUnderlay.getWidth ())
-				.height (0.2 * scoreboard.rightBarHeight)
-				.x (voteUnderlay.getX ())
-				.y (scoreboard.rightBarY + 0.7 * scoreboard.rightBarHeight)
+				.width (voteFlagUnderlay.getWidth ())
+				.height (0.15 * scoreboard.rightBarHeight)
+				.x (voteFlagUnderlay.getX ())
+				.y (scoreboard.rightBarY + 0.75 * scoreboard.rightBarHeight)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteNameUnderlay))
 				.build ();
 
@@ -94,20 +76,20 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.create ()
 				.text (voter.getName ())
 				.fill (Color.WHITE)
-				.font (Font.font ("Inconsolata", FontWeight.SEMI_BOLD, voter
-						.getName ().length () < 14 ? 82 : 58)).build ();
+				.font (Font.font ("RobotoLt", FontWeight.SEMI_BOLD, voter
+						.getName ().length () < 14 ? 74 : 52)).build ();
 
 		VBox currentVoterVBox = VBoxBuilder.create ()
-				.layoutX (voteUnderlay.getX ())
-				.layoutY (scoreboard.rightBarY + 0.7 * scoreboard.rightBarHeight)
-				.prefHeight (0.2 * scoreboard.rightBarHeight)
-				.prefWidth (voteUnderlay.getWidth ()).children (currentVoter)
+				.layoutX (voteFlagUnderlay.getX ())
+				.layoutY (scoreboard.rightBarY + 0.75 * scoreboard.rightBarHeight)
+				.prefHeight (0.15 * scoreboard.rightBarHeight)
+				.prefWidth (voteFlagUnderlay.getWidth ()).children (currentVoter)
 				.alignment (Pos.CENTER).build ();
 
 		// ADD COUNTER
 		Rectangle counterUnderlay = RectangleBuilder.create ()
-				.width (voteUnderlay.getWidth ()).height (0.1 * scoreboard.rightBarHeight)
-				.x (voteUnderlay.getX ()).y (scoreboard.rightBarY + 0.9 * scoreboard.rightBarHeight)
+				.width (voteFlagUnderlay.getWidth ()).height (0.1 * scoreboard.rightBarHeight)
+				.x (voteFlagUnderlay.getX ()).y (scoreboard.rightBarY + 0.9 * scoreboard.rightBarHeight)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteCounterUL))
 				.build ();
 
@@ -116,17 +98,17 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " out of "
 						+ scoreboard.getDataCarrier().voteMap.size ())
 				.fill (Color.WHITE)
-				.font (Font.font ("Inconsolata", FontWeight.LIGHT, 32))
+				.font (Font.font ("Roboto Lt", FontWeight.LIGHT, 32))
 				.build ();
 
-		VBox counterVBox = VBoxBuilder.create ().layoutX (voteUnderlay.getX ())
+		VBox counterVBox = VBoxBuilder.create ().layoutX (voteFlagUnderlay.getX ())
 				.layoutY (counterUnderlay.getY ())
 				.prefHeight (counterUnderlay.getHeight ())
-				.prefWidth (voteUnderlay.getWidth ()).children (counter)
+				.prefWidth (voteFlagUnderlay.getWidth ()).children (counter)
 				.alignment (Pos.CENTER).build ();
 
 		// ADD TO GROUPS
-		sidebar.getChildren ().addAll (voteUnderlay, voteVBox,
+		sidebar.getChildren ().addAll (
 				voteFlagUnderlay, diamondVBox, currentVoterUnderlay,
 				currentVoterVBox, counterUnderlay, counterVBox);
 

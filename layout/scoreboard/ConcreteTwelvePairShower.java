@@ -32,7 +32,7 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		iR2.setX (0);
 		iR2.setY (780);
 		iR2.setId ("12Strip");
-		iR2.setWidth (1920);
+		iR2.setWidth (scoreboard.getScreenWidth ());
 		iR2.setHeight (270);
 		iR2.setFill (new ImagePattern (scoreboard.getDataCarrier().ppraisbg));
 		

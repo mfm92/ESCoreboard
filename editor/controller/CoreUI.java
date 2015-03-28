@@ -115,11 +115,11 @@ public class CoreUI extends Application implements Initializable {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {	
+	public void start(Stage primaryStage) throws Exception {			
 		this.primaryStage = primaryStage;
 		
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation (getClass ().getResource ("../view/CoreUI.fxml"));
+		loader.setLocation (getClass ().getResource ("/view/CoreUI.fxml"));
 		content = (Pane) loader.load ();
 		
 		Scene scene = new Scene (content);

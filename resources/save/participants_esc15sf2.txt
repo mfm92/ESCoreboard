@@ -1,21 +1,45 @@
-Australia$AUS$Guy Sebastian$---$$$$V
-Austria$AUT$The Makemakes$I Am Yours$$$$V
-Azerbaijan$AZE$Elnur Hüseynov$Fire Angel$$$4$P
-Cyprus$CYP$Giannis Karagiannis$One Thing I Should Have Done$$$11$P
-Czech Republic$CZE$Václav Noid & Marta Jandová$Hope Dies Last$$$5$P
-France$FRA$Lisa Angell$N'oubliez pas$$$$V
-Iceland$ISL$María Ólafsdóttir$Unbroken$$$15$P
-Ireland$IRE$Molly Sterling$Playing With Numbers$$$6$P
-Israel$ISR$Nadav Guedj$Golden Boy$$$17$P
-Latvia$LAT$Aminata Sovadogo$Love Injected$$$1$P
-Lithuania$LTU$Vaidas & Monika$This Time$$$2$P
-Malta$MLT$Amber$Warrior$$$3$P
-Montenegro$MNE$Knez$Ljubavi Lalala$$$7$P
-Norway$NOR$Karin Park$Human Beings$$$10$P
-Poland$POL$Nataszia Urbanska$In The Name Of Love$$$13$P
-Portugal$POR$Leonor Andrade$Há Um Mar Que Nos Separa$$$8$P
-San Marino$SMR$Michele Perniola & Anita Simoncini$Together$$$9$P
-Slovenia$SLO$Maraaya$Here For You$$$12$P
-Spain$ESP$Edurne$Amanecer$$$$V
-Sweden$SWE$Mans Zelmerlow$Something$$$16$P
-Switzerland$SUI$Mélanie René$Time to Shine$$$14$P
+Anselmsmumonia$AMM$Bye Beneco$Chemirocha$128$148$1$P
+Ölanda$ÖLA$Eliot Sumner$Information$158$178$2$P
+Perryfornia$PER$OMG NYC x Alex Winston$Medicine$194$214$3$P
+Smileyland & Folegandria$SMF$Arkona$Yarilo$118$138$4$P
+Reym-L-Dneurb$RLD$The Night Terrors$Megafauna$179$199$5$P
+Llama Republic$LLA$Kenzie May$Hide & Seek$198$218$6$P
+Trash Canyon$TRC$The Mispers$Shoulder$128$148$7$P
+Cydoni-Gibberia$CYG$Shake Shake Go$England Skies$164$184$8$P
+New Acadia$NAC$Snowmine$Tidal Wave$145$165$9$P
+Oussou Empire$OUS$Bang La Decks$Zouka$166$186$10$P
+Rumia$RUM$Dordeduh$Dojana$237$257$11$P
+Vedatistan$VED$Dani Im$Alive$177$197$12$P
+Trollheimr$TRO$Dalriada$A Dudás$251$271$13$P
+Viola Per Sempre$VPS$Nightwish$Élan$208$228$14$P
+Calypso$CAL$Talisco$The Keys$148$168$15$P
+Carpatina$CRP$Zdob si Zdub$Om cu inima de lemn$125$145$16$P
+Ujedinjeni Gvozd$UJG$Kíla$Suas Síos$139$159$17$P
+Prasia$PRA$Fear Of Men$Descent$126$146$18$P
+Irinatie$IRI$Sofia Jannok$Snöljejoninna$169$189$19$P
+Lukeland$LKL$Rona Nishliu & Fanfara Tirana$Jeho$182$202$20$P
+Srivijaya & Sasentia$SRS$ONE OK ROCK$Mighty Long Fall$157$177$21$P
+Noizeland$NOZ$Fol'kneri$Rozova-bêr'ozova$81$101$22$P
+Waiting Iist of Shelley & Nici$WSN$Nostalghia$Homeostasis$136$156$23$P
+Dalisska$DAL$Breakfast$Diane$129$149$24$P
+Halito$HAL$Sophie$Lemonade$95$115$25$P
+Bigicia$BIG$Ólafur Arnalds ft. Arnór Dan$So Close$140$160$26$P
+Eterland$ETE$of Verona$Dark In My Imagination$109$129$27$P
+Illumia$ILL$Cesar Bolaños$Intensidad Y Altura$97$117$28$P
+Tonallán$TON$--TON$---$$$$V
+Pebbleland$PEB$--PEB$---$$$$V
+Begonia$BEG$--BEG$---$$$$V
+Sakuralia$SAK$--SAK$---$$$$V
+Il-Bidu$ILB$--ILB$---$$$$V
+Kamandé$KAM$--KAM$---$$$$V
+Belvist$BEL$--BEL$---$$$$V
+Artyomka$ART$--ART$---$$$$V
+Santa d'Lucia$SDL$--SDL$---$$$$V
+Blackmere$BLA$--BLA$---$$$$V
+Lorien$LOR$--LOR$---$$$$V
+Utopia$UTO$--UTO$---$$$$V
+Chyariia$CHY$--CHY$---$$$$V
+Genext$GXT$--GXT$---$$$$V
+L'ester$LES$--LES$---$$$$V
+Meilutya$MEI$--- MEI$---$$$$V
+Glamastan$GLA$--GLA$---$$$$V

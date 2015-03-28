@@ -34,7 +34,8 @@ public abstract class UpdateAnimator {
 		Text scoreTest = new Text();
 		
 		scoreTest.setText (new Integer (newNrOfPoints).toString ());
-		scoreTest.setFont (Font.font ("Inconsolata", FontWeight.MEDIUM, 38));
+		scoreTest.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 34));
+		scoreTest.setId ("scoreTest");
 		scoreTest.setFill (Color.WHITE);
 
 		VBox scoreVBox = new VBox ();

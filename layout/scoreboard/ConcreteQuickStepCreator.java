@@ -2,8 +2,11 @@ package scoreboard;
 
 import java.util.ArrayList;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -82,7 +85,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			Media entry = recEntry.getMedia ();
 			MediaPlayer entryPlayer = new MediaPlayer (entry);
 			entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - 17));
+			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
 			entryPlayer.setAutoPlay (true);
 			entryPlayer.setVolume (0);
 			entryPlayer.setCycleCount (1);
@@ -137,8 +140,8 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 
 					Text recText = new Text();
 					recText.setText (currentVoterCopy.getVotes ().getReceivers ()[i].getName ());
-					recText.setFont (Font.font ("Calibri", FontWeight.MEDIUM, 33));
-					recText.setFill (Color.BLACK);
+					recText.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 24));
+					recText.setFill (Color.web ("#1C1C1C"));
 					
 					rectVBox.getChildren().add (recText);
 					recTexts.add (rectVBox);
@@ -184,12 +187,34 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 				for (ParallelTransition pTrans : transitions) {
 					pTrans.setDelay (Duration.seconds (1));
 					pTrans.play ();
+					
 					final int cSave = counter++;
 					pTrans.setOnFinished (event -> {
 						to7Group.getChildren ().add (1, rects.get (cSave));
 						to7Group.getChildren ().add (flags.get (cSave));
 						to7Group.getChildren ().add (recTexts.get (cSave));
 						pointViews.get (cSave).toFront ();
+						
+						Rectangle shiny = new Rectangle (rects.get (cSave).getHeight (), rects.get (cSave).getHeight ());
+						shiny.setFill (Color.WHITE);
+						shiny.setLayoutX (rects.get (cSave).getX ());
+						shiny.setLayoutY (rects.get (cSave).getY ());
+						shiny.setEffect (new javafx.scene.effect.MotionBlur (20, 20));
+						shiny.setOpacity (0.7);
+						
+						to7Group.getChildren ().add (shiny);
+						
+						Timeline run = new Timeline();
+						
+						KeyFrame start = new KeyFrame (Duration.ZERO, new KeyValue (shiny.layoutXProperty (), shiny.getLayoutX ()));
+						KeyFrame go = new KeyFrame (Duration.seconds (0.5), new KeyValue (shiny.layoutXProperty(), 
+								shiny.getLayoutX () + scoreboard.getColumnWidthTransition () - shiny.getWidth ()));
+						KeyFrame stay = new KeyFrame (Duration.seconds(0.5), new KeyValue (shiny.opacityProperty (), shiny.getOpacity ()));
+						KeyFrame nowGo = new KeyFrame (Duration.seconds (0.55), new KeyValue (shiny.opacityProperty (), 0));
+						
+						run.getKeyFrames ().addAll (start, go, stay, nowGo);
+						run.setDelay (Duration.seconds (0.04 * cSave));
+						run.play ();
 					});
 				}
 			});

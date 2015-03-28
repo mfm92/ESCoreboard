@@ -24,7 +24,7 @@ import nations.Entry;
 import nations.Participant;
 import nations.Votes;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.math.*;
 
 import bannercreator.BannerCreator;
 import bannercreator.SimpleBannerCreator;
@@ -61,7 +61,8 @@ public class DataCarrier {
 	
 	public Image ptHolder;
 	public Image voteQuickUnderlay;
-
+	public Image scoredPtsBG;
+	
 	public HashMap<String, Participant> nameMap;
 	public HashMap<Participant, Votes> voteMap;
 	public HashMap<Participant, Image> diamondMap;
@@ -73,6 +74,8 @@ public class DataCarrier {
 	private Image dummyPrettyFlag;
 	
 	boolean readDiamonds;
+	
+	public static ExecutorService threadExecutor = Executors.newCachedThreadPool ();
 
 	BannerCreator bannerCreator = new SimpleBannerCreator (130, 810);
 
@@ -129,6 +132,8 @@ public class DataCarrier {
 			longE = System.nanoTime ();
 			System.out.println ("readCreateBanners: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));	
 		}
+		
+		sortVotes();
 	}
 
 	private void readUtilImages() throws IOException, InterruptedException {
@@ -164,6 +169,7 @@ public class DataCarrier {
 						+ "Graphics\\Point Tokens\\BluePtsBG.png");
 				pointsTileBackgroundPQ = readImage (resourcesFile
 						+ "Graphics\\Point Tokens\\RedPtsBG.png");
+				scoredPtsBG = readImage (resourcesFile + "Graphics\\Point Tokens\\ScoredBGPts.png");
 
 				backgroundWhite = readImage (resourcesFile
 						+ "Graphics\\Global Backgrounds\\Scoreboard BG BW.png");
@@ -214,7 +220,7 @@ public class DataCarrier {
 		
 		exeService.invokeAll (exes);
 		exeService.shutdown ();
-		exeService.awaitTermination (3, TimeUnit.SECONDS);
+		exeService.awaitTermination (10, TimeUnit.SECONDS);
 	}
 	
 	private void readDummies () throws IOException {
@@ -326,14 +332,14 @@ public class DataCarrier {
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
 			Participant p = getRosterNationByShortName (pData.getShortName ());
 			
-			File mediaFile = new File (mediaLocation + pData.getArtist () + " - " + pData.getTitle () + ".mp4");
+			File mediaFile = new File (mediaLocation + pData.getShortName () + ".mp4");
 			
 			if (mediaFile.exists() && NumberUtils.isNumber (pData.getStart ()) && NumberUtils.isNumber (pData.getStop ())) {
 				Media entryVid = new Media ((mediaFile).toURI ().toString ());
 				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, Integer.parseInt (pData.getStart ()),
 					Integer.parseInt (pData.getStop ()), pData.getStatus ()));	
 			} else {
-				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), dummyMedia, 13, 33, pData.getStatus ()));
+				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), dummyMedia, 66, 86, pData.getStatus ()));
 			}
 		}
 	}
@@ -358,6 +364,23 @@ public class DataCarrier {
 			voteMap.put (getRosterNationByShortName (pair.getKey ().getShortName ()), votes);
 			getRosterNationByShortName (pair.getKey ().getShortName ()).setVotes (votes);
 			allVotes.add (votes);
+		}
+	}
+	
+	/**
+	 * Use this to hack voting order into the show.
+	 */
+	private void sortVotes () {
+		allVotes.clear ();
+		
+		String[] voteOrder = new String[]{"Begonia", "Tonallán", "Chyariia", "L'ester", "Santa d'Lucia",
+				"Utopia", "Sakuralia", "Il-Bidu", "Belvist", "Lorien", "Pebbleland", "Artyomka", "Meilutya",
+				"Genext", "Glamastan", "Blackmere", "Kamandé"};
+		
+		for (String s : voteOrder) {
+			Participant p = getRosterNationByFullName (s);
+			Votes v = p.getVotes ();
+			allVotes.add (v);
 		}
 	}
 

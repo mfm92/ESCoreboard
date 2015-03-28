@@ -53,7 +53,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			nationName.setLayoutY (0.65 * pointsBase.getHeight ());
 			nationName.setId ("nationName");
 			nationName.setTextAlignment (TextAlignment.CENTER);
-			nationName.setFont (Font.font ("Harabara Mais", FontWeight.MEDIUM, 33));
+			nationName.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, nationName.getText ().length () > 21 ? 24 : 28));
 			nationName.setFill (position < scoreboard.getSpecialBorder() ? Color.WHITE
 					: Color.BLACK);
 
@@ -64,7 +64,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			scoreTest.setLayoutY (40);
 			scoreTest.setId ("scoreTest");
 			scoreTest.setTextAlignment (TextAlignment.CENTER);
-			scoreTest.setFont (Font.font ("Inconsolata", FontWeight.MEDIUM, 41));
+			scoreTest.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 34));
 			scoreTest.setFill (Color.WHITE);
 
 			VBox scoreVBox = new VBox ();
@@ -127,16 +127,13 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 				if (scoreboard.getParticipants().get (position).getScoredFlag ()
 						&& !(nationName.getText ().endsWith (" has SCORED!") && !(nationName
 								.getText ().endsWith (" PQ!")))) {
-					base.setFill (new ImagePattern (
-							scoreboard.getDataCarrier().nationTileBackgroundScored));
+					
+					base.setFill (new ImagePattern (scoreboard.getDataCarrier().nationTileBackgroundScored));
 					if (position < scoreboard.getSpecialBorder()) {
-						base.setFill (new ImagePattern (
-								scoreboard.getDataCarrier().nationTileBackgroundPQScored));
+						base.setFill (new ImagePattern (scoreboard.getDataCarrier().nationTileBackgroundPQScored));
+					} else {
+						pointsBase.setFill (new ImagePattern (scoreboard.getDataCarrier ().scoredPtsBG));
 					}
-				}
-				
-				if (scoreboard.getParticipants().get (position) == receiver) {
-					// do some effects here...
 				}
 
 				nationTile.getChildren ().add (ptsView);

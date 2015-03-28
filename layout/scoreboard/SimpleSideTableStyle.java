@@ -33,7 +33,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			textGroup.setId ("Table " + i);
 			
 			Rectangle rectangle = new Rectangle();
-			rectangle.setX (900);
+			rectangle.setX (850);
 			rectangle.setY (124 + i * textHeight);
 			rectangle.setFill (bgColor);
 			rectangle.setWidth (500);
@@ -46,7 +46,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			flag.setFitWidth (80);
 
 			Rectangle pointsBase = new Rectangle();
-			pointsBase.setX (1380);
+			pointsBase.setX (1330);
 			pointsBase.setY (124 + i * textHeight);
 			pointsBase.setWidth (120);
 			pointsBase.setHeight (textHeight);
@@ -54,8 +54,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 
 			Text textScore = new Text (finalists.get (i).getScore ()
 					+ "");
-			textScore.setFont (Font.font ("Inconsolata", textScore.getText ()
-					.length () > 15 ? 26 : 38));
+			textScore.setFont (Font.font ("Roboto Lt", 46));
 			textScore.setFill (Color.WHITE);
 
 			VBox ptsVBox = new VBox ();
@@ -68,7 +67,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 
 			Rectangle rectangleEntry = new Rectangle();
 			
-			rectangleEntry.setX (900);
+			rectangleEntry.setX (rectangle.getX ());
 			rectangleEntry.setY (124 + i * textHeight + 60);
 			rectangleEntry.setWidth (480);
 			rectangleEntry.setHeight (40);
@@ -77,8 +76,8 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			Text textEntry = new Text (finalists.get (i).getEntry ()
 					.getArtist ()
 					+ " - " + finalists.get (i).getEntry ().getTitle ());
-			textEntry.setFont (Font.font ("Liberation Sans Standard",
-					FontWeight.BOLD, 24));
+			textEntry.setFont (Font.font ("Roboto Lt",
+					FontWeight.BOLD, textEntry.getText ().length () > 40 ? 16 : 20));
 			textEntry.setFill (Color.WHITE);
 
 			VBox entryVBox = new VBox ();
@@ -88,14 +87,14 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			entryVBox.setPrefWidth (rectangleEntry.getWidth () - 20);
 			entryVBox.setAlignment (Pos.CENTER_LEFT);
 			entryVBox.getChildren ().add (textEntry);
-
+			
 			Text textNation = new Text (finalists.get (i).getName ());
 			textNation.setFont (Font
-					.font ("Coolvetica RG", FontWeight.BOLD, 46));
+					.font ("Roboto Lt", FontWeight.BOLD, textNation.getText ().length () > 14 ? 26 : 40));
 			textNation.setFill (Color.WHITE);
 
 			VBox nationVBox = new VBox ();
-			nationVBox.setLayoutX (rectangle.getX () + 110);
+			nationVBox.setLayoutX (rectangle.getX () + flag.getFitWidth () + 18);
 			nationVBox.setLayoutY (rectangle.getY () + 5);
 			nationVBox.setPrefHeight (rectangle.getHeight () - 10);
 			nationVBox.setPrefWidth (rectangle.getWidth () - 20);
@@ -108,7 +107,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 		}
 		
 		Rectangle r = new Rectangle();
-		r.setX (900);
+		r.setX (850);
 		r.setY (50);
 		r.setId ("Top6Rect");
 		r.setWidth (600);
@@ -131,7 +130,10 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 
 		superText.getChildren ().add (top6VBox);
 		superText.setLayoutX (400);
-
+		superText.setStyle ("-fx-border-color: white;"
+				+ "-fx-border-style: dashed;"
+				+ "-fx-border-width: 1 1 1 1");
+		
 		return superText;
 	}
 

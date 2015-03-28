@@ -145,22 +145,22 @@ public class Participant implements Comparable<Participant>, Cloneable {
 	public int compareTo(Participant o) {
 		if (o.getScore () > score.get ())
 			return 1;
-		else if (o.getScore () < score.get ())
+		if (o.getScore () < score.get ())
 			return -1;
 
 		if (o.getTotalVoters () > totalVoters)
 			return 1;
-		else if (o.getTotalVoters () < totalVoters)
+		if (o.getTotalVoters () < totalVoters)
 			return -1;
 
 		for (int i = 0; i < 10; i++) {
 			if (o.getReceiveHistory ()[i] > receiveHistory[i])
 				return 1;
-			else if (o.getReceiveHistory ()[i] < receiveHistory[i])
+			if (o.getReceiveHistory ()[i] < receiveHistory[i])
 				return -1;
 		}
 
-		return 0;
+		return name.get ().compareTo (o.getName ());
 	}
 
 	@Override

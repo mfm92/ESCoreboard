@@ -39,9 +39,13 @@ public class SimpleBannerCreator extends BannerCreator {
 				null);
 		BufferedImage bannerNextStep = SwingFXUtils.fromFXImage (bannerImage,
 				image);
-		File bannerDestination = new File (System.getProperty ("user.dir") + "\\banners\\"
+		File bannerBase = new File (System.getProperty ("user.dir") + "\\banners\\"
 						+ p.getName () + ".png");
-		bannerDestination.getParentFile ().mkdirs ();
+		bannerBase.getParentFile ().mkdirs ();
+		
+		File bannerDestination = new File (bannerBase.getAbsolutePath () + "\\" +
+				p.getName () + ".png");
+		bannerDestination.getParentFile ().mkdirs();
 
 		try {
 			Graphics2D g2D = (Graphics2D) bannerNextStep.getGraphics ();

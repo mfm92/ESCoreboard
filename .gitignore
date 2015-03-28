@@ -1,11 +1,17 @@
 #Ignore compiled stuff
 bin/
+build/
 
 #no docs?
 doc/
 
+libs/
+
 #Ignore giant-sized videos
 resources/Nation Info/Entries Videos/
+
+#no spoilers
+resources/save/
 
 #Do not upload scoreboards
 scoreboards/

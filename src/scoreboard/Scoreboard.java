@@ -4,6 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,8 +54,8 @@ public class Scoreboard {
 	// ----------------------------------- //
 	
 	// ----------------------------------- //
-	private Duration minDuration = Duration.seconds (0.2);
-	private Duration maxDuration = Duration.seconds (3.0);
+	private Duration minDuration = Duration.seconds (0.8);
+	private Duration maxDuration = Duration.seconds (4.0);
 	
 	private String title = CoreUI.inputData.getNameOfEdition () + " " + CoreUI.inputData.getEditionNr () + " results";
 	private Duration voteTokenDuration = Duration.seconds 
@@ -72,7 +75,7 @@ public class Scoreboard {
 	
 	// ----------------------------- //
 	private int columnsNr = 2;
-	private int scWidth = (int) (0.63 * backgroundWidth);
+	private int scWidth = (int) (0.65 * backgroundWidth);
 	private int widthFromLeftOffset = (int) (0.03 * backgroundWidth);
 	
 	private int columnWidth = scWidth / columnsNr;
@@ -132,7 +135,7 @@ public class Scoreboard {
 	
 	// ----------------------------- //
 	private int quickEntryX = (screenWidth - backgroundWidth) / 2 + widthFromLeftOffset;
-	private int quickEntryWidth = (int)(0.63 * backgroundWidth);
+	private int quickEntryWidth = scWidth;
 	private int quickEntryY = (screenHeight - backgroundHeight) / 2 + heightFromTopOffset;
 	private int quickEntryHeight = (int)(0.6 * backgroundHeight);
 	
@@ -156,9 +159,9 @@ public class Scoreboard {
 	private int transitionYOffset = (screenHeight - backgroundHeight) / 2 + heightFromTopOffset +
 			quickEntryHeight + heightTransition - rowHeightTransition;
 	
-	private int ptfromEdgeOffsetTrans = 0;
-	private int flagFromPTOffsetTrans = 0;
-	private int textFromFlagOffsetTrans = 12;
+	private int ptfromEdgeOffsetTrans = -8;
+	private int flagFromPTOffsetTrans = -8;
+	private int textFromFlagOffsetTrans = 16;
 	// ----------------------------- //
 	
 	// ----------------------------- //
@@ -288,7 +291,7 @@ public class Scoreboard {
 		entryView.setMediaPlayer (entryPlayer);
 		entryView.setFitHeight (674);
 		entryView.setFitWidth (1200);
-		entryView.setX (100);
+		entryView.setX (50);
 		entryView.setY (50);
 		entryView.setId ("media");
 
@@ -307,8 +310,22 @@ public class Scoreboard {
 				new SnapshotParameters (), null);
 		BufferedImage scoreboard = SwingFXUtils.fromFXImage (scoreboardImage,
 				bufferedImage);
-		File destScoreboard = new File (System.getProperty ("user.dir") + "\\scoreboards\\"
-						+ voter.getName () + ".png");
+		Path basePath = Paths.get ("scoreboards");
+		Path scPath = Paths.get ("scoreboards\\" + title);
+		File destScoreboard = null;
+		
+		if (!Files.exists (basePath)) {
+			File base = basePath.toFile ();
+			base.mkdirs ();
+		}
+		
+		if (!Files.exists (scPath)) {
+			File base = scPath.toFile ();
+			base.mkdirs ();
+		}
+		
+		destScoreboard = new File (System.getProperty ("user.dir") + "\\scoreboards\\" +
+				title + "\\" + voter.getName () + ".png");
 		destScoreboard.getParentFile ().mkdirs ();
 
 		try {
