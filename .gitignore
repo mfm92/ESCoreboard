@@ -1,6 +1,7 @@
 #Ignore compiled stuff
 bin/
 build/
+*.jar
 
 #no docs?
 doc/
