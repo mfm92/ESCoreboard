@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="finish" name="ESCoreboard" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<property name="src.dir" value="src" />
+	<property name="editor.dir" value="editor" />
+	<property name="layout.dir" value="layout" />
+	<property name="build.dir" value="build" />
+	<property name="libs.dir" value="libs" />
+
+	<property name="ant.build.javac.source" value="1.8" />
+	<property name="ant.build.javac.target" value="1.8" />
+
+	<path id="extlibs">
+		<fileset dir="${build.dir}" />
+		<fileset dir="${libs.dir}" includes="**/*.jar" />
+	</path>
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
+	<target name="finish" depends="clean">
+	    <echo message="Done!"/>
+	</target>
+
+	<target name="bootstrap" description="Used to install the ivy task jar">
+		<mkdir dir="${user.home}/.ant/lib" />
+		<get dest="${user.home}/.ant/lib/ivy.jar"
+			src="http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.2.0/ivy-2.2.0.jar" />
+	</target>
+
+	<target name="init" depends="bootstrap">
+		<mkdir dir="${libs.dir}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/view" />
+		<copy todir="${build.dir}/view">
+			<fileset dir="${editor.dir}/view" />
+		</copy>
+		<ivy:retrieve pattern="libs/[organisation]/[module]-[revision].[ext]" />
+	</target>
+
+	<target name="compile" depends="init">
+	    <echo message="Compiling all those source files..."/>
+		<javac srcdir="${editor.dir}; ${layout.dir}; ${src.dir}"
+			destdir="${build.dir}" classpathref="extlibs" includeantruntime="false"
+			encoding="iso-8859-1" />
+	</target>
+
+	<target name="build app" depends="compile">
+	    <echo message="Building the executable..."/>
+		<jar destfile="ESCoreboard.jar" basedir="${build.dir}">
+
+			<manifest>
+				<attribute name="Main-Class" value="controller.CoreUI" />
+				<attribute name="DependencyFinder" value="main" />
+				<attribute name="Class-Path" value="${libs.dir}/**/*.jar" />
+			</manifest>
+
+			<path refid="extlibs"/>
+			<fileset dir="${build.dir}" />
+			<zipgroupfileset dir="${libs.dir}"/>
+		</jar>
+	</target>
+	
+	<target name="clean" depends="build app">
+	    <delete dir="bin"/>
+	    <delete dir="build"/>
+	</target>
+</project>
