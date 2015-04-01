@@ -31,9 +31,11 @@
 		<mkdir dir="${libs.dir}" />
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dir}/view" />
+		<mkdir dir="${build.dir}/resources" />
 		<copy todir="${build.dir}/view">
 			<fileset dir="${editor.dir}/view" />
 		</copy>
+		<copy todir="${build.dir}/resources" file="resources/Graphics/EditorBackgrounds/rootBackground.png"/>
 		<ivy:retrieve pattern="libs/[organisation]/[module]-[revision].[ext]" />
 	</target>
 
@@ -61,7 +63,6 @@
 	</target>
 	
 	<target name="clean" depends="build app">
-	    <delete dir="bin"/>
-	    <delete dir="build"/>
+		<delete dir="${build.dir}"/>
 	</target>
 </project>

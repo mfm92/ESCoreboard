@@ -1,5 +1,7 @@
 package bannercreator;
 
+import java.io.IOException;
+
 import nations.Participant;
 
 public abstract class BannerCreator {
@@ -12,7 +14,5 @@ public abstract class BannerCreator {
 		this.bannerWidth = bannerWidth;
 	}
 
-	public abstract void createBanners(Participant p, String startStatus,
-			String startGrid);
-
+	public abstract void createBanners(Participant p, String startStatus, String startGrid) throws IOException;
 }

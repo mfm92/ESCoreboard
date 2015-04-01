@@ -1,5 +1,5 @@
 .root {
-	-fx-background-image: url("../../resources/Graphics/EditorBackgrounds/rootBackground.png");
+	-fx-background-image: url("/resources/rootBackground.png");
 	-fx-font-family: "Segue UI";
 }
 

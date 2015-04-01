@@ -311,7 +311,7 @@ public class Scoreboard {
 		BufferedImage scoreboard = SwingFXUtils.fromFXImage (scoreboardImage,
 				bufferedImage);
 		Path basePath = Paths.get ("scoreboards");
-		Path scPath = Paths.get ("scoreboards\\" + title);
+		Path scPath = Paths.get ("scoreboards" + File.separator + title);
 		File destScoreboard = null;
 		
 		if (!Files.exists (basePath)) {
@@ -324,8 +324,8 @@ public class Scoreboard {
 			base.mkdirs ();
 		}
 		
-		destScoreboard = new File (System.getProperty ("user.dir") + "\\scoreboards\\" +
-				title + "\\" + voter.getName () + ".png");
+		destScoreboard = new File (System.getProperty ("user.dir") + File.separator + "scoreboards" + File.separator +
+				title + File.separator + voter.getName () + ".png");
 		destScoreboard.getParentFile ().mkdirs ();
 
 		try {

@@ -403,9 +403,9 @@ public class CoreUI extends Application implements Initializable {
 		flagDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
 			if (inputData.getFlagDirectory() != null && (!inputData.getFlagDirectory().equals("null"))) {
 				String destination = inputData.getFlagDirectory ();
-				String[] tokens = destination.split ("\\\\");
-				String show = ".../" + tokens[tokens.length-3] + "/" + 
-						tokens[tokens.length-2] + "/" + tokens[tokens.length-1];
+				String[] tokens = destination.split (File.separator + File.separator);
+				String show = "..." + File.separator + tokens[tokens.length-3] + File.separator + 
+						tokens[tokens.length-2] + File.separator + tokens[tokens.length-1];
 				flagDirButton.setText ("Flag Directory set to: " + show + " \u2713");
 			}
 		});
@@ -431,7 +431,7 @@ public class CoreUI extends Application implements Initializable {
 		entryDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
 			if (inputData.getEntriesDirectory() != null && (!inputData.getEntriesDirectory().equals("null"))) {
 				String destination = inputData.getEntriesDirectory ();
-				String[] tokens = destination.split ("\\\\");
+				String[] tokens = destination.split (File.separator + File.separator);
 				String show = ".../" + tokens[tokens.length-2] + "/" + tokens[tokens.length-1];
 				entryDirButton.setText ("Entries Directory set to: " + show + " \u2713");
 			}
@@ -458,7 +458,7 @@ public class CoreUI extends Application implements Initializable {
 		prettyFlagDirButton.textProperty ().addListener ((observable, oldValue, newValue) -> {
 			if (inputData.getPrettyFlagDirectory() != null && (!inputData.getPrettyFlagDirectory().equals("null"))) {
 				String destination = inputData.getPrettyFlagDirectory ();
-				String[] tokens = destination.split ("\\\\");
+				String[] tokens = destination.split (File.separator + File.separator);
 				String show = ".../" + tokens[tokens.length-2] + "/" + tokens[tokens.length-1];
 				prettyFlagDirButton.setText ("Pretty flag directory set to: " + show + " \u2713");
 			}

@@ -1,7 +1,7 @@
 @CHARSET "ISO-8859-1";
 
 .root {
-	-fx-background-image: url("../../resources/Graphics/EditorBackgrounds/rootBackground.png");
+	-fx-background-image: url("/resources/rootBackground.png");
 }
 
 .label {

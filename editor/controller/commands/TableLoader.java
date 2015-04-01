@@ -37,9 +37,12 @@ public class TableLoader {
 			origin = bReader.readLine ();
 		}
 		
-		File participantsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\participants_" + origin + ".txt");
-		File votesFile = new File (System.getProperty("user.dir") + "\\resources\\save\\votes_" + origin + ".txt");
-		File paramsFile = new File (System.getProperty("user.dir") + "\\resources\\save\\params_" + origin + ".txt");
+		File participantsFile = new File (System.getProperty("user.dir") + File.separator + "resources" + 
+				File.separator + "save" + File.separator + "participants_" + origin + ".txt");
+		File votesFile = new File (System.getProperty("user.dir") + File.separator + 
+				"resources" + File.separator + "save" + File.separator + "votes_" + origin + ".txt");
+		File paramsFile = new File (System.getProperty("user.dir") + File.separator + "resources" +
+				File.separator + "save" + File.separator + "params_" + origin + ".txt");
 
 		try {
 			clearer.execute ();
@@ -57,7 +60,7 @@ public class TableLoader {
 		
 		BufferedReader reader = new BufferedReader (new FileReader (inputFile));
 		while ((line = reader.readLine ()) != null) {
-			String[] tokens = line.split ("\\$");
+			String[] tokens = line.split (File.separator + "$");
 			
 			ParticipantData participant = new ParticipantData (tokens[0], tokens[1],
 					tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7]);
@@ -73,7 +76,7 @@ public class TableLoader {
 		
 		BufferedReader reader = new BufferedReader (new FileReader (inputFile));
 		while ((line = reader.readLine ()) != null) {
-			String[] tokens = line.split ("\\$");
+			String[] tokens = line.split (File.separator + "$");
 			ParticipantData voter = CoreUI.inputData.retrieveParticipantByShortName (tokens[0]);
 			ArrayList<ParticipantData> votes = new ArrayList<> ();
 			
