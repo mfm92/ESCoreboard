@@ -6,13 +6,13 @@ import java.util.Collections;
 import data.Standings;
 import nations.Participant;
 import nations.Votes;
-import utilities.DataCarrier;
+import utilities.Utilities;
 
 public class VoteAdder implements Runnable {
 
 	Standings standings;
 	Scoreboard scoreboard;
-	DataCarrier utilities;
+	Utilities utilities;
 
 	ArrayList<Votes> allVotes;
 	volatile int inCountryCounter;
@@ -21,7 +21,7 @@ public class VoteAdder implements Runnable {
 	boolean tradVP;
 
 	public VoteAdder(Standings standings, Scoreboard scoreboard,
-			DataCarrier utilities, int inCountryCounter, boolean tradVP) {
+			Utilities utilities, int inCountryCounter, boolean tradVP) {
 		this.standings = standings;
 		this.scoreboard = scoreboard;
 		this.utilities = utilities;

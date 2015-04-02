@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ import bannercreator.BannerCreator;
 import bannercreator.ESCBannerCreator;
 import controller.CoreUI;
 
-public class DataCarrier {
+public class Utilities {
 
 	public Image nationTileBackground;
 	public Image nationTileBackgroundScored;
@@ -82,9 +83,9 @@ public class DataCarrier {
 	private ArrayList<Image> pointsTokens;
 	public ArrayList<Votes> allVotes = new ArrayList<>();
 	
-	String resourcesFile = System.getProperty ("user.dir") + File.separator;
+	String resourcesFile = System.getProperty ("user.dir") + "/";
 
-	public DataCarrier(boolean readDiamonds) throws IOException {
+	public Utilities(boolean readDiamonds) throws IOException {
 		this.readDiamonds = readDiamonds;
 	}
 
@@ -137,25 +138,25 @@ public class DataCarrier {
 	}
 
 	private void readUtilImages() throws IOException, InterruptedException {
-		String resourcesFile = this.resourcesFile + "resources" + File.separator;
+		String resourcesFile = this.resourcesFile + "resources/";
 		List<Callable<Void>> exes = new ArrayList<> ();
 		ExecutorService exeService = Executors.newFixedThreadPool (4);
 		
 		exes.add (() -> {
 			try {
 				nationTileBackground = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Scoreboard Single Nation Backgrounds" + File.separator + "BG.png");
+						+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png");
 				nationTileBackgroundScored = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Scoreboard Single Nation Backgrounds" + File.separator + "Scored_BG.png");
+						+ "Graphics/Scoreboard Single Nation Backgrounds/Scored_BG.png");
 				nationTileBackgroundPQ = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Scoreboard Single Nation Backgrounds" + File.separator + "PQ_BG.png");
+						+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_BG.png");
 				nationTileBackgroundPQScored = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Scoreboard Single Nation Backgrounds" + File.separator + "PQ_Scored_BG.png");
+						+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_Scored_BG.png");
 				nationTileBackgroundVoter = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Scoreboard Single Nation Backgrounds" + File.separator + "Voter_BG.png");
+						+ "Graphics/Scoreboard Single Nation Backgrounds/Voter_BG.png");
 				
 				voteQuickUnderlay = readImage (resourcesFile +
-						"Graphics" + File.separator + "Global Backgrounds" + File.separator + "VoteQuickUnderlay.png");
+						"Graphics/Global Backgrounds/VoteQuickUnderlay.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
@@ -166,20 +167,22 @@ public class DataCarrier {
 		exes.add (() -> {
 			try {
 				pointsTileBackground = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Point Tokens" + File.separator + "BluePtsBG.png");
+						+ "Graphics/Point Tokens/BluePtsBG.png");
 				pointsTileBackgroundPQ = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Point Tokens" + File.separator + "RedPtsBG.png");
-				scoredPtsBG = readImage (resourcesFile + "Graphics" + File.separator + "Point Tokens" + File.separator + "ScoredBGPts.png");
+						+ "Graphics/Point Tokens/RedPtsBG.png");
+				scoredPtsBG = readImage (resourcesFile + "Graphics/Point Tokens/ScoredBGPts.png");
 
 				backgroundWhite = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Global Backgrounds" + File.separator + "Scoreboard BG BW.png");
+						+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
+				System.out.println("resourcesFile"
+						+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
 				backgroundBlue = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Global Backgrounds" + File.separator + "Scoreboard BG Blue.png");
+						+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png");
 				backgroundRed = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Global Backgrounds" + File.separator + "Scoreboard BG Red.png");
+						+ "Graphics/Global Backgrounds/Scoreboard BG Red.png");
 				
 				voteBGPTs = readImage (resourcesFile +
-						"Graphics" + File.separator + "Point Tokens" + File.separator + "VoteBGPts.png");
+						"Graphics/Point Tokens/VoteBGPts.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
@@ -188,16 +191,16 @@ public class DataCarrier {
 
 		exes.add (() -> {
 			try {
-				pprais = readImage (resourcesFile + "Graphics" + File.separator + "Point Tokens" + File.separator + "12PPrais.png");
+				pprais = readImage (resourcesFile + "Graphics/Point Tokens/12PPrais.png");
 				ppraisbg = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Scoreboard Single Nation Backgrounds" + File.separator + "Praise_BG.png");
+						+ "Graphics/Scoreboard Single Nation Backgrounds/Praise_BG.png");
 
 				voterPointToken = readImage (resourcesFile
-						+ "Graphics" + File.separator + "Point Tokens" + File.separator + "Calling.png");
+						+ "Graphics/Point Tokens/Calling.png");
 				
-				voteUnderlay = readImage (resourcesFile + "Graphics" + File.separator + "SideBarTokens" + File.separator + "VotingBGVoter.png");
+				voteUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGVoter.png");
 				
-				intermediateBackground = readImage (resourcesFile + "Graphics" + File.separator + "Global Backgrounds" + File.separator + "IntermediateBackground.png");
+				intermediateBackground = readImage (resourcesFile + "Graphics/Global Backgrounds/IntermediateBackground.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
@@ -207,11 +210,11 @@ public class DataCarrier {
 		
 		exes.add(() -> {
 			try {
-				voteFlagUnderlay = readImage (resourcesFile + "Graphics" + File.separator + "SideBarTokens" + File.separator + "VotingBGFlag.png");
-				voteNameUnderlay = readImage (resourcesFile + "Graphics" + File.separator + "SideBarTokens" + File.separator + "VotingBGName.png");
-				voteCounterUL = readImage (resourcesFile + "Graphics" + File.separator + "SideBarTokens" + File.separator + "VotingBGCounter.png");
-				voteCounterULSmall = readImage (resourcesFile + "Graphics" + File.separator + "SideBarTokens" + File.separator + "VotingBGCounterSmall.png");
-				ptHolder = readImage (resourcesFile + "Graphics" + File.separator + "SideBarTokens" + File.separator + "PTHolder.png");
+				voteFlagUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGFlag.png");
+				voteNameUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGName.png");
+				voteCounterUL = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGCounter.png");
+				voteCounterULSmall = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGCounterSmall.png");
+				ptHolder = readImage (resourcesFile + "Graphics/SideBarTokens/PTHolder.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
@@ -220,17 +223,17 @@ public class DataCarrier {
 		
 		exeService.invokeAll (exes);
 		exeService.shutdown ();
-		exeService.awaitTermination (10, TimeUnit.SECONDS);
+		exeService.awaitTermination (20, TimeUnit.SECONDS);
 	}
 	
 	private void readDummies () throws IOException {
-		String dummyLocation = System.getProperty ("user.dir") + "" + File.separator + "resources" + File.separator + "Nation Info" + File.separator + ""
-				+ "Entries Videos" + File.separator + "Dummy.mp4";
+		String dummyLocation = System.getProperty ("user.dir") + "/resources/Nation Info/"
+				+ "Entries Videos/Dummy.mp4";
 		File file = new File (dummyLocation);
 		dummyMedia = new Media (file.toURI ().toString ());
 		
-		dummyFlag = readImage (System.getProperty ("user.dir") + "" + File.separator + "resources" + File.separator + "Nation Info" + File.separator + ""
-				+ "Participants Flags" + File.separator + "EmptyEmptyEmpty.png");
+		dummyFlag = readImage (System.getProperty ("user.dir") + "/resources/Nation Info/"
+				+ "Participants Flags/EmptyEmptyEmpty.png");
 		dummyPrettyFlag = dummyFlag;
 	}
 
@@ -247,7 +250,7 @@ public class DataCarrier {
 	private void readPtsTokens() throws IOException {
 		ArrayList<Image> pToken = new ArrayList<> ();
 
-		String baseLocation = resourcesFile + "resources" + File.separator + "Graphics" + File.separator + "Point Tokens" + File.separator + "";
+		String baseLocation = resourcesFile + "resources/Graphics/Point Tokens/";
 		
 		ArrayList<String> locations = new ArrayList<>();
 
@@ -273,8 +276,8 @@ public class DataCarrier {
 		ArrayList<Participant> nations = new ArrayList<> ();
 		nameMap = new HashMap<> ();
 
-		String flagFile = CoreUI.inputData.getFlagDirectory () + "" + File.separator + "";
-		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "" + File.separator + "";
+		String flagFile = CoreUI.inputData.getFlagDirectory () + "/";
+		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "/";
 		
 		ExecutorService exeService = Executors.newCachedThreadPool ();
 		List<Callable<Void>> exes = new ArrayList<> ();
@@ -327,7 +330,7 @@ public class DataCarrier {
 	}
 
 	private void readEntries() throws NumberFormatException, IOException {
-		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "" + File.separator + "";
+		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "/";
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
 			Participant p = getRosterNationByShortName (pData.getShortName ());
@@ -382,6 +385,10 @@ public class DataCarrier {
 			Votes v = p.getVotes ();
 			allVotes.add (v);
 		}
+		
+		Collections.sort (participants, (p1, p2) -> { 
+			return p1.getName ().compareTo (p2.getName ());
+		});
 	}
 
 	public ArrayList<Participant> getAllNations() {

@@ -25,7 +25,7 @@ import javafx.scene.text.Text;
 import javax.imageio.ImageIO;
 
 import nations.Participant;
-import utilities.DataCarrier;
+import utilities.Utilities;
 
 public class ESCBannerCreator extends BannerCreator {
 
@@ -35,10 +35,7 @@ public class ESCBannerCreator extends BannerCreator {
 
 	@Override
 	public void createBanners (Participant p, String startStatus, String startGrid) throws IOException {
-		Image background = DataCarrier.readImage ("resources" + System.getProperty ("file.separator") +
-				"Graphics" + System.getProperty ("file.separator") +
-				"banners" + System.getProperty ("file.separator") +
-				"bannerbase.png");
+		Image background = Utilities.readImage ("resources/Graphics/banners/bannerbase.png");
 		
 		Group bRoot = new Group ();
 		bRoot.getChildren ().add (new Rectangle (background.getWidth (), background.getHeight ()));
@@ -107,7 +104,7 @@ public class ESCBannerCreator extends BannerCreator {
 		BufferedImage image = new BufferedImage ((int) background.getWidth(), (int) background.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		WritableImage bannerImage = bRoot.snapshot (new SnapshotParameters (), null);
 		BufferedImage bannerNextStep = SwingFXUtils.fromFXImage (bannerImage, image);
-		File bannerBase = new File (System.getProperty ("user.dir") + File.separator + "banners" + File.separator + p.getName () + ".png");
+		File bannerBase = new File (System.getProperty ("user.dir") + "/banners/" + p.getName () + ".png");
 		bannerBase.getParentFile ().mkdirs ();
 		
 		CropImageFilter cif = new CropImageFilter (0, 0, (int) background.getWidth (), (int) background.getHeight ());

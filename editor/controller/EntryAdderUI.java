@@ -52,10 +52,6 @@ public class EntryAdderUI implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		setUp();
-	}
-
-	private void setUp () {
 		setUpConfirmButton ();
 		setUpTextFields ();
 	}
@@ -210,7 +206,7 @@ public class EntryAdderUI implements Initializable {
 								startField.getText (), 
 								statusField.getText ());
 				
-				confirmButton.setText("Confirmed " + nameField.getText() + "!");
+				confirmButton.setText("Confirmed!");
 				confirmButton.getStyleClass ().add("buttonConfirmed");
 				
 				EntryAdder adder = new EntryAdder (target);

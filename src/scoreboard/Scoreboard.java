@@ -31,7 +31,7 @@ import javax.imageio.ImageIO;
 
 import nations.Entry;
 import nations.Participant;
-import utilities.DataCarrier;
+import utilities.Utilities;
 import controller.CoreUI;
 import data.Standings;
 
@@ -185,7 +185,7 @@ public class Scoreboard {
 	//------------//
 
 	// --------------- //
-	private DataCarrier dataCarrier;
+	private Utilities dataCarrier;
 	private Rectangle background;
 	private Standings standings;
 	int inCountryCounter;
@@ -214,7 +214,7 @@ public class Scoreboard {
 
 	private void drawScoreboard (Stage primaryStage) throws IOException, InterruptedException {
 		
-		this.dataCarrier = new DataCarrier (useSpecialFlags);
+		this.dataCarrier = new Utilities (useSpecialFlags);
 		dataCarrier.initialize ();
 		this.standings = new Standings (dataCarrier);
 
@@ -311,7 +311,7 @@ public class Scoreboard {
 		BufferedImage scoreboard = SwingFXUtils.fromFXImage (scoreboardImage,
 				bufferedImage);
 		Path basePath = Paths.get ("scoreboards");
-		Path scPath = Paths.get ("scoreboards" + File.separator + title);
+		Path scPath = Paths.get ("scoreboards/" + title);
 		File destScoreboard = null;
 		
 		if (!Files.exists (basePath)) {
@@ -324,8 +324,8 @@ public class Scoreboard {
 			base.mkdirs ();
 		}
 		
-		destScoreboard = new File (System.getProperty ("user.dir") + File.separator + "scoreboards" + File.separator +
-				title + File.separator + voter.getName () + ".png");
+		destScoreboard = new File (System.getProperty ("user.dir") + "/scoreboards/" +
+				title + "/" + voter.getName () + ".png");
 		destScoreboard.getParentFile ().mkdirs ();
 
 		try {
@@ -787,11 +787,11 @@ public class Scoreboard {
 		this.pointViews = pointViews;
 	}
 
-	public DataCarrier getDataCarrier() {
+	public Utilities getDataCarrier() {
 		return dataCarrier;
 	}
 
-	public void setDataCarrier(DataCarrier utilities) {
+	public void setDataCarrier(Utilities utilities) {
 		this.dataCarrier = utilities;
 	}
 
