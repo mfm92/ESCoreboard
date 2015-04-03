@@ -250,9 +250,9 @@ public class CoreUI extends Application implements Initializable {
 	
 	private void setUpPopUps () {
 		try {
-			confirmBG = Utilities.readImage (System.getProperty("user.dir").replace("\\", "/") + "/resources/Graphics/EditorBackgrounds/Confirmation.png");
-			warningBG = Utilities.readImage (System.getProperty("user.dir").replace("\\", "/") + "/resources/Graphics/EditorBackgrounds/Warning.png");
-			errorBG = Utilities.readImage (System.getProperty("user.dir").replace("\\", "/") + "/resources/Graphics/EditorBackgrounds/Error.png");
+			confirmBG = Utilities.readImage ("resources/Graphics/EditorBackgrounds/Confirmation.png");
+			warningBG = Utilities.readImage ("resources/Graphics/EditorBackgrounds/Warning.png");
+			errorBG = Utilities.readImage ("resources/Graphics/EditorBackgrounds/Error.png");
 		} catch (Exception e) {}
 	}
 

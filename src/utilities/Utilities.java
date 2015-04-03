@@ -93,9 +93,6 @@ public class Utilities {
 		nameMap = new HashMap<String, Participant> ();
 		voteMap = new HashMap<Participant, Votes> ();
 		diamondMap = new HashMap<> ();
-
-//		ExecutorService exeService = Executors.newFixedThreadPool (6);
-//		List<Runnable> runs = new ArrayList<>();
 		
 		long longM = System.nanoTime ();
 		readNations();
@@ -134,11 +131,10 @@ public class Utilities {
 			System.out.println ("readCreateBanners: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));	
 		}
 		
-//		sortVotes();
-		Collections.sort (participants, (p1, p2) -> { 
-                	return p1.getName ().compareTo (p2.getName ());
-                });
-
+		// sortVotes();
+		Collections.sort (participants, (p1, p2) -> {
+			return p1.getName ().compareTo (p2.getName ());
+		});
 	}
 
 	private void readUtilImages() throws IOException, InterruptedException {

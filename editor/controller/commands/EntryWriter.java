@@ -38,12 +38,9 @@ public class EntryWriter {
 		saveOut.write (saveName);
 		saveOut.close ();
 		
-		PrintStream participantsOut = new PrintStream (new File 
-				(System.getProperty("user.dir") + "/resources/save/participants_" + saveName + ".txt"));
-		PrintStream votesOut = new PrintStream (new File 
-				(System.getProperty("user.dir") + "/resources/save/votes_" + saveName + ".txt"));
-		PrintStream paramsOut = new PrintStream (new File 
-				(System.getProperty("user.dir") + "/resources/save/params_" + saveName + ".txt"));
+		PrintStream participantsOut = new PrintStream (new File ("resources/save/participants_" + saveName + ".txt"));
+		PrintStream votesOut = new PrintStream (new File ("resources/save/votes_" + saveName + ".txt"));
+		PrintStream paramsOut = new PrintStream (new File ("resources/save/params_" + saveName + ".txt"));
 		
 		final String STRING_SEPARATOR = System.lineSeparator ();
 		
@@ -113,9 +110,9 @@ public class EntryWriter {
 			cS.setFillBackgroundColor (HSSFColor.GREY_25_PERCENT.index);
 		}
 		
-		File os = new File (System.getProperty ("user.dir") + "/spreadsheet/");	
+		File os = new File ("spreadsheet/");	
 		os.mkdirs ();
-		os = new File (System.getProperty ("user.dir") + "/spreadsheet/spreadsheet" + 
+		os = new File ("spreadsheet/spreadsheet" + 
 				FilenameUtils.removeExtension (saveFile.getName ()) + ".xlsx");	
 		os.createNewFile ();
 		

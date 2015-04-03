@@ -37,12 +37,9 @@ public class TableLoader {
 			origin = bReader.readLine ();
 		}
 		
-		File participantsFile = new File (System.getProperty("user.dir") + "/resources" + 
-				"/save/participants_" + origin + ".txt");
-		File votesFile = new File (System.getProperty("user.dir") + "/" + 
-				"resources/save/votes_" + origin + ".txt");
-		File paramsFile = new File (System.getProperty("user.dir") + "/resources" +
-				"/save/params_" + origin + ".txt");
+		File participantsFile = new File ("resources/save/participants_" + origin + ".txt");
+		File votesFile = new File ("resources/save/votes_" + origin + ".txt");
+		File paramsFile = new File ("resources/save/params_" + origin + ".txt");
 
 		try {
 			clearer.execute ();
