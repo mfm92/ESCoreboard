@@ -179,7 +179,7 @@ public class EntryAdderUI implements Initializable {
 		
 		confirmButton.setOnMouseEntered (event -> {
 			if (checkValidity()) {
-				confirmButton.setText ("You could confirm now.");
+				confirmButton.setText ("Confirm?");
 				confirmButton.getStyleClass ().add ("buttonHover");
 			} else {
 				confirmButton.getStyleClass ().add ("button-invalid");

@@ -134,7 +134,11 @@ public class Utilities {
 			System.out.println ("readCreateBanners: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));	
 		}
 		
-		sortVotes();
+//		sortVotes();
+		Collections.sort (participants, (p1, p2) -> { 
+                	return p1.getName ().compareTo (p2.getName ());
+                });
+
 	}
 
 	private void readUtilImages() throws IOException, InterruptedException {
@@ -385,16 +389,11 @@ public class Utilities {
 			Votes v = p.getVotes ();
 			allVotes.add (v);
 		}
-		
-		Collections.sort (participants, (p1, p2) -> { 
-			return p1.getName ().compareTo (p2.getName ());
-		});
 	}
 
 	public ArrayList<Participant> getAllNations() {
 		return new ArrayList<> (nameMap.values ());
 	}
-
 	public ArrayList<Participant> getListOfNations(String[] names) {
 		ArrayList<Participant> containedNations = new ArrayList<> ();
 		for (String name : names) {
