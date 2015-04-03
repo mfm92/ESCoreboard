@@ -128,6 +128,7 @@ public class CoreUI extends Application implements Initializable {
 		primaryStage.setResizable (false);
 		primaryStage.setScene (scene);
 		primaryStage.setTitle ("Participant Editor");
+		primaryStage.getIcons ().add (Utilities.readImage ("resources/Icon.png"));
 		primaryStage.show ();
 	}
 	
