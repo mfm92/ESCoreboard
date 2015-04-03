@@ -32,6 +32,7 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dir}/view" />
 		<mkdir dir="${build.dir}/resources" />
+		<mkdir dir="resources/save" />
 		<copy todir="${build.dir}/view">
 			<fileset dir="${editor.dir}/view" />
 		</copy>
