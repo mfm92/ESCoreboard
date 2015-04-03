@@ -324,8 +324,7 @@ public class Scoreboard {
 			base.mkdirs ();
 		}
 		
-		destScoreboard = new File (System.getProperty ("user.dir") + "/scoreboards/" +
-				title + "/" + voter.getName () + ".png");
+		destScoreboard = new File ("scoreboards/" + title + "/" + voter.getName () + ".png");
 		destScoreboard.getParentFile ().mkdirs ();
 
 		try {

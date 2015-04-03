@@ -29,7 +29,7 @@ public class TableLoader {
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("XSCO Data (*.xsco)", "*.xsco");
 		fileChooser.getExtensionFilters ().add (extFilter);
-		fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+		fileChooser.setInitialDirectory (new File ("."));
 		fileChooser.setTitle ("Choose participants file...");
 		
 		String origin = null;

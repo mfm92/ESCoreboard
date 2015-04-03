@@ -82,8 +82,6 @@ public class Utilities {
 
 	private ArrayList<Image> pointsTokens;
 	public ArrayList<Votes> allVotes = new ArrayList<>();
-	
-	String resourcesFile = System.getProperty ("user.dir") + "/";
 
 	public Utilities(boolean readDiamonds) throws IOException {
 		this.readDiamonds = readDiamonds;
@@ -138,7 +136,7 @@ public class Utilities {
 	}
 
 	private void readUtilImages() throws IOException, InterruptedException {
-		String resourcesFile = this.resourcesFile + "resources/";
+		String resourcesFile = "resources/";
 		List<Callable<Void>> exes = new ArrayList<> ();
 		ExecutorService exeService = Executors.newFixedThreadPool (4);
 		
@@ -173,8 +171,6 @@ public class Utilities {
 				scoredPtsBG = readImage (resourcesFile + "Graphics/Point Tokens/ScoredBGPts.png");
 
 				backgroundWhite = readImage (resourcesFile
-						+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
-				System.out.println("resourcesFile"
 						+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
 				backgroundBlue = readImage (resourcesFile
 						+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png");
@@ -227,13 +223,11 @@ public class Utilities {
 	}
 	
 	private void readDummies () throws IOException {
-		String dummyLocation = System.getProperty ("user.dir") + "/resources/Nation Info/"
-				+ "Entries Videos/Dummy.mp4";
+		String dummyLocation = "resources/Nation Info/" + "Entries Videos/Dummy.mp4";
 		File file = new File (dummyLocation);
 		dummyMedia = new Media (file.toURI ().toString ());
 		
-		dummyFlag = readImage (System.getProperty ("user.dir") + "/resources/Nation Info/"
-				+ "Participants Flags/EmptyEmptyEmpty.png");
+		dummyFlag = readImage ("resources/Nation Info/" + "Participants Flags/EmptyEmptyEmpty.png");
 		dummyPrettyFlag = dummyFlag;
 	}
 
@@ -250,7 +244,7 @@ public class Utilities {
 	private void readPtsTokens() throws IOException {
 		ArrayList<Image> pToken = new ArrayList<> ();
 
-		String baseLocation = resourcesFile + "resources/Graphics/Point Tokens/";
+		String baseLocation = "resources/Graphics/Point Tokens/";
 		
 		ArrayList<String> locations = new ArrayList<>();
 
@@ -373,6 +367,7 @@ public class Utilities {
 	/**
 	 * Use this to hack voting order into the show.
 	 */
+	@SuppressWarnings("unused")
 	private void sortVotes () {
 		allVotes.clear ();
 		

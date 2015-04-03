@@ -22,7 +22,7 @@ public class DataSaver {
 			FileChooser fileChooser = new FileChooser();
 			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("XSCO Data (*.xsco)", "*.xsco");
 			fileChooser.getExtensionFilters ().add (extFilter);
-			fileChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+			fileChooser.setInitialDirectory (new File ("."));
 			fileChooser.setTitle ("where to write out that shit...");
 			
 			toSave = fileChooser.showSaveDialog (null);

@@ -428,7 +428,7 @@ public class CoreUI extends Application implements Initializable {
 	private void setUpButtons () {
 		flagDirButton.setOnMouseClicked (event -> {
 			DirectoryChooser dirChooser = new DirectoryChooser ();
-			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+			dirChooser.setInitialDirectory (new File ("."));
 			dirChooser.setTitle ("Folder that contains the flags...");
 			
 			File selected = dirChooser.showDialog (null);
@@ -455,7 +455,7 @@ public class CoreUI extends Application implements Initializable {
 		
 		entryDirButton.setOnMouseClicked (event -> {
 			DirectoryChooser dirChooser = new DirectoryChooser ();
-			dirChooser.setInitialDirectory (new File (System.getProperty("user.dir")));
+			dirChooser.setInitialDirectory (new File ("."));
 			dirChooser.setTitle ("Folder that contains the entries...");
 			
 			File selectedFile = dirChooser.showDialog (null);
@@ -482,7 +482,7 @@ public class CoreUI extends Application implements Initializable {
 		
 		prettyFlagDirButton.setOnMouseClicked (event -> {
 			DirectoryChooser dirChooser = new DirectoryChooser ();
-			dirChooser.setInitialDirectory (new File (System.getProperty ("user.dir")));
+			dirChooser.setInitialDirectory (new File ("."));
 			dirChooser.setTitle ("Folder that contains the pretty flags...");
 			
 			File selectedFile = dirChooser.showDialog (null);

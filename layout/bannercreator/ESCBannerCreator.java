@@ -104,7 +104,7 @@ public class ESCBannerCreator extends BannerCreator {
 		BufferedImage image = new BufferedImage ((int) background.getWidth(), (int) background.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		WritableImage bannerImage = bRoot.snapshot (new SnapshotParameters (), null);
 		BufferedImage bannerNextStep = SwingFXUtils.fromFXImage (bannerImage, image);
-		File bannerBase = new File (System.getProperty ("user.dir") + "/banners/" + p.getName () + ".png");
+		File bannerBase = new File ("banners/" + p.getName () + ".png");
 		bannerBase.getParentFile ().mkdirs ();
 		
 		CropImageFilter cif = new CropImageFilter (0, 0, (int) background.getWidth (), (int) background.getHeight ());
