@@ -275,11 +275,11 @@ public class Scoreboard {
 	private void showVideoAndDirect(Participant receiver,
 			final Standings standings, final Scoreboard scoreboard) {
 		Entry recEntry = receiver.getEntry ();
-		
+
 		Media entry = recEntry.getMedia ();
 		MediaPlayer entryPlayer = new MediaPlayer (entry);
 		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - 10));
+		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - (10 + 3d*(2d / voteTokenDuration.toSeconds ()))));
 		entryPlayer.setAutoPlay (true);
 		entryPlayer.setVolume (0);
 		entryPlayer.setCycleCount (1);

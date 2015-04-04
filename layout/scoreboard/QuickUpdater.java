@@ -65,7 +65,7 @@ public class QuickUpdater extends UpdateAnimator {
 					new KeyValue (pointView.yProperty (), pointView.getY() - nationGroupL.getLayoutY()));
 			
 			
-			KeyFrame dMid = new KeyFrame (Duration.seconds (1.2),
+			KeyFrame dMid = new KeyFrame (scoreboard.getVoteTokenDuration (),
 					new KeyValue (pointView.xProperty (), pointView.getX() - nationGroupL.getLayoutX()),
 					new KeyValue (pointView.yProperty (), pointView.getY() - nationGroupL.getLayoutY()));
 			
@@ -73,13 +73,13 @@ public class QuickUpdater extends UpdateAnimator {
 					new KeyValue (pointView.scaleXProperty (), 1),
 					new KeyValue (pointView.scaleYProperty (), 1));
 			
-			KeyFrame dF = new KeyFrame (Duration.seconds (1.5).add (dMid.getTime ()),
+			KeyFrame dF = new KeyFrame (scoreboard.getVoteTokenDuration ().add (dMid.getTime ()),
 					new KeyValue (pointView.xProperty (), nationGroupL.lookup ("#icon").getLayoutX () +
 							((pointView.getWidth () * (scTransPV.getByX () + 1) - pointView.getWidth ()) / 2)),
 					new KeyValue (pointView.yProperty (), nationGroupL.lookup ("#icon").getLayoutY () +
 							(pointView.getHeight () * (scTransPV.getByY () + 1) - pointView.getHeight ()) / 2));
 			
-			KeyFrame scEnd = new KeyFrame (Duration.seconds (1.5).add (dMid.getTime ()),
+			KeyFrame scEnd = new KeyFrame (scoreboard.getVoteTokenDuration ().add (dMid.getTime ()),
 					new KeyValue (pointView.scaleXProperty (), scTransPV.getByX () + 1),
 					new KeyValue (pointView.scaleYProperty (), scTransPV.getByY () + 1));
 

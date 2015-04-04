@@ -138,7 +138,7 @@ public class Utilities {
 	private void readUtilImages() throws IOException, InterruptedException {
 		String resourcesFile = "resources/";
 		List<Callable<Void>> exes = new ArrayList<> ();
-		ExecutorService exeService = Executors.newFixedThreadPool (4);
+		ExecutorService exeService = Executors.newFixedThreadPool (Runtime.getRuntime ().availableProcessors ());
 		
 		exes.add (() -> {
 			try {
@@ -169,16 +169,23 @@ public class Utilities {
 				pointsTileBackgroundPQ = readImage (resourcesFile
 						+ "Graphics/Point Tokens/RedPtsBG.png");
 				scoredPtsBG = readImage (resourcesFile + "Graphics/Point Tokens/ScoredBGPts.png");
-
+				
+				voteBGPTs = readImage (resourcesFile +
+						"Graphics/Point Tokens/VoteBGPts.png");
+			} catch (Exception e) {
+				e.printStackTrace ();
+			}
+			return null;
+		});
+		
+		exes.add (() -> {
+			try {
 				backgroundWhite = readImage (resourcesFile
 						+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
 				backgroundBlue = readImage (resourcesFile
 						+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png");
 				backgroundRed = readImage (resourcesFile
 						+ "Graphics/Global Backgrounds/Scoreboard BG Red.png");
-				
-				voteBGPTs = readImage (resourcesFile +
-						"Graphics/Point Tokens/VoteBGPts.png");
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
@@ -219,7 +226,7 @@ public class Utilities {
 		
 		exeService.invokeAll (exes);
 		exeService.shutdown ();
-		exeService.awaitTermination (20, TimeUnit.SECONDS);
+		exeService.awaitTermination (30, TimeUnit.SECONDS);
 	}
 	
 	private void readDummies () throws IOException {
@@ -273,7 +280,7 @@ public class Utilities {
 		String flagFile = CoreUI.inputData.getFlagDirectory () + "/";
 		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "/";
 		
-		ExecutorService exeService = Executors.newCachedThreadPool ();
+		ExecutorService exeService = Executors.newFixedThreadPool (Runtime.getRuntime ().availableProcessors ());
 		List<Callable<Void>> exes = new ArrayList<> ();
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {

@@ -5,8 +5,8 @@ build/
 
 #no docs?
 doc/
-
 libs/
+*.txt
 
 #no spoilers
 resources/save/

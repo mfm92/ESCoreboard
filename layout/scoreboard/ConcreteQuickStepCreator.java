@@ -81,14 +81,18 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			ArrayList<ImageView> flags = new ArrayList<> ();
 			ArrayList<VBox> recTexts = new ArrayList<> ();
 
+			int shortage = (int)(Math.min (10d, 20 * (scoreboard.getVoteTokenDuration ().toSeconds () / 4d)));
+			
 			Entry recEntry = currentVoterCopy.getEntry ();
 			Media entry = recEntry.getMedia ();
 			MediaPlayer entryPlayer = new MediaPlayer (entry);
 			entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
+			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - shortage));
 			entryPlayer.setAutoPlay (true);
 			entryPlayer.setVolume (0);
 			entryPlayer.setCycleCount (1);
+			
+			
 
 			MediaView entryView = new MediaView ();
 			entryView.setStyle ("-fx-border-color: #000033;\n-fx-border-width: 2 2 2 2;");

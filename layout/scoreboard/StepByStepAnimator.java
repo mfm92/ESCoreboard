@@ -111,8 +111,8 @@ public class StepByStepAnimator extends UpdateAnimator {
 				TranslateTransition tTrans = new TranslateTransition ();
 				
 				tTrans.setNode (nationGroup);
-				tTrans.setDuration (scoreboard.getVoteTokenDuration().subtract (Duration.seconds (0.7)));
-				tTrans.setDelay (Duration.seconds (0.45));
+				tTrans.setDuration (scoreboard.getVoteTokenDuration().subtract (scoreboard.getVoteTokenDuration ().divide (3)));
+				tTrans.setDelay (scoreboard.getVoteTokenDuration ().divide (6));
 				tTrans.setByX (xShift);
 				tTrans.setByY (yShift);
 				tTrans.setAutoReverse (false);
@@ -133,20 +133,20 @@ public class StepByStepAnimator extends UpdateAnimator {
 			target.getChildren ().add (1, r);
 			
 			Timeline moveR = new Timeline();
-			moveR.getKeyFrames().addAll(new KeyFrame (Duration.seconds(0.45),
+			moveR.getKeyFrames().addAll(new KeyFrame (scoreboard.getVoteTokenDuration ().divide (6),
 							new KeyValue (r.layoutXProperty (), scoreboard.getColumnWidth () - r.getWidth ())),
 							
-							new KeyFrame (scoreboard.getVoteTokenDuration ().subtract(Duration.seconds(0.45)),
+							new KeyFrame (scoreboard.getVoteTokenDuration ().subtract(scoreboard.getVoteTokenDuration ().divide (6)),
 								new KeyValue (r.layoutXProperty (), scoreboard.getColumnWidth () - r.getWidth ())),
 								
 							new KeyFrame (scoreboard.getVoteTokenDuration(),
 								new KeyValue (r.layoutXProperty (), 0)));
 			
 			
-			KeyFrame start = new KeyFrame (Duration.seconds(0.45), new KeyValue (target.opacityProperty (), 1));
-			KeyFrame startOn = new KeyFrame (scoreboard.getVoteTokenDuration ().subtract(Duration.seconds(0.9)).divide (5).add(Duration.seconds(0.45)), new KeyValue (target.opacityProperty (), 0));
-			KeyFrame endOut = new KeyFrame (scoreboard.getVoteTokenDuration ().subtract(Duration.seconds(0.9)).divide (8d/7d).add(Duration.seconds(0.45)), new KeyValue (target.opacityProperty (), 0));
-			KeyFrame end = new KeyFrame (scoreboard.getVoteTokenDuration ().subtract(Duration.seconds(0.45)), new KeyValue (target.opacityProperty (), 1));
+			KeyFrame start = new KeyFrame (scoreboard.getVoteTokenDuration ().divide (6), new KeyValue (target.opacityProperty (), 1));
+			KeyFrame startOn = new KeyFrame (scoreboard.getVoteTokenDuration ().divide (3), new KeyValue (target.opacityProperty (), 0));
+			KeyFrame endOut = new KeyFrame (scoreboard.getVoteTokenDuration ().divide (3d/2d), new KeyValue (target.opacityProperty (), 0));
+			KeyFrame end = new KeyFrame (scoreboard.getVoteTokenDuration ().subtract(scoreboard.getVoteTokenDuration ().divide (6)), new KeyValue (target.opacityProperty (), 1));
 						
 			Rectangle base = ((Rectangle)(scoreboard.getGroupNationMap ().get (receiver).lookup("#base")));
 			Rectangle ptsBase = ((Rectangle)(scoreboard.getGroupNationMap ().get (receiver).lookup("#pointBase")));
@@ -194,7 +194,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 						
 						Timeline pause = new Timeline();
 						pause.getKeyFrames().add (new KeyFrame
-								(Duration.seconds(3), 
+								(Duration.seconds(3d * (Math.pow (scoreboard.getVoteTokenDuration ().toSeconds (), 2)) / 4d), 
 										new KeyValue (scoreboard.getGroupNationMap ().get (receiver).layoutXProperty (), 
 										scoreboard.getGroupNationMap ().get (receiver).getLayoutX ())));
 
