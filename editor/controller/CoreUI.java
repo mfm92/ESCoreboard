@@ -101,6 +101,7 @@ public class CoreUI extends Application implements Initializable {
 	Image confirmBG;
 	Image warningBG;
 	Image errorBG;
+	Image exceptionBG;
 	
 	VoteRegistrator voteRegistrator = new VoteRegistrator ();
 	EntryAdderUI entryAdder = new EntryAdderUI ();
@@ -129,6 +130,7 @@ public class CoreUI extends Application implements Initializable {
 		primaryStage.setScene (scene);
 		primaryStage.setTitle ("Participant Editor");
 		primaryStage.getIcons ().add (Utilities.readImage ("resources/Icon.png"));
+		primaryStage.setResizable (false);
 		primaryStage.show ();
 	}
 	
@@ -176,7 +178,7 @@ public class CoreUI extends Application implements Initializable {
 			try { 
 				voteRegistrator.start (new Stage()); 
 			} catch (Exception e) { 
-				e.printStackTrace(); 
+				visualExceptionMsg ("Error setting votes");
 			} 
 		} else {
 			String message = table.getSelectionModel().getSelectedItems ().size () + " participants selected!";
@@ -222,7 +224,9 @@ public class CoreUI extends Application implements Initializable {
 			String message = inputData.getNameOfEdition () + " " + inputData.getEditionNr () + " saved!";
 			PopUp popUp = new PopUp (PopUpMessage.CONFIRMATION, this, message);
 			popUp.show ();
-		} catch (IOException e) { e.printStackTrace(); }
+		} catch (IOException e) { 
+			visualExceptionMsg ("Error while saving!");
+		}
 	}
 	
 	private void voteOverview () {
@@ -254,6 +258,7 @@ public class CoreUI extends Application implements Initializable {
 			confirmBG = Utilities.readImage ("resources/Graphics/EditorBackgrounds/Confirmation.png");
 			warningBG = Utilities.readImage ("resources/Graphics/EditorBackgrounds/Warning.png");
 			errorBG = Utilities.readImage ("resources/Graphics/EditorBackgrounds/Error.png");
+			exceptionBG = Utilities.readImage ("resources/Graphics/EditorBackgrounds/Exception.png");
 		} catch (Exception e) {}
 	}
 
@@ -569,7 +574,9 @@ public class CoreUI extends Application implements Initializable {
 			try {	
 				Scoreboard sc = new Scoreboard();
 				sc.start (new Stage());
-			} catch (Exception e) { e.printStackTrace(); }
+			} catch (Exception e) { 
+				visualExceptionMsg ("Yikes! Try again :)");
+			}
 		});
 	}
 	
@@ -663,11 +670,17 @@ public class CoreUI extends Application implements Initializable {
 		return true;
 	}
 	
+	private void visualExceptionMsg (String message) {
+		PopUp popUp = new PopUp (PopUpMessage.EXCEPTION, this, message);
+		popUp.show ();
+	}
+	
 	public Image getPopUpBackground (PopUpMessage style) {
 		switch (style) {
 			case CONFIRMATION: return confirmBG;
 			case WARNING: return warningBG;
 			case ERROR: return errorBG;
+			case EXCEPTION: return exceptionBG;
 			default: return null;
 		}
 	}

@@ -64,8 +64,9 @@ public class Scoreboard {
 	// ----------------------------------- //
 	
 	// ----------------------------- //
-	private int screenWidth = 1920;
-	private int screenHeight = 1080;
+	private int screenWidth = (int)(Screen.getPrimary ().getBounds ().getWidth ());
+	private int screenHeight = (int)(Screen.getPrimary ().getBounds ().getHeight ());
+	private int nrOfParts = (int)(CoreUI.inputData.getParticipants ().stream ().filter (t -> t.getStatus ().equals ("P")).count ());
 	// ----------------------------- //
 	
 	// ----------------------------- //	
@@ -74,9 +75,9 @@ public class Scoreboard {
 	// ----------------------------- //
 	
 	// ----------------------------- //
-	private int columnsNr = 2;
-	private int scWidth = (int) (0.65 * backgroundWidth);
-	private int widthFromLeftOffset = (int) (0.03 * backgroundWidth);
+	private int columnsNr = nrOfParts > 34 ? 3 : 2;
+	private int scWidth = (int)((columnsNr == 3 ? 0.975 : 0.65) * backgroundWidth);
+	private int widthFromLeftOffset = (int) ((columnsNr == 3 ? 0.0125 : 0.03) * backgroundWidth);
 	
 	private int columnWidth = scWidth / columnsNr;
 	private int columnNameWidth = (int) (0.8 * (double)(columnWidth));
@@ -115,7 +116,7 @@ public class Scoreboard {
 	
 	// ----------------------------- //
 	private int ptUnderLayHeight = (int)(0.0775*backgroundHeight);
-	private int ptUnderLayWidth = scWidth;
+	private int ptUnderLayWidth = columnsNr == 2 ? scWidth : (int)(scWidth * ((double)(columnsNr-1) / ((double) columnsNr)));
 	private int ptUnderLayX = (screenWidth - backgroundWidth) / 2 + widthFromLeftOffset;
 	private int ptUnderLayY = (screenHeight - backgroundHeight) / 2 + heightFromTopOffset + height + bottomScoreboardOffset;
 	
@@ -135,7 +136,7 @@ public class Scoreboard {
 	
 	// ----------------------------- //
 	private int quickEntryX = (screenWidth - backgroundWidth) / 2 + widthFromLeftOffset;
-	private int quickEntryWidth = scWidth;
+	private int quickEntryWidth = (int)((double) scWidth / ((double) columnsNr / 2d));
 	private int quickEntryY = (screenHeight - backgroundHeight) / 2 + heightFromTopOffset;
 	private int quickEntryHeight = (int)(0.6 * backgroundHeight);
 	
@@ -146,7 +147,7 @@ public class Scoreboard {
 	// ----------------------------- //
 	
 	// ----------------------------- //
-	private int columnsNrTransition = columnsNr;
+	private int columnsNrTransition = 2;
 	private int columnWidthTransition = quickEntryWidth / columnsNrTransition;
 	private int heightTransition = (int) (0.2 * backgroundHeight);
 	private int transitionXOffset = (screenWidth - backgroundWidth) / 2 + widthFromLeftOffset +
@@ -198,8 +199,9 @@ public class Scoreboard {
 		
 		primaryStage.setX (Screen.getPrimary ().getVisualBounds ().getMinX ());
 		primaryStage.setY (Screen.getPrimary ().getVisualBounds ().getMinY ());
-		primaryStage.setWidth (Screen.getPrimary ().getVisualBounds ().getWidth ());
-		primaryStage.setHeight (Screen.getPrimary ().getVisualBounds ().getHeight ());
+		primaryStage.setWidth (screenWidth);
+		primaryStage.setResizable (false);
+		primaryStage.setHeight (screenHeight);
 		primaryStage.setScene (scene);
 		primaryStage.setTitle (title);
 		primaryStage.setFullScreen (useFullScreen);

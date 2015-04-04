@@ -77,7 +77,8 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.text (voter.getName ())
 				.fill (Color.WHITE)
 				.font (Font.font ("RobotoLt", FontWeight.SEMI_BOLD, voter
-						.getName ().length () < 14 ? 74 : 52)).build ();
+						.getName ().length () < 14 ? 74 * (scoreboard.getScreenWidth () / 1920d) 
+								: 52 * (scoreboard.getScreenWidth () / 1920d))).build ();
 
 		VBox currentVoterVBox = VBoxBuilder.create ()
 				.layoutX (voteFlagUnderlay.getX ())
@@ -98,7 +99,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " out of "
 						+ scoreboard.getDataCarrier().voteMap.size ())
 				.fill (Color.WHITE)
-				.font (Font.font ("Roboto Lt", FontWeight.LIGHT, 32))
+				.font (Font.font ("Roboto Lt", FontWeight.LIGHT, 32 * (scoreboard.getScreenWidth () / 1920d)))
 				.build ();
 
 		VBox counterVBox = VBoxBuilder.create ().layoutX (voteFlagUnderlay.getX ())

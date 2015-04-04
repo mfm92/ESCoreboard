@@ -53,7 +53,8 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			nationName.setLayoutY (0.65 * pointsBase.getHeight ());
 			nationName.setId ("nationName");
 			nationName.setTextAlignment (TextAlignment.CENTER);
-			nationName.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, nationName.getText ().length () > 21 ? 24 : 28));
+			nationName.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, nationName.getText ().length () > 21 ? 24 * (scoreboard.getScreenWidth () / 1920d) 
+					: 28 * (scoreboard.getScreenWidth () / 1920d)));
 			nationName.setFill (position < scoreboard.getSpecialBorder() ? Color.WHITE
 					: Color.BLACK);
 
@@ -64,7 +65,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			scoreTest.setLayoutY (40);
 			scoreTest.setId ("scoreTest");
 			scoreTest.setTextAlignment (TextAlignment.CENTER);
-			scoreTest.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 34));
+			scoreTest.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 34 * (scoreboard.getScreenWidth () / 1920d)));
 			scoreTest.setFill (Color.WHITE);
 
 			VBox scoreVBox = new VBox ();

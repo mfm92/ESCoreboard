@@ -140,7 +140,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 
 					Text recText = new Text();
 					recText.setText (currentVoterCopy.getVotes ().getReceivers ()[i].getName ());
-					recText.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 24));
+					recText.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 24 * (scoreboard.getScreenWidth () / 1920d)));
 					recText.setFill (Color.web ("#1C1C1C"));
 					
 					rectVBox.getChildren().add (recText);
