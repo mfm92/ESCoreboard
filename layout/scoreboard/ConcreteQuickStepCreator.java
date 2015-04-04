@@ -91,8 +91,6 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			entryPlayer.setAutoPlay (true);
 			entryPlayer.setVolume (0);
 			entryPlayer.setCycleCount (1);
-			
-			
 
 			MediaView entryView = new MediaView ();
 			entryView.setStyle ("-fx-border-color: #000033;\n-fx-border-width: 2 2 2 2;");

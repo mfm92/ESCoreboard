@@ -64,8 +64,8 @@ public class Scoreboard {
 	// ----------------------------------- //
 	
 	// ----------------------------- //
-	private int screenWidth = (int)(Screen.getPrimary ().getBounds ().getWidth ());
-	private int screenHeight = (int)(Screen.getPrimary ().getBounds ().getHeight ());
+	private int screenWidth = (int)(Screen.getPrimary ().getBounds ().getWidth ()) - 900;
+	private int screenHeight = (int)(Screen.getPrimary ().getBounds ().getHeight ()) - 500;
 	private int nrOfParts = (int)(CoreUI.inputData.getParticipants ().stream ().filter (t -> t.getStatus ().equals ("P")).count ());
 	// ----------------------------- //
 	
@@ -85,7 +85,7 @@ public class Scoreboard {
 	
 	// ----------------------------- //
 	private int specialBorder = 10;
-	private int transParts = 7;
+	private int transParts = 5;
 	// ----------------------------- //
 	
 	// ----------------------------- //
@@ -126,8 +126,8 @@ public class Scoreboard {
 	private int rightBarWidth = (int)(0.27 * backgroundWidth);
 	private int rightBarX = (int)(0.7 * backgroundWidth) + (screenWidth - backgroundWidth) / 2;
 	
-	int rightBarHeight = height + bottomScoreboardOffset + ptUnderLayHeight;
-	int rightBarY = heightFromTopOffset + (screenHeight - backgroundHeight) / 2;
+	private int rightBarHeight = height + bottomScoreboardOffset + ptUnderLayHeight;
+	private int rightBarY = heightFromTopOffset + (screenHeight - backgroundHeight) / 2;
 	// ----------------------------- //
 	
 	// ----------------------------- //
@@ -192,9 +192,7 @@ public class Scoreboard {
 		drawScoreboard (primaryStage);
 		
 		Scene scene = new Scene (root);
-		
-		primaryStage.setX (Screen.getPrimary ().getVisualBounds ().getMinX ());
-		primaryStage.setY (Screen.getPrimary ().getVisualBounds ().getMinY ());
+
 		primaryStage.setWidth (screenWidth);
 		primaryStage.setResizable (false);
 		primaryStage.setHeight (screenHeight);
@@ -260,12 +258,12 @@ public class Scoreboard {
 		return new Thread (() -> {
 			// GENERATE SCOREBOARD
 			generateImageScoreboard (root, voter);
-
+			
 			// SHOW 12 PAIR
 			twelvePairShower.addTwelvePair (scoreboard, voter, receiver);
 
 			// CREATE TABLE
-			root.getChildren ().add (sideTableCreator.createSideTable (participants));
+			root.getChildren ().add (sideTableCreator.createSideTable (this, participants));
 
 			// GET THE VIDEO
 			showVideoAndDirect (receiver, standings, scoreboard);
@@ -287,10 +285,10 @@ public class Scoreboard {
 		MediaView entryView = new MediaView ();
 		entryView.setPreserveRatio (false);
 		entryView.setMediaPlayer (entryPlayer);
-		entryView.setFitHeight (674);
-		entryView.setFitWidth (1200);
-		entryView.setX (50);
-		entryView.setY (50);
+		entryView.setFitHeight (674 * (screenHeight / 1080d));
+		entryView.setFitWidth (1200 * (screenWidth / 1920d));
+		entryView.setX (50 * (screenWidth / 1920d));
+		entryView.setY (50 * (screenHeight / 1080d));
 		entryView.setId ("media");
 
 		root.getChildren ().add (entryView);
@@ -950,5 +948,21 @@ public class Scoreboard {
 
 	public void setPointTokenWidth(int pointTokenWidth) {
 		this.pointTokenWidth = pointTokenWidth;
+	}
+
+	public int getRightBarHeight() {
+		return rightBarHeight;
+	}
+
+	public void setRightBarHeight(int rightBarHeight) {
+		this.rightBarHeight = rightBarHeight;
+	}
+
+	public int getRightBarY() {
+		return rightBarY;
+	}
+
+	public void setRightBarY(int rightBarY) {
+		this.rightBarY = rightBarY;
 	}
 }

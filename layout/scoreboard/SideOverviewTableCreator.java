@@ -7,6 +7,6 @@ import nations.Participant;
 
 public abstract class SideOverviewTableCreator {
 
-	public abstract Group createSideTable(ArrayList<Participant> finalists);
+	public abstract Group createSideTable(Scoreboard scoreboard, ArrayList<Participant> finalists);
 
 }
