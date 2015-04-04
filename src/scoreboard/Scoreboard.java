@@ -91,11 +91,7 @@ public class Scoreboard {
 	// ----------------------------- //
 	private int height = (int) (0.8 * backgroundHeight);
 	private int heightFromTopOffset = (int) (0.05 * backgroundHeight);
-	private int rowHeight = 
-			(int)(((double) height / 
-				Math.ceil((double) 
-						CoreUI.inputData.getParticipants ().stream ().filter (t -> t.getStatus ().equals ("P")).count () / 
-						(double) columnsNr)));
+	private int rowHeight = (int)(((double) height / Math.ceil((double) nrOfParts / (double) columnsNr)));
 	// ----------------------------- //
 
 	// ----------------------------- //
@@ -283,7 +279,7 @@ public class Scoreboard {
 		Media entry = recEntry.getMedia ();
 		MediaPlayer entryPlayer = new MediaPlayer (entry);
 		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - 19));
+		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - 10));
 		entryPlayer.setAutoPlay (true);
 		entryPlayer.setVolume (0);
 		entryPlayer.setCycleCount (1);

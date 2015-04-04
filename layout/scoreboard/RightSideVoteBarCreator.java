@@ -40,12 +40,15 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.y (scoreboard.rightBarY)
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteFlagUnderlay))
 				.build ();
+		
+		double scaleWidth = ((double)(scoreboard.getScreenHeight ()) / 1080d) * (1920d / (double)(scoreboard.getScreenWidth ()));
+		double scaleHeight = ((double)(scoreboard.getScreenWidth ()) / 1920d) * (1080d / (double)(scoreboard.getScreenHeight ()));
+				
+		int specialFlagWidth = (int) (scaleWidth * 0.96 * (double) scoreboard.getRightBarWidth());
+		int specialFlagHeight = (int) (scaleHeight * 0.96 * (double) scoreboard.getRightBarWidth());
 
-		int specialFlagWidth = (int) (0.96 * scoreboard.getRightBarWidth());
-		int specialFlagHeight = (int) (0.96 * scoreboard.getRightBarWidth());
-
-		int normalFlagWidth = (int) (0.955 * scoreboard.getRightBarWidth());
-		int normalFlagHeight = (int) ((0.595/0.955) * normalFlagWidth);
+		int normalFlagWidth = (int) (scaleWidth * 0.955 * (double) scoreboard.getRightBarWidth());
+		int normalFlagHeight = (int) (scaleHeight * (0.595/0.955) * (double) normalFlagWidth);
 
 		ImageView voterFlag = ImageViewBuilder
 				.create ()

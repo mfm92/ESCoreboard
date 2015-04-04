@@ -146,8 +146,12 @@ public class CoreUI extends Application implements Initializable {
 	}
 	
 	private void addEntry () {
-		try { entryAdder.init (new Stage()); } 
-		catch (Exception e) { e.printStackTrace (); }
+		try { 
+			entryAdder.init (new Stage()); 
+		} catch (Exception e) { 
+			PopUp popUp = new PopUp (PopUpMessage.EXCEPTION, this, "Error adding a participant...");
+			popUp.show();
+		}
 	}
 	
 	private void removeEntry () {
@@ -161,8 +165,13 @@ public class CoreUI extends Application implements Initializable {
 		}
 		
 		if (macroCommand.getCommands ().size () == 1) {
+			String name = table.getSelectionModel ().getSelectedItems ().get (0).getName ();
+			String shortName = table.getSelectionModel ().getSelectedItems ().get (0).getShortName ();
 			sb.delete (0, sb.length () - 1);
-			sb.append ("Goodbye... " + table.getSelectionModel ().getSelectedItems ().get (0).getName ());
+			sb.append ("Goodbye... " + (name.length() > 15 ? shortName : name));
+		} else if (macroCommand.getCommands ().size () > 4) {
+			sb.delete (0, sb.length () - 1);
+			sb.append ("Goodbye...: " + macroCommand.getCommands ().size () + " participants.");
 		}
 		
 		macroCommand.execute ();
@@ -576,6 +585,7 @@ public class CoreUI extends Application implements Initializable {
 				sc.start (new Stage());
 			} catch (Exception e) { 
 				visualExceptionMsg ("Yikes! Try again :)");
+				e.printStackTrace ();
 			}
 		});
 	}

@@ -8,9 +8,6 @@ doc/
 
 libs/
 
-#Ignore giant-sized videos
-resources/Nation Info/Entries Videos/
-
 #no spoilers
 resources/save/
 

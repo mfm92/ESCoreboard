@@ -336,7 +336,7 @@ public class Utilities {
 				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), entryVid, Integer.parseInt (pData.getStart ()),
 					Integer.parseInt (pData.getStop ()), pData.getStatus ()));	
 			} else {
-				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), dummyMedia, 66, 86, pData.getStatus ()));
+				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), dummyMedia, 0, 20, pData.getStatus ()));
 			}
 		}
 	}
