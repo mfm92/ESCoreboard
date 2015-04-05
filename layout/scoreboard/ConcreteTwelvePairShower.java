@@ -55,21 +55,21 @@ public class ConcreteTwelvePairShower extends TwelvePairShower {
 		receiveNation.setX (500 * scaleWidth);
 		receiveNation.setY (795 * scaleHeight);
 		receiveNation.setText (receiver.getName ());
-		receiveNation.setFont (Font.font ("Coolvetica RG", FontWeight.BOLD, 81 * scaleWidth));
+		receiveNation.setFont (Font.font (scoreboard.getDataCarrier().font_3, FontWeight.BOLD, 81 * scaleWidth));
 		receiveNation.setFill (Color.WHITE);
 
 		Text receiveText = new Text();
 		receiveText.setX (500 * scaleWidth);
 		receiveText.setY (850 * scaleHeight);
 		receiveText.setText ("received 12 points from");
-		receiveText.setFont (Font.font ("Walkway SemiBold", FontWeight.BOLD, 42 * scaleWidth));
+		receiveText.setFont (Font.font (scoreboard.getDataCarrier().font_2, FontWeight.BOLD, 42 * scaleWidth));
 		receiveText.setFill (Color.WHITE);
 
 		Text giverNation = new Text();
 		giverNation.setX (500 * scaleWidth);
 		giverNation.setY (900 * scaleHeight);
 		giverNation.setText (voter.getName ());
-		giverNation.setFont (Font.font ("Coolvetica RG", FontWeight.BOLD, 81 * scaleWidth));
+		giverNation.setFont (Font.font (scoreboard.getDataCarrier().font_3, FontWeight.BOLD, 81 * scaleWidth));
 		giverNation.setFill (Color.WHITE);
 
 		VBox vBox = new VBox ();

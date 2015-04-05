@@ -34,7 +34,7 @@ public abstract class UpdateAnimator {
 		Text scoreTest = new Text();
 		
 		scoreTest.setText (new Integer (newNrOfPoints).toString ());
-		scoreTest.setFont (Font.font ("Roboto Lt", FontWeight.MEDIUM, 34 * (scoreboard.getScreenWidth () / 1920d)));
+		scoreTest.setFont (Font.font (scoreboard.getDataCarrier().font_1, FontWeight.MEDIUM, 34 * (scoreboard.getScreenWidth () / 1920d)));
 		scoreTest.setId ("scoreTest");
 		scoreTest.setFill (Color.WHITE);
 

@@ -58,7 +58,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 
 		Text currentVoter = TextBuilder.create ()
 				.text (voter.getName ()).fill (Color.WHITE)
-				.font (Font.font ("Roboto Lt", FontWeight.SEMI_BOLD, 45 * (scoreboard.getScreenWidth () / 1920d)))
+				.font (Font.font (scoreboard.getDataCarrier().font_1, FontWeight.SEMI_BOLD, 45 * (scoreboard.getScreenWidth () / 1920d)))
 				.build ();
 
 		VBox currentVoterVBox = VBoxBuilder.create ()
@@ -83,7 +83,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " / "
 						+ scoreboard.getDataCarrier().voteMap.size ())
 				.fill (Color.WHITE)
-				.font (Font.font ("Roboto Lt", FontWeight.LIGHT, 24 * (scoreboard.getScreenWidth () / 1920d)))
+				.font (Font.font (scoreboard.getDataCarrier().font_1, FontWeight.LIGHT, 24 * (scoreboard.getScreenWidth () / 1920d)))
 				.build ();
 
 		VBox counterVBox = VBoxBuilder.create ()

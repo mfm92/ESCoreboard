@@ -1,8 +1,10 @@
 package utilities;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,6 +65,11 @@ public class Utilities {
 	public Image voteQuickUnderlay;
 	public Image scoredPtsBG;
 	
+	public String font_1;
+	public String font_2;
+	public String font_3;
+	public String font_4;
+	
 	public HashMap<String, Participant> nameMap;
 	public HashMap<Participant, Votes> voteMap;
 	public HashMap<Participant, Image> diamondMap;
@@ -99,6 +106,7 @@ public class Utilities {
 		readPtsTokens ();
 		readEntries ();
 		readVotes ();
+		readFonts ();
 		sortVotes ();
 		
 		if (CoreUI.inputData.getBannerCreatorActivated ()) createBanners ();
@@ -325,6 +333,19 @@ public class Utilities {
 			getRosterNationByShortName (pair.getKey ().getShortName ()).setVotes (votes);
 			allVotes.add (votes);
 		}
+	}
+	
+	private void readFonts () throws FileNotFoundException, IOException {
+		try (BufferedReader bReader = new BufferedReader (new FileReader (new File ("resources/Graphics/Fonts.txt")))) {
+			font_1 = getFontString(bReader.readLine ());
+			font_2 = getFontString(bReader.readLine ());
+			font_3 = getFontString(bReader.readLine ());
+			font_4 = getFontString(bReader.readLine ());
+		}
+	}
+	
+	private String getFontString (String line) {
+		return line.split ("=")[1];
 	}
 	
 	private void sortVotes () {		

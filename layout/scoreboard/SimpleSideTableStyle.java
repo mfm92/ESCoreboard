@@ -57,7 +57,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 
 			Text textScore = new Text (finalists.get (i).getScore ()
 					+ "");
-			textScore.setFont (Font.font ("Roboto Lt", 46 * scaleWidth));
+			textScore.setFont (Font.font (scoreboard.getDataCarrier().font_1, 46 * scaleWidth));
 			textScore.setFill (Color.WHITE);
 
 			VBox ptsVBox = new VBox ();
@@ -79,7 +79,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			Text textEntry = new Text (finalists.get (i).getEntry ()
 					.getArtist ()
 					+ " - " + finalists.get (i).getEntry ().getTitle ());
-			textEntry.setFont (Font.font ("Roboto Lt",
+			textEntry.setFont (Font.font (scoreboard.getDataCarrier().font_1,
 					FontWeight.BOLD, scaleWidth * (textEntry.getText ().length () > 40 ? 16 : 20)));
 			textEntry.setFill (Color.WHITE);
 
@@ -93,7 +93,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 			
 			Text textNation = new Text (finalists.get (i).getName ());
 			textNation.setFont (Font
-					.font ("Roboto Lt", FontWeight.BOLD, scaleWidth * (textNation.getText ().length () > 14 ? 26 : 40)));
+					.font (scoreboard.getDataCarrier().font_1, FontWeight.BOLD, scaleWidth * (textNation.getText ().length () > 14 ? 26 : 40)));
 			textNation.setFill (Color.WHITE);
 
 			VBox nationVBox = new VBox ();
@@ -121,7 +121,7 @@ public class SimpleSideTableStyle extends SideOverviewTableCreator {
 
 		Text top6Text = new Text ("Top 6");
 		top6Text.setFill (Color.DARKGRAY);
-		top6Text.setFont (Font.font ("Coolvetica RG", FontWeight.BOLD, 50 * scaleWidth));
+		top6Text.setFont (Font.font (scoreboard.getDataCarrier().font_3, FontWeight.BOLD, 50 * scaleWidth));
 
 		VBox top6VBox = new VBox ();
 		top6VBox.setLayoutX (900 * scaleWidth);

@@ -173,7 +173,7 @@ public class Scoreboard {
 	private int pointTokenWidthTransition = pointTokenWidth;
 	private int pointTokenHeightTransition = pointTokenHeight;
 	// ----------------------------- //
-
+	
 	//------------//
 	private SideOverviewTableCreator sideTableCreator = new SimpleSideTableStyle ();
 	private TwelvePairShower twelvePairShower = new ConcreteTwelvePairShower ();
