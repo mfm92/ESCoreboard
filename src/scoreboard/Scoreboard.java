@@ -17,6 +17,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -235,8 +236,7 @@ public class Scoreboard {
 		Platform.runLater (() -> to7ScreenMaker.showSplitScreen (this, standings, traditionalVoting));
 	}
 	
-	private void setUpListeners() {
-
+	private void setUpListeners() {		
 		stage.addEventFilter (KeyEvent.KEY_RELEASED, event -> {
 			if (event.getCode () == KeyCode.PLUS && event.isControlDown () && !event.isAltDown () &&
 					voteTokenDuration.toSeconds () > minDuration.toSeconds ()) {

@@ -1,14 +1,17 @@
 package utilities;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
@@ -114,80 +117,58 @@ public class Utilities {
 
 	private void readUtilImages() throws IOException, InterruptedException {
 		String resourcesFile = "resources/";
-		ExecutorService exeService = Executors.newFixedThreadPool (Runtime.getRuntime ().availableProcessors ());
 		
-		exeService.execute(() -> {
-			try {
-				nationTileBackground = readImage (resourcesFile
-						+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png");
-				nationTileBackgroundScored = readImage (resourcesFile
-						+ "Graphics/Scoreboard Single Nation Backgrounds/Scored_BG.png");
-				nationTileBackgroundPQ = readImage (resourcesFile
-						+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_BG.png");
-				nationTileBackgroundPQScored = readImage (resourcesFile
-						+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_Scored_BG.png");
-				nationTileBackgroundVoter = readImage (resourcesFile
-						+ "Graphics/Scoreboard Single Nation Backgrounds/Voter_BG.png");
-				
-				voteQuickUnderlay = readImage (resourcesFile +
-						"Graphics/Global Backgrounds/VoteQuickUnderlay.png");
-			} catch (Exception e) {
-				e.printStackTrace ();
-			}
-		});
+		nationTileBackground = readImage (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png");
+		nationTileBackgroundScored = readImage (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Scored_BG.png");
+		nationTileBackgroundPQ = readImage (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_BG.png");
+		nationTileBackgroundPQScored = readImage (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_Scored_BG.png");
+		nationTileBackgroundVoter = readImage (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Voter_BG.png");
 
-		exeService.execute(() -> {
-			try {
-				pointsTileBackground = readImage (resourcesFile
-						+ "Graphics/Point Tokens/BluePtsBG.png");
-				pointsTileBackgroundPQ = readImage (resourcesFile
-						+ "Graphics/Point Tokens/RedPtsBG.png");
-				scoredPtsBG = readImage (resourcesFile + "Graphics/Point Tokens/ScoredBGPts.png");
-				
-				voteBGPTs = readImage (resourcesFile +
-						"Graphics/Point Tokens/VoteBGPts.png");
-			} catch (Exception e) {
-				e.printStackTrace ();
-			}
-		});
+		voteQuickUnderlay = readImage (resourcesFile
+				+ "Graphics/Global Backgrounds/VoteQuickUnderlay.png");
+		pointsTileBackground = readImage (resourcesFile
+				+ "Graphics/Point Tokens/BluePtsBG.png");
+		pointsTileBackgroundPQ = readImage (resourcesFile
+				+ "Graphics/Point Tokens/RedPtsBG.png");
+		scoredPtsBG = readImage (resourcesFile
+				+ "Graphics/Point Tokens/ScoredBGPts.png");
 
-		exeService.execute(() -> {
-			try {
-				backgroundWhite = readImage (resourcesFile
-						+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
-				backgroundBlue = readImage (resourcesFile
-						+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png");
-				backgroundRed = readImage (resourcesFile
-						+ "Graphics/Global Backgrounds/Scoreboard BG Red.png");
-				pprais = readImage (resourcesFile + "Graphics/Point Tokens/12PPrais.png");
-				ppraisbg = readImage (resourcesFile
-						+ "Graphics/Scoreboard Single Nation Backgrounds/Praise_BG.png");
+		voteBGPTs = readImage (resourcesFile
+				+ "Graphics/Point Tokens/VoteBGPts.png");
+		backgroundWhite = readImage (resourcesFile
+				+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
+		backgroundBlue = readImage (resourcesFile
+				+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png");
+		backgroundRed = readImage (resourcesFile
+				+ "Graphics/Global Backgrounds/Scoreboard BG Red.png");
+		pprais = readImage (resourcesFile
+				+ "Graphics/Point Tokens/12PPrais.png");
+		ppraisbg = readImage (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Praise_BG.png");
 
-				voterPointToken = readImage (resourcesFile
-						+ "Graphics/Point Tokens/Calling.png");
-				
-				voteUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGVoter.png");
-				
-				intermediateBackground = readImage (resourcesFile + "Graphics/Global Backgrounds/IntermediateBackground.png");
-			} catch (Exception e) {
-				e.printStackTrace ();
-			}
-		});
-		
-		exeService.execute(() -> {
-			try {
-				voteFlagUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGFlag.png");
-				voteNameUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGName.png");
-				voteCounterUL = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGCounter.png");
-				voteCounterULSmall = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGCounterSmall.png");
-				ptHolder = readImage (resourcesFile + "Graphics/SideBarTokens/PTHolder.png");
-			} catch (Exception e) {
-				e.printStackTrace ();
-			}
-		});
-		
-		exeService.awaitTermination (5, TimeUnit.SECONDS);
-		exeService.shutdown ();
+		voterPointToken = readImage (resourcesFile
+				+ "Graphics/Point Tokens/Calling.png");
+
+		voteUnderlay = readImage (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGVoter.png");
+
+		intermediateBackground = readImage (resourcesFile
+				+ "Graphics/Global Backgrounds/IntermediateBackground.png");
+		voteFlagUnderlay = readImage (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGFlag.png");
+		voteNameUnderlay = readImage (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGName.png");
+		voteCounterUL = readImage (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGCounter.png");
+		voteCounterULSmall = readImage (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGCounterSmall.png");
+		ptHolder = readImage (resourcesFile
+				+ "Graphics/SideBarTokens/PTHolder.png");
 	}
 	
 	private void readDummies () throws IOException {
@@ -200,13 +181,8 @@ public class Utilities {
 	}
 
 	public static Image readImage(String fileName) throws IOException {
-		BufferedImage newBuffImg = null;
-		
-		File file = new File (fileName);
-		if (!file.exists ()) return null;
-		
-		newBuffImg = ImageIO.read (new File (fileName));
-		return SwingFXUtils.toFXImage (newBuffImg, null);
+		return Files.exists (Paths.get (fileName)) ? 
+				SwingFXUtils.toFXImage (ImageIO.read (new File (fileName)), null) : null;
 	}
 
 	private void readPtsTokens() throws IOException {
@@ -242,7 +218,7 @@ public class Utilities {
 				"" : (CoreUI.inputData.getFlagDirectory () + "/");
 		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "/";
 		
-		ExecutorService exeService = Executors.newCachedThreadPool ();
+		ExecutorService exeService = Executors.newFixedThreadPool (Runtime.getRuntime ().availableProcessors ());
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
 			exeService.execute (() -> {
@@ -275,8 +251,8 @@ public class Utilities {
 			});
 		}
 		
-		exeService.awaitTermination (5, TimeUnit.SECONDS);
 		exeService.shutdown ();
+		exeService.awaitTermination (5, TimeUnit.SECONDS);
 		
 		return nations;
 	}
@@ -366,6 +342,15 @@ public class Utilities {
 
 	public ArrayList<Participant> getAllNations() {
 		return new ArrayList<> (nameMap.values ());
+	}
+	
+	public List<Image> getImages () {
+		return Arrays.asList(nationTileBackground, nationTileBackgroundPQ, nationTileBackgroundPQScored,
+				nationTileBackgroundScored, nationTileBackgroundVoter, voteBGPTs, voteCounterUL,
+				voteCounterULSmall, voteFlagUnderlay, voterPointToken, intermediateBackground, 
+				backgroundBlue, backgroundRed, backgroundWhite, pprais, ppraisbg, pointsTileBackground,
+				pointsTileBackgroundPQ, pointsTileBackgroundVoter, ptHolder, voteQuickUnderlay, 
+				scoredPtsBG, dummyFlag, dummyPrettyFlag);
 	}
 	
 	public ArrayList<Participant> getListOfNations(String[] names) {

@@ -457,9 +457,10 @@ public class CoreUI extends Application implements Initializable {
 		
 		voteNrCol.setOnEditCommit (event -> {
 			
-			boolean valid = NumberUtils.isNumber (event.getNewValue()) && Integer.parseInt (event.getNewValue ()) > 0;
+			boolean empty = event.getNewValue().equals ("") || event.getNewValue ().equals (" ");
+			boolean valid = empty || (NumberUtils.isNumber (event.getNewValue()) && Integer.parseInt (event.getNewValue ()) > 0);
 			
-			if (checkNoDuplicateVoteNr (event.getNewValue ()) && valid) {
+			if (empty || (valid && checkNoDuplicateVoteNr (event.getNewValue ()))) {
 				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
 						"voteNr", event.getOldValue (), event.getNewValue ());
 				eEditor.execute ();
@@ -622,8 +623,7 @@ public class CoreUI extends Application implements Initializable {
 				Scoreboard sc = new Scoreboard();
 				sc.start (new Stage());
 			} catch (Exception e) { 
-				String message = e.getMessage ();
-				visualExceptionMsg ("Yikes! Try again :)" + (message.length () < 25 ? (System.lineSeparator () + message) : ""));
+				visualExceptionMsg ("Yikes! Try again :)");
 				e.printStackTrace ();
 			}
 		});

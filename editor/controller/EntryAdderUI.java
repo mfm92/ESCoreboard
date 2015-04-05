@@ -229,7 +229,7 @@ public class EntryAdderUI implements Initializable {
 								startTimeField.getText (), 
 								endTimeField.getText (), 
 								startField.getText (), 
-								statusField.getText (), "0");
+								statusField.getText (), "");
 				
 				confirmButton.setText("Confirmed!");
 				confirmButton.getStyleClass ().add("buttonConfirmed");
