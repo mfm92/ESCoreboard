@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -108,10 +106,9 @@ public class Utilities {
 
 	private void readUtilImages() throws IOException, InterruptedException {
 		String resourcesFile = "resources/";
-		List<Callable<Void>> exes = new ArrayList<> ();
 		ExecutorService exeService = Executors.newFixedThreadPool (Runtime.getRuntime ().availableProcessors ());
 		
-		exes.add (() -> {
+		exeService.execute(() -> {
 			try {
 				nationTileBackground = readImage (resourcesFile
 						+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png");
@@ -129,11 +126,9 @@ public class Utilities {
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
-			
-			return null;
 		});
 
-		exes.add (() -> {
+		exeService.execute(() -> {
 			try {
 				pointsTileBackground = readImage (resourcesFile
 						+ "Graphics/Point Tokens/BluePtsBG.png");
@@ -146,10 +141,9 @@ public class Utilities {
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
-			return null;
 		});
-		
-		exes.add (() -> {
+
+		exeService.execute(() -> {
 			try {
 				backgroundWhite = readImage (resourcesFile
 						+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
@@ -157,14 +151,6 @@ public class Utilities {
 						+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png");
 				backgroundRed = readImage (resourcesFile
 						+ "Graphics/Global Backgrounds/Scoreboard BG Red.png");
-			} catch (Exception e) {
-				e.printStackTrace ();
-			}
-			return null;
-		});
-
-		exes.add (() -> {
-			try {
 				pprais = readImage (resourcesFile + "Graphics/Point Tokens/12PPrais.png");
 				ppraisbg = readImage (resourcesFile
 						+ "Graphics/Scoreboard Single Nation Backgrounds/Praise_BG.png");
@@ -178,11 +164,9 @@ public class Utilities {
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
-			
-			return null;
 		});
 		
-		exes.add(() -> {
+		exeService.execute(() -> {
 			try {
 				voteFlagUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGFlag.png");
 				voteNameUnderlay = readImage (resourcesFile + "Graphics/SideBarTokens/VotingBGName.png");
@@ -192,10 +176,9 @@ public class Utilities {
 			} catch (Exception e) {
 				e.printStackTrace ();
 			}
-			return null;
 		});
 		
-		exeService.invokeAll (exes, 5, TimeUnit.SECONDS);
+		exeService.awaitTermination (5, TimeUnit.SECONDS);
 		exeService.shutdown ();
 	}
 	
@@ -247,14 +230,14 @@ public class Utilities {
 		ArrayList<Participant> nations = new ArrayList<> ();
 		nameMap = new HashMap<> ();
 
-		String flagFile = CoreUI.inputData.getFlagDirectory () + "/";
+		final String flagFile = CoreUI.inputData.getFlagDirectory () == null ?
+				"" : (CoreUI.inputData.getFlagDirectory () + "/");
 		String diamondFile = CoreUI.inputData.getPrettyFlagDirectory () + "/";
 		
-		ExecutorService exeService = Executors.newFixedThreadPool (Runtime.getRuntime ().availableProcessors ());
-		List<Callable<Void>> exes = new ArrayList<> ();
+		ExecutorService exeService = Executors.newCachedThreadPool ();
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
-			exes.add (() -> {
+			exeService.execute (() -> {
 				try {
 					Image flag = readImage (flagFile + pData.getName () + ".png");
 					Participant newNation = new Participant (pData.getName (), pData.getShortName (),
@@ -281,12 +264,10 @@ public class Utilities {
 				} catch (Exception e) {
 					e.printStackTrace ();
 				}
-				
-				return null;
 			});
 		}
 		
-		exeService.invokeAll (exes, 5, TimeUnit.SECONDS);
+		exeService.awaitTermination (5, TimeUnit.SECONDS);
 		exeService.shutdown ();
 		
 		return nations;
@@ -308,6 +289,8 @@ public class Utilities {
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
 			Participant p = getRosterNationByFullName (pData.getName ());
+			
+			if (CoreUI.inputData.getEntriesDirectory () == null) mediaLocation = "";
 			
 			File mediaFile = new File (mediaLocation + pData.getShortName () + ".mp4");
 			
@@ -346,10 +329,13 @@ public class Utilities {
 	
 	private void sortVotes () {		
 		int max = allVotes.size ();
-		allVotes.clear ();
 		
 		for (Map.Entry<Integer, Participant> indexPair : voteIndex.entrySet ()) {
-			if (indexPair.getKey () < max) allVotes.add (indexPair.getValue ().getVotes ());
+			if (indexPair.getKey () <= max) {
+				Votes v = indexPair.getValue ().getVotes();
+				allVotes.remove (v);
+				allVotes.add (indexPair.getKey () - 1, v);
+			}
 		}
 		
 		Collections.sort (participants, (p1, p2) -> {
@@ -360,6 +346,7 @@ public class Utilities {
 	public ArrayList<Participant> getAllNations() {
 		return new ArrayList<> (nameMap.values ());
 	}
+	
 	public ArrayList<Participant> getListOfNations(String[] names) {
 		ArrayList<Participant> containedNations = new ArrayList<> ();
 		for (String name : names) {
@@ -381,7 +368,6 @@ public class Utilities {
 			if (nation.getName ().equals (shortName))
 				return nation;
 		}
-		System.out.println ("Searching for...: " + shortName + " gave no result!");
 		return null;
 	}
 

@@ -18,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
@@ -41,6 +43,7 @@ public class Scoreboard {
 	
 	// ----------------------------------- //
 	private Group root;
+	private Stage stage;
 	private Group superNations;
 	private HashMap<Participant, Group> groupNationMap = new HashMap<> ();
 	private ArrayList<Participant> participants;
@@ -223,11 +226,32 @@ public class Scoreboard {
 		primaryStage.setFullScreen (useFullScreen);
 		primaryStage.show ();
 		
+		this.stage = primaryStage;
+		setUpListeners();
 		runCycle ();
 	}
 	
 	private void runCycle() {
 		Platform.runLater (() -> to7ScreenMaker.showSplitScreen (this, standings, traditionalVoting));
+	}
+	
+	private void setUpListeners() {
+
+		stage.addEventFilter (KeyEvent.KEY_RELEASED, event -> {
+			if (event.getCode () == KeyCode.PLUS && event.isControlDown () && !event.isAltDown () &&
+					voteTokenDuration.toSeconds () > minDuration.toSeconds ()) {
+				voteTokenDuration = voteTokenDuration.subtract (Duration.seconds (0.3));
+			} else if (event.getCode () == KeyCode.MINUS && event.isControlDown () &&
+					voteTokenDuration.toSeconds () < 2 * maxDuration.toSeconds ()) {
+				voteTokenDuration = voteTokenDuration.add (Duration.seconds (0.3));
+			} else if (event.getCode () == KeyCode.T && event.isControlDown ()) {
+				traditionalVoting = !traditionalVoting;
+			} else if (event.getCode () == KeyCode.I && event.isControlDown () && event.isAltDown ()) {
+				specialBorder = Math.min (participants.size (), specialBorder + 1);
+			} else if (event.getCode () == KeyCode.D && event.isControlDown () && event.isAltDown ()) {
+				specialBorder = Math.max (0, specialBorder - 1);
+			}
+		});
 	}
 
 	private void drawScoreboard (Stage primaryStage) throws IOException, InterruptedException {
@@ -299,7 +323,7 @@ public class Scoreboard {
 		Media entry = recEntry.getMedia ();
 		MediaPlayer entryPlayer = new MediaPlayer (entry);
 		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - (10 + 3d*(2d / voteTokenDuration.toSeconds ()))));
+		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - Math.min (16d, (10 + 3d*(2d / voteTokenDuration.toSeconds ())))));
 		entryPlayer.setAutoPlay (true);
 		entryPlayer.setVolume (0);
 		entryPlayer.setCycleCount (1);

@@ -81,7 +81,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			ArrayList<ImageView> flags = new ArrayList<> ();
 			ArrayList<VBox> recTexts = new ArrayList<> ();
 
-			int shortage = (int)(Math.min (10d, 20 * (scoreboard.getVoteTokenDuration ().toSeconds () / 4d)));
+			int shortage = (int)(Math.min (5.5d, 20 * (scoreboard.getVoteTokenDuration ().toSeconds () / 4d)));
 			
 			Entry recEntry = currentVoterCopy.getEntry ();
 			Media entry = recEntry.getMedia ();
@@ -209,10 +209,10 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 						Timeline run = new Timeline();
 						
 						KeyFrame start = new KeyFrame (Duration.ZERO, new KeyValue (shiny.layoutXProperty (), shiny.getLayoutX ()));
-						KeyFrame go = new KeyFrame (Duration.seconds (0.5), new KeyValue (shiny.layoutXProperty(), 
+						KeyFrame go = new KeyFrame (Duration.seconds (0.5 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.layoutXProperty(), 
 								shiny.getLayoutX () + scoreboard.getColumnWidthTransition () - shiny.getWidth ()));
-						KeyFrame stay = new KeyFrame (Duration.seconds(0.5), new KeyValue (shiny.opacityProperty (), shiny.getOpacity ()));
-						KeyFrame nowGo = new KeyFrame (Duration.seconds (0.55), new KeyValue (shiny.opacityProperty (), 0));
+						KeyFrame stay = new KeyFrame (Duration.seconds(0.5 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.opacityProperty (), shiny.getOpacity ()));
+						KeyFrame nowGo = new KeyFrame (Duration.seconds (0.55 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.opacityProperty (), 0));
 						
 						run.getKeyFrames ().addAll (start, go, stay, nowGo);
 						run.setDelay (Duration.seconds (0.04 * cSave));

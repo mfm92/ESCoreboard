@@ -8,6 +8,7 @@ doc/
 libs/
 fonts_used/
 *.txt
+*.tex
 
 #no spoilers
 resources/save/

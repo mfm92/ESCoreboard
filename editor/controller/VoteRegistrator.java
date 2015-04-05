@@ -12,12 +12,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.ParticipantData;
 import controller.commands.VoteSetter;
@@ -58,7 +60,27 @@ public class VoteRegistrator extends Application implements Initializable {
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/VoteRegistrator.fxml"));
 		Pane voteDocRoot = (Pane) loader.load ();
-		Scene scene = new Scene(voteDocRoot);
+		
+		double originalHeight = voteDocRoot.getHeight ();
+		double originalWidth = voteDocRoot.getWidth ();
+		
+		if (Pane.USE_COMPUTED_SIZE == voteDocRoot.getPrefHeight ()) {
+			voteDocRoot.setPrefHeight (originalHeight);
+		} else originalHeight = voteDocRoot.getPrefHeight ();
+		
+		if (Pane.USE_COMPUTED_SIZE == voteDocRoot.getPrefWidth ()) {
+			voteDocRoot.setPrefWidth (originalWidth);
+		} else originalWidth = voteDocRoot.getPrefWidth ();
+		
+		Group wrapper = new Group (voteDocRoot);
+		StackPane sPane = new StackPane ();
+		sPane.getChildren ().add (wrapper);
+		
+		Scene scene = new Scene (sPane);
+	
+		wrapper.scaleXProperty ().bind (scene.widthProperty ().divide (originalWidth));
+		wrapper.scaleYProperty ().bind (scene.heightProperty ().divide (originalHeight));
+		
 		scene.getStylesheets ().add ("/view/VoteRegistrator.css");
 		primaryStage.setScene (scene);
 		primaryStage.show ();

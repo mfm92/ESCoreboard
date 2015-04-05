@@ -8,12 +8,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.ParticipantData;
 
@@ -45,9 +47,29 @@ public class EntryAdderUI implements Initializable {
 	public void init (Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader (getClass ().getResource ("/view/EntryAdder.fxml"));
 		Pane voteDocRoot = (Pane) loader.load ();
-		Scene addScene = new Scene (voteDocRoot);
-		addScene.getStylesheets ().add("/view/EntryAdder.css");
-		primaryStage.setScene (addScene);
+		
+		double originalHeight = voteDocRoot.getHeight ();
+		double originalWidth = voteDocRoot.getWidth ();
+		
+		if (Pane.USE_COMPUTED_SIZE == voteDocRoot.getPrefHeight ()) {
+			voteDocRoot.setPrefHeight (originalHeight);
+		} else originalHeight = voteDocRoot.getPrefHeight ();
+		
+		if (Pane.USE_COMPUTED_SIZE == voteDocRoot.getPrefWidth ()) {
+			voteDocRoot.setPrefWidth (originalWidth);
+		} else originalWidth = voteDocRoot.getPrefWidth ();
+		
+		Group wrapper = new Group (voteDocRoot);
+		StackPane sPane = new StackPane ();
+		sPane.getChildren ().add (wrapper);
+		
+		Scene scene = new Scene (sPane);
+	
+		wrapper.scaleXProperty ().bind (scene.widthProperty ().divide (originalWidth));
+		wrapper.scaleYProperty ().bind (scene.heightProperty ().divide (originalHeight));
+		
+		scene.getStylesheets ().add("/view/EntryAdder.css");
+		primaryStage.setScene (scene);
 		primaryStage.show ();
 	}
 	
