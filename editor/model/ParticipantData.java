@@ -18,11 +18,12 @@ public class ParticipantData implements Comparable<ParticipantData> {
 	StringProperty stop;
 	StringProperty grid;
 	StringProperty status;
+	StringProperty voteNr;
 	
 	ListProperty<ParticipantData> votes;
 	
 	public ParticipantData (String name, String shortName, String artist,
-			String title, String start, String stop, String grid, String status) {
+			String title, String start, String stop, String grid, String status, String voteNr) {
 
 		this.name = new SimpleStringProperty(name);
 		this.shortName = new SimpleStringProperty(shortName);
@@ -32,13 +33,14 @@ public class ParticipantData implements Comparable<ParticipantData> {
 		this.stop = new SimpleStringProperty (stop);
 		this.grid = new SimpleStringProperty (grid);
 		this.status = new SimpleStringProperty (status);
+		this.voteNr = new SimpleStringProperty (voteNr);
 		
 		votes = new SimpleListProperty<> ();
 	}
 	
 	public ParticipantData clone() {
 		return new ParticipantData (name.get (), shortName.get (), artist.get (),
-				title.get (), start.get (), stop.get (), grid.get (), status.get ());
+				title.get (), start.get (), stop.get (), grid.get (), status.get (), voteNr.get ());
 	}
 
 	public String getName() {
@@ -123,6 +125,18 @@ public class ParticipantData implements Comparable<ParticipantData> {
 	
 	public String toString () {
 		return name.get ();
+	}
+	
+	public StringProperty voteNrProperty () {
+		return voteNr;
+	}
+	
+	public String getVoteNr () {
+		return voteNr.get();
+	}
+	
+	public void setVoteNr (String voteNr) {
+		this.voteNr = new SimpleStringProperty (voteNr);
 	}
 
 	@Override

@@ -27,6 +27,7 @@ public class EntryEditor extends EntryCommand {
 			case "stop": target.setStop (newValue); break;
 			case "grid": target.setGrid (newValue); break;
 			case "status": target.setStatus (newValue); break;
+			case "voteNr": target.setVoteNr (newValue); break;
 			
 			default: return;
 		}
@@ -43,7 +44,8 @@ public class EntryEditor extends EntryCommand {
 			case "stop": target.setStop (oldValue); break;
 			case "grid": target.setGrid (oldValue); break;
 			case "status": target.setStatus (oldValue); break;
-		
+			case "voteNr": target.setStatus (oldValue); break;
+			
 			default: return;
 		}
 		

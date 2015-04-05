@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -70,6 +71,8 @@ public class Utilities {
 
 	public ArrayList<Participant> participants = new ArrayList<Participant> ();
 	
+	private Map<Integer, Participant> voteIndex = new TreeMap<> ();
+	
 	private Media dummyMedia;
 	private Image dummyFlag;
 	private Image dummyPrettyFlag;
@@ -92,47 +95,15 @@ public class Utilities {
 		voteMap = new HashMap<Participant, Votes> ();
 		diamondMap = new HashMap<> ();
 		
-		long longM = System.nanoTime ();
 		readNations();
-		long longE = System.nanoTime ();
-		System.out.println ("readNations: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
-		
-		longM = System.nanoTime ();
 		readUtilImages ();
-		longE = System.nanoTime ();
-		System.out.println ("readUtilImages: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
-		
-		longM = System.nanoTime ();
 		readDummies ();
-		longE = System.nanoTime ();
-		System.out.println ("readDummies: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
-		
-		longM = System.nanoTime ();
 		readPtsTokens ();
-		longE = System.nanoTime ();
-		System.out.println ("readPtsTokens: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
-		
-		longM = System.nanoTime ();
 		readEntries ();
-		longE = System.nanoTime ();
-		System.out.println ("readEntries: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
-		
-		longM = System.nanoTime ();
 		readVotes ();
-		longE = System.nanoTime ();
-		System.out.println ("readVotes: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));
+		sortVotes ();
 		
-		if (CoreUI.inputData.getBannerCreatorActivated ()) {
-			longM = System.nanoTime ();
-			createBanners ();
-			longE = System.nanoTime ();
-			System.out.println ("readCreateBanners: " + TimeUnit.MILLISECONDS.convert ((longE - longM), TimeUnit.NANOSECONDS));	
-		}
-		
-		// sortVotes();
-		Collections.sort (participants, (p1, p2) -> {
-			return p1.getName ().compareTo (p2.getName ());
-		});
+		if (CoreUI.inputData.getBannerCreatorActivated ()) createBanners ();
 	}
 
 	private void readUtilImages() throws IOException, InterruptedException {
@@ -224,17 +195,16 @@ public class Utilities {
 			return null;
 		});
 		
-		exeService.invokeAll (exes);
+		exeService.invokeAll (exes, 5, TimeUnit.SECONDS);
 		exeService.shutdown ();
-		exeService.awaitTermination (30, TimeUnit.SECONDS);
 	}
 	
 	private void readDummies () throws IOException {
-		String dummyLocation = "resources/Nation Info/" + "Entries Videos/Dummy.mp4";
+		String dummyLocation = "resources/Nation Info/Entries Videos/Dummy.mp4";
 		File file = new File (dummyLocation);
 		dummyMedia = new Media (file.toURI ().toString ());
 		
-		dummyFlag = readImage ("resources/Nation Info/" + "Participants Flags/EmptyEmptyEmpty.png");
+		dummyFlag = readImage ("resources/Nation Info/Participants Flags/EmptyEmptyEmpty.png");
 		dummyPrettyFlag = dummyFlag;
 	}
 
@@ -300,6 +270,11 @@ public class Utilities {
 					
 					nameMap.put (pData.getName (), newNation);
 					
+					if (NumberUtils.isNumber (pData.getVoteNr ())) {
+						int voteOrder = Integer.parseInt (pData.getVoteNr ());
+						voteIndex.put (voteOrder, newNation);	
+					}
+					
 					boolean shouldBeCreated = pData.getStatus ().equals ("P");
 					
 					if (shouldBeCreated) participants.add (newNation);
@@ -311,10 +286,8 @@ public class Utilities {
 			});
 		}
 		
-		exeService.invokeAll (exes);
+		exeService.invokeAll (exes, 5, TimeUnit.SECONDS);
 		exeService.shutdown ();
-		exeService.awaitTermination ((long)(CoreUI.inputData.getParticipants ().size () * 28), 
-				TimeUnit.SECONDS);
 		
 		return nations;
 	}
@@ -334,7 +307,7 @@ public class Utilities {
 		String mediaLocation = CoreUI.inputData.getEntriesDirectory () + "/";
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
-			Participant p = getRosterNationByShortName (pData.getShortName ());
+			Participant p = getRosterNationByFullName (pData.getName ());
 			
 			File mediaFile = new File (mediaLocation + pData.getShortName () + ".mp4");
 			
@@ -344,7 +317,7 @@ public class Utilities {
 					Integer.parseInt (pData.getStop ()), pData.getStatus ()));	
 			} else {
 				p.setEntry (new Entry (pData.getArtist (), pData.getTitle (), dummyMedia, 0, 20, pData.getStatus ()));
-			}
+			} 			
 		}
 	}
 
@@ -371,22 +344,17 @@ public class Utilities {
 		}
 	}
 	
-	/**
-	 * Use this to hack voting order into the show.
-	 */
-	@SuppressWarnings("unused")
-	private void sortVotes () {
+	private void sortVotes () {		
+		int max = allVotes.size ();
 		allVotes.clear ();
 		
-		String[] voteOrder = new String[]{"Begonia", "Tonallán", "Chyariia", "L'ester", "Santa d'Lucia",
-				"Utopia", "Sakuralia", "Il-Bidu", "Belvist", "Lorien", "Pebbleland", "Artyomka", "Meilutya",
-				"Genext", "Glamastan", "Blackmere", "Kamandé"};
-		
-		for (String s : voteOrder) {
-			Participant p = getRosterNationByFullName (s);
-			Votes v = p.getVotes ();
-			allVotes.add (v);
+		for (Map.Entry<Integer, Participant> indexPair : voteIndex.entrySet ()) {
+			if (indexPair.getKey () < max) allVotes.add (indexPair.getValue ().getVotes ());
 		}
+		
+		Collections.sort (participants, (p1, p2) -> {
+			return p1.getName ().compareTo (p2.getName ());
+		});
 	}
 
 	public ArrayList<Participant> getAllNations() {
@@ -413,6 +381,7 @@ public class Utilities {
 			if (nation.getName ().equals (shortName))
 				return nation;
 		}
+		System.out.println ("Searching for...: " + shortName + " gave no result!");
 		return null;
 	}
 

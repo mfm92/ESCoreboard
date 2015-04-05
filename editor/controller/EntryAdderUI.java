@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.ParticipantData;
@@ -173,6 +174,8 @@ public class EntryAdderUI implements Initializable {
 				}
 			}
 		});
+		
+		statusField.setTooltip (new Tooltip ("Status must be P, O or V!"));
 	}
 	
 	private void setUpConfirmButton () {
@@ -204,7 +207,7 @@ public class EntryAdderUI implements Initializable {
 								startTimeField.getText (), 
 								endTimeField.getText (), 
 								startField.getText (), 
-								statusField.getText ());
+								statusField.getText (), "0");
 				
 				confirmButton.setText("Confirmed!");
 				confirmButton.getStyleClass ().add("buttonConfirmed");

@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -27,6 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -64,6 +66,7 @@ public class CoreUI extends Application implements Initializable {
 	@FXML TableColumn<ParticipantData, String> stopCol;
 	@FXML TableColumn<ParticipantData, String> gridCol;
 	@FXML TableColumn<ParticipantData, String> statusCol;
+	@FXML TableColumn<ParticipantData, String> voteNrCol;
 	
 	@FXML Button addEntryButton;
 	@FXML Button removeEntryButton;
@@ -122,15 +125,32 @@ public class CoreUI extends Application implements Initializable {
 		loader.setLocation (getClass ().getResource ("/view/CoreUI.fxml"));
 		content = (Pane) loader.load ();
 		
-		Scene scene = new Scene (content);
+		double originalHeight = content.getHeight ();
+		double originalWidth = content.getWidth ();
+		
+		if (Pane.USE_COMPUTED_SIZE == content.getPrefHeight ()) {
+			content.setPrefHeight (originalHeight);
+		} else originalHeight = content.getPrefHeight ();
+		
+		if (Pane.USE_COMPUTED_SIZE == content.getPrefWidth ()) {
+			content.setPrefWidth (originalWidth);
+		} else originalWidth = content.getPrefWidth ();
+		
+		Group wrapper = new Group (content);
+		StackPane sPane = new StackPane ();
+		sPane.getChildren ().add (wrapper);
+		
+		Scene scene = new Scene (sPane);
 		scene.getStylesheets ().add ("/view/CoreUI.css");
 		this.scene = scene;
 	
-		primaryStage.setResizable (false);
+		wrapper.scaleXProperty ().bind (scene.widthProperty ().divide (originalWidth));
+		wrapper.scaleYProperty ().bind (scene.heightProperty ().divide (originalHeight));
+		
+		primaryStage.setResizable (true);
 		primaryStage.setScene (scene);
 		primaryStage.setTitle ("Participant Editor");
 		primaryStage.getIcons ().add (Utilities.readImage ("resources/Icon.png"));
-		primaryStage.setResizable (false);
 		primaryStage.show ();
 	}
 	
@@ -285,6 +305,7 @@ public class CoreUI extends Application implements Initializable {
 		stopCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String>("stop"));
 		gridCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String>("grid"));
 		statusCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("status"));
+		voteNrCol.setCellValueFactory (new PropertyValueFactory<ParticipantData, String> ("voteNr"));
 		
 		int counter = 0;
 		
@@ -429,6 +450,23 @@ public class CoreUI extends Application implements Initializable {
 				commandPtr = nrOfCommands;			
 			} else {
 				String message = "Status must be P, O or V!";
+				PopUp popUp = new PopUp (PopUpMessage.ERROR, this, message);
+				popUp.show ();
+			}
+		});
+		
+		voteNrCol.setOnEditCommit (event -> {
+			
+			boolean valid = NumberUtils.isNumber (event.getNewValue()) && Integer.parseInt (event.getNewValue ()) > 0;
+			
+			if (checkNoDuplicateVoteNr (event.getNewValue ()) && valid) {
+				EntryEditor eEditor = new EntryEditor ((ParticipantData)(event.getTableView ().getItems ().get (event.getTablePosition ().getRow ())), 
+						"voteNr", event.getOldValue (), event.getNewValue ());
+				eEditor.execute ();
+				commandLog.put (++nrOfCommands, eEditor);
+				commandPtr = nrOfCommands;
+			} else {
+				String message = "Invalid!";
 				PopUp popUp = new PopUp (PopUpMessage.ERROR, this, message);
 				popUp.show ();
 			}
@@ -584,7 +622,8 @@ public class CoreUI extends Application implements Initializable {
 				Scoreboard sc = new Scoreboard();
 				sc.start (new Stage());
 			} catch (Exception e) { 
-				visualExceptionMsg ("Yikes! Try again :)");
+				String message = e.getMessage ();
+				visualExceptionMsg ("Yikes! Try again :)" + (message.length () < 25 ? (System.lineSeparator () + message) : ""));
 				e.printStackTrace ();
 			}
 		});
@@ -676,6 +715,13 @@ public class CoreUI extends Application implements Initializable {
 	private boolean checkIfUpperCase (String newCode) {
 		for (char c : newCode.toCharArray ()) {
 			if (!Character.isUpperCase (c)) return false;
+		}
+		return true;
+	}
+	
+	private boolean checkNoDuplicateVoteNr (String voteNr) {
+		for (ParticipantData pData : inputData.getParticipants ()) {
+			if (pData.getVoteNr ().equals (voteNr)) return false;
 		}
 		return true;
 	}

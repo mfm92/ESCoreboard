@@ -60,7 +60,7 @@ public class TableLoader {
 			String[] tokens = line.split ("\\$");
 			
 			ParticipantData participant = new ParticipantData (tokens[0], tokens[1],
-					tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7]);
+					tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8]);
 			CoreUI.inputData.addParticipant (participant);
 		}
 			

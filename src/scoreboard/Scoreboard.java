@@ -18,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -64,8 +66,8 @@ public class Scoreboard {
 	// ----------------------------------- //
 	
 	// ----------------------------- //
-	private int screenWidth = (int)(Screen.getPrimary ().getBounds ().getWidth ()) - 900;
-	private int screenHeight = (int)(Screen.getPrimary ().getBounds ().getHeight ()) - 500;
+	private int screenWidth = (int)(Screen.getPrimary ().getBounds ().getWidth ());
+	private int screenHeight = (int)(Screen.getPrimary ().getBounds ().getHeight ());
 	private int nrOfParts = (int)(CoreUI.inputData.getParticipants ().stream ().filter (t -> t.getStatus ().equals ("P")).count ());
 	// ----------------------------- //
 	
@@ -85,7 +87,7 @@ public class Scoreboard {
 	
 	// ----------------------------- //
 	private int specialBorder = 10;
-	private int transParts = 5;
+	private int transParts = 7;
 	// ----------------------------- //
 	
 	// ----------------------------- //
@@ -191,10 +193,30 @@ public class Scoreboard {
 	public void start(Stage primaryStage) throws InterruptedException, IOException {		
 		drawScoreboard (primaryStage);
 		
-		Scene scene = new Scene (root);
+		double originalHeight = screenHeight;
+		double originalWidth = screenWidth;
+		
+		Pane content = new Pane ();
+		content.getChildren ().add(root);
+		
+		if (Pane.USE_COMPUTED_SIZE == content.getPrefHeight ()) {
+			content.setPrefHeight (originalHeight);
+		} else originalHeight = content.getPrefHeight ();
+		
+		if (Pane.USE_COMPUTED_SIZE == content.getPrefWidth ()) {
+			content.setPrefWidth (originalWidth);
+		} else originalWidth = content.getPrefWidth ();
+		
+		Group wrapper = new Group (content);
+		StackPane sPane = new StackPane ();
+		sPane.getChildren ().add (wrapper);
+		
+		Scene scene = new Scene (sPane, originalWidth, originalHeight);
+	
+		wrapper.scaleXProperty ().bind (scene.widthProperty ().divide (originalWidth));
+		wrapper.scaleYProperty ().bind (scene.heightProperty ().divide (originalHeight));
 
 		primaryStage.setWidth (screenWidth);
-		primaryStage.setResizable (false);
 		primaryStage.setHeight (screenHeight);
 		primaryStage.setScene (scene);
 		primaryStage.setTitle (title);

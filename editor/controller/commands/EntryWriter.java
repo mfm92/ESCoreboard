@@ -47,7 +47,7 @@ public class EntryWriter {
 		for (ParticipantData p : CoreUI.inputData.getParticipants ()) {
 			participantsOut.append (p.getName () + "$" + p.getShortName () + "$" + 
 					p.getArtist () + "$" + p.getTitle () + "$" + p.getStart () +
-					"$" + p.getStop () + "$" + p.getGrid () + "$" + p.getStatus () + STRING_SEPARATOR);
+					"$" + p.getStop () + "$" + p.getGrid () + "$" + p.getStatus () + "$" + p.getVoteNr () + STRING_SEPARATOR);
 		}
 		
 		for (Map.Entry<ParticipantData, ArrayList<ParticipantData>> vote : CoreUI.inputData.getVotes ().entrySet ()) {
