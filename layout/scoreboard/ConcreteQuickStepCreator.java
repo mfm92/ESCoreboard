@@ -1,16 +1,20 @@
 package scoreboard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -160,63 +164,118 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					pointView.setX(scoreboard.getPointTokenXOffsetTransition() + i *+
 							scoreboard.getPointTokenWidthTransition());
 					pointView.setY (scoreboard.getPointTokenYOffsetTransition());
-
+					
 					pointViews.add (pointView);
 					to7Group.getChildren ().add (pointView);
 					
 					if (i >= scoreboard.getTransParts()) continue;
 					
-					double shiftPVX = rects.get (i).getX () - pointView.getX () + scoreboard.getPtfromEdgeOffsetTrans();
-					double shiftPVY = rects.get (i).getY () - pointView.getY () + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2;
+					ScaleTransition scaleTrans = new ScaleTransition (scoreboard.getVoteTokenDuration ().divide (2), pointView);
+					scaleTrans.setFromX (1);
+					scaleTrans.setToX (0.3);
+					scaleTrans.setFromY (1);
+					scaleTrans.setToY (0.3);
 					
-					double scaleX = ((double) scoreboard.getFlagWidthTransition () - (double) scoreboard.getPointTokenWidthTransition ()) / (double) scoreboard.getPointTokenWidthTransition ();
-					double scaleY = ((double) scoreboard.getFlagHeightTransition () - (double) scoreboard.getPointTokenHeightTransition ()) / (double) scoreboard.getPointTokenHeightTransition ();
-				
-					TranslateTransition locShift = new TranslateTransition (scoreboard.getVoteTokenDuration ().divide (2));
-					locShift.setByX (shiftPVX);
-					locShift.setByY (shiftPVY);
-					locShift.setNode (pointView);
+					RotateTransition rotTrans = new RotateTransition (scoreboard.getVoteTokenDuration ().divide (2), pointView);
+					rotTrans.setByAngle (-180);
 					
-					ScaleTransition sizeShift = new ScaleTransition (scoreboard.getVoteTokenDuration ().divide (2));
-					sizeShift.setByX (scaleX);
-					sizeShift.setByY (scaleY);
-					sizeShift.setNode (pointView);
+					FadeTransition fadeTrans = new FadeTransition (scoreboard.getVoteTokenDuration ().divide (2), pointView);
+					fadeTrans.setFromValue (1);
+					fadeTrans.setToValue (0);
 					
-					transitions.add (new ParallelTransition (locShift, sizeShift));
+					transitions.add (new ParallelTransition (scaleTrans, fadeTrans));
 				}
 
 				int counter = 0;
 				for (ParallelTransition pTrans : transitions) {
-					pTrans.setDelay (Duration.seconds (1));
+					final int cSave = counter++;
+					
+					Rectangle rect = rects.get (cSave);
+					ImageView flag = flags.get (cSave);
+					VBox textBox = recTexts.get (cSave);
+					
+					rect.setY (rect.getY() - 100);
+					flag.setY (flag.getY() - 100);
+					textBox.setLayoutY (textBox.getLayoutY() - 100);
+					
+					for (Node n : Arrays.asList (rect, flag, textBox)) {
+						FadeTransition fadeTrans = new FadeTransition (scoreboard.getVoteTokenDuration ().divide (2), n);
+						fadeTrans.setFromValue (0);
+						fadeTrans.setToValue (1);
+						
+						TranslateTransition tTrans = new TranslateTransition (scoreboard.getVoteTokenDuration ().divide (2), n);
+						tTrans.setByY (100);
+						
+						ScaleTransition scTrans = new ScaleTransition (scoreboard.getVoteTokenDuration().divide(2), n);
+						scTrans.setFromX (1);
+						scTrans.setToX (0.3);
+						scTrans.setFromY (1);
+						scTrans.setToY (0.3);
+						
+						ParallelTransition piTrans = new ParallelTransition (fadeTrans, tTrans);
+						piTrans.setDelay (Duration.seconds (0.3));
+						piTrans.play ();
+					}
+					
+					to7Group.getChildren ().add (1, rects.get (cSave));
+					to7Group.getChildren ().add (flags.get (cSave));
+					to7Group.getChildren ().add (recTexts.get (cSave));
+					
+					pTrans.setDelay (scoreboard.getVoteTokenDuration ().divide (2));
 					pTrans.play ();
 					
-					final int cSave = counter++;
 					pTrans.setOnFinished (event -> {
-						to7Group.getChildren ().add (1, rects.get (cSave));
-						to7Group.getChildren ().add (flags.get (cSave));
-						to7Group.getChildren ().add (recTexts.get (cSave));
-						pointViews.get (cSave).toFront ();
-						
-						Rectangle shiny = new Rectangle (rects.get (cSave).getHeight (), rects.get (cSave).getHeight ());
-						shiny.setFill (Color.WHITE);
-						shiny.setLayoutX (rects.get (cSave).getX ());
-						shiny.setLayoutY (rects.get (cSave).getY ());
-						shiny.setEffect (new javafx.scene.effect.MotionBlur (20, 20));
-						shiny.setOpacity (0.7);
-						
-						to7Group.getChildren ().add (shiny);
-						
-						Timeline run = new Timeline();
-						
-						KeyFrame start = new KeyFrame (Duration.ZERO, new KeyValue (shiny.layoutXProperty (), shiny.getLayoutX ()));
-						KeyFrame go = new KeyFrame (Duration.seconds (0.5 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.layoutXProperty(), 
-								shiny.getLayoutX () + scoreboard.getColumnWidthTransition () - shiny.getWidth ()));
-						KeyFrame stay = new KeyFrame (Duration.seconds(0.5 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.opacityProperty (), shiny.getOpacity ()));
-						KeyFrame nowGo = new KeyFrame (Duration.seconds (0.55 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.opacityProperty (), 0));
-						
-						run.getKeyFrames ().addAll (start, go, stay, nowGo);
-						run.setDelay (Duration.seconds (0.04 * cSave));
-						run.play ();
+						for (int i = 0; i < scoreboard.getTransParts(); i++) {
+							ImageView pointView = pointViews.get (i);
+							pointView.setX (rects.get (i).getX () + scoreboard.getPtfromEdgeOffsetTrans() + 23);
+							pointView.setY (rects.get (i).getY () + 10 + 100 + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2);
+							
+							pointView.setFitHeight (scoreboard.getFlagHeightTransition ());
+							pointView.setFitWidth (scoreboard.getFlagWidthTransition ());
+							
+							ScaleTransition scaleTrans = new ScaleTransition (scoreboard.getVoteTokenDuration ().divide (2), pointView);
+							scaleTrans.setFromX (0);
+							scaleTrans.setToX (1);
+							scaleTrans.setFromY (0);
+							scaleTrans.setToY (1);
+							
+							FadeTransition fadeTrans = new FadeTransition (scoreboard.getVoteTokenDuration ().divide (4), pointView);
+							fadeTrans.setFromValue (0);
+							fadeTrans.setToValue (1);
+							
+							ParallelTransition pTransI = new ParallelTransition (scaleTrans, fadeTrans);
+							
+							if (i == scoreboard.getTransParts () - 1 && cSave == transitions.size () - 1) {
+								pTransI.setOnFinished (eventI -> {
+									for (int j = 0; j < scoreboard.getTransParts(); j++) {
+										pointViews.get (j).toFront ();
+										
+										Rectangle shiny = new Rectangle (rects.get (j).getHeight (), rects.get (j).getHeight ());
+										shiny.setFill (Color.WHITE);
+										shiny.setLayoutX (rects.get (j).getX ());
+										shiny.setLayoutY (rects.get (j).getY () + 100);
+										shiny.setEffect (new javafx.scene.effect.MotionBlur (20, 20));
+										shiny.setOpacity (0.7);
+										
+										to7Group.getChildren ().add (shiny);
+										
+										Timeline run = new Timeline();
+										
+										KeyFrame start = new KeyFrame (Duration.ZERO, new KeyValue (shiny.layoutXProperty (), shiny.getLayoutX ()));
+										KeyFrame go = new KeyFrame (Duration.seconds (0.5 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.layoutXProperty(), 
+												shiny.getLayoutX () + scoreboard.getColumnWidthTransition () - shiny.getWidth ()));
+										KeyFrame stay = new KeyFrame (Duration.seconds(0.5 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.opacityProperty (), shiny.getOpacity ()));
+										KeyFrame nowGo = new KeyFrame (Duration.seconds (0.55 * scoreboard.getVoteTokenDuration ().toSeconds () / 2d), new KeyValue (shiny.opacityProperty (), 0));
+										
+										run.getKeyFrames ().addAll (start, go, stay, nowGo);
+										run.setDelay (Duration.seconds (0.04 * j));
+										run.play ();
+									}
+								});	
+							}
+							
+							pTransI.play ();
+						}
 					});
 				}
 			});
