@@ -6,7 +6,7 @@ import java.io.File;
 public class HelpDisplayer {
 
 	public void execute() {
-		File pdfFile = new File ("resources/About.pdf");
+		File pdfFile = new File ("resources/Manual.pdf");
 		try {
 			Desktop.getDesktop ().open (pdfFile);
 		} catch (Exception e) {
