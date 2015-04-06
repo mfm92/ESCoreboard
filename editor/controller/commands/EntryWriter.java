@@ -13,9 +13,7 @@ import java.util.Map;
 import model.ParticipantData;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -105,10 +103,16 @@ public class EntryWriter {
 		
 		Cell topLeftCell = headerRow.createCell (0);
 		topLeftCell.setCellValue (CoreUI.inputData.getNameOfEdition () + " //// " + CoreUI.inputData.getEditionNr ());
+				
+		sheet.setColumnWidth (0, 7000);
+		sheet.setColumnWidth (1, 700);
 		
 		ArrayList<ParticipantData> votees = new ArrayList<>();
 		ArrayList<ParticipantData> voters = new ArrayList<>();
-		FormulaEvaluator evaluator = workBook.getCreationHelper ().createFormulaEvaluator ();
+		
+		for (int i = 2; i < voters.size () + 2; ++i) {
+			sheet.setColumnWidth (i, 1400);
+		}
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
 			switch (pData.getStatus ()) {
@@ -133,12 +137,6 @@ public class EntryWriter {
 			cell.setCellValue (pData.getShortName ());
 			
 			nameMap.put (pData.getName (), pData);
-			
-			CellStyle cS = cell.getCellStyle ();
-			cS.setRotation ((short) 45);
-			cS.setAlignment (CellStyle.ALIGN_CENTER);
-			cS.setFillBackgroundColor (HSSFColor.GREY_25_PERCENT.index);
-			cell.setCellStyle (cS);
 		}
 		
 		Cell sumHeader = headerRow.createCell (voters.size () + 3);
@@ -148,6 +146,7 @@ public class EntryWriter {
 		placeHeader.setCellValue ("PLACE");
 		
 		counter = 2;
+		FormulaEvaluator evaluator = workBook.getCreationHelper ().createFormulaEvaluator ();
 		for (ParticipantData pData : votees) {
 			Row voterRow = sheet.createRow (counter++);
 			Cell nameCell = voterRow.createCell (0);
@@ -183,14 +182,9 @@ public class EntryWriter {
 			scoreCellMap.put (pData, placeCell);
 			
 			if (counter > votees.size () + 1) {
-				
-				ArrayList<ParticipantData> pDatas = votees;
-				
-				Collections.sort (pDatas, (p1, p2) -> scoreMap.get (p2).compareTo (scoreMap.get (p1)));
-
+				Collections.sort (votees, (p1, p2) -> scoreMap.get (p2).compareTo (scoreMap.get (p1)));
 				int counterS = 1;
-				
-				for (ParticipantData pDataInner : pDatas) {
+				for (ParticipantData pDataInner : votees) {
 					scoreCellMap.get (pDataInner).setCellValue (counterS++);
 				}
 			}
@@ -216,8 +210,7 @@ public class EntryWriter {
 		else return 10 - index;
 	}
 	
-	private String getColumnDenominator (int nr) {
-		
+	private String getColumnDenominator (int nr) {		
 		int nrSave = nr;
 		if (nr <= 0) return null;
 		
