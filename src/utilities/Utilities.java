@@ -119,18 +119,18 @@ public class Utilities {
 		String resourcesFile = "resources/";
 		
 		nationTileBackground = readImagePriv (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png", 500, 200);
+				+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png", 600, 150);
 		nationTileBackgroundScored = readImagePriv (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/Scored_BG.png", 500, 200);
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Scored_BG.png", 600, 150);
 		nationTileBackgroundPQ = readImagePriv (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_BG.png", 500, 200);
+				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_BG.png", 600, 150);
 		nationTileBackgroundPQScored = readImagePriv (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_Scored_BG.png", 500, 200);
+				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_Scored_BG.png", 600, 150);
 		nationTileBackgroundVoter = readImagePriv (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/Voter_BG.png", 500, 200);
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Voter_BG.png", 600, 150);
 
 		voteQuickUnderlay = readImagePriv (resourcesFile
-				+ "Graphics/Global Backgrounds/VoteQuickUnderlay.png", 400, 400);
+				+ "Graphics/Global Backgrounds/VoteQuickUnderlay.png", 600, 400);
 		pointsTileBackground = readImagePriv (resourcesFile
 				+ "Graphics/Point Tokens/BluePtsBG.png", 200, 200);
 		pointsTileBackgroundPQ = readImagePriv (resourcesFile
@@ -160,7 +160,7 @@ public class Utilities {
 		intermediateBackground = readImagePriv (resourcesFile
 				+ "Graphics/Global Backgrounds/IntermediateBackground.png", 1280, 1050);
 		voteFlagUnderlay = readImagePriv (resourcesFile
-				+ "Graphics/SideBarTokens/VotingBGFlag.png", 400, 600);
+				+ "Graphics/SideBarTokens/VotingBGFlag.png", 280, 720);
 		voteNameUnderlay = readImagePriv (resourcesFile
 				+ "Graphics/SideBarTokens/VotingBGName.png", 400, 400);
 		voteCounterUL = readImagePriv (resourcesFile

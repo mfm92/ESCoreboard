@@ -51,7 +51,7 @@ public class ESCBannerCreator extends BannerCreator {
 
 		Text nationText = new Text(p.getName ());
 		nationText.setFill (Color.WHITE);
-		nationText.setFont (Font.font ("Roboto Lt", FontWeight.BOLD, 119));
+		nationText.setFont (Font.font ("Roboto Lt", FontWeight.BOLD, nationText.getText ().length () > 17 ? 78 : 119));
 		
 		VBox nationBox = new VBox ();
 		nationBox.setPrefWidth (0.6 * background.getWidth ());
