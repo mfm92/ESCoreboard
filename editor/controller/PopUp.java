@@ -41,7 +41,7 @@ public class PopUp {
 
 		Text text = new Text (message);
 		text.setFill (Color.WHITE);
-		text.setFont (Font.font ("Roboto Lt", FontWeight.BOLD, message.length () > 50 ? 18 : 24));
+		text.setFont (Font.font ("Roboto Lt", FontWeight.BOLD, message.length () > 25 ? 18 : 24));
 		textBox.getChildren ().add (text);
 
 		popUpRoot.getChildren ().addAll (background, textBox);

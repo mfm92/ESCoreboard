@@ -226,9 +226,13 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					
 					pTrans.setOnFinished (event -> {
 						for (int i = 0; i < scoreboard.getTransParts(); i++) {
+							
+							double scaleWidth = scoreboard.getScreenWidth () / 1920d;
+							double scaleHeight = scoreboard.getScoreboardHeight () / 1080d;
+							
 							ImageView pointView = pointViews.get (i);
-							pointView.setX (rects.get (i).getX () + scoreboard.getPtfromEdgeOffsetTrans() + 23);
-							pointView.setY (rects.get (i).getY () + 10 + 100 + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2);
+							pointView.setX (rects.get (i).getX () + scoreboard.getPtfromEdgeOffsetTrans() + 23 * scaleWidth);
+							pointView.setY (rects.get (i).getY () + 15 * scaleHeight + 100 + (transSDen - scoreboard.getPointTokenHeightTransition()) / 2);
 							
 							pointView.setFitHeight (scoreboard.getFlagHeightTransition ());
 							pointView.setFitWidth (scoreboard.getFlagWidthTransition ());

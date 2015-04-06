@@ -118,57 +118,57 @@ public class Utilities {
 	private void readUtilImages() throws IOException, InterruptedException {
 		String resourcesFile = "resources/";
 		
-		nationTileBackground = readImage (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png");
-		nationTileBackgroundScored = readImage (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/Scored_BG.png");
-		nationTileBackgroundPQ = readImage (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_BG.png");
-		nationTileBackgroundPQScored = readImage (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_Scored_BG.png");
-		nationTileBackgroundVoter = readImage (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/Voter_BG.png");
+		nationTileBackground = readImagePriv (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/BG.png", 500, 200);
+		nationTileBackgroundScored = readImagePriv (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Scored_BG.png", 500, 200);
+		nationTileBackgroundPQ = readImagePriv (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_BG.png", 500, 200);
+		nationTileBackgroundPQScored = readImagePriv (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/PQ_Scored_BG.png", 500, 200);
+		nationTileBackgroundVoter = readImagePriv (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Voter_BG.png", 500, 200);
 
-		voteQuickUnderlay = readImage (resourcesFile
-				+ "Graphics/Global Backgrounds/VoteQuickUnderlay.png");
-		pointsTileBackground = readImage (resourcesFile
-				+ "Graphics/Point Tokens/BluePtsBG.png");
-		pointsTileBackgroundPQ = readImage (resourcesFile
-				+ "Graphics/Point Tokens/RedPtsBG.png");
-		scoredPtsBG = readImage (resourcesFile
-				+ "Graphics/Point Tokens/ScoredBGPts.png");
+		voteQuickUnderlay = readImagePriv (resourcesFile
+				+ "Graphics/Global Backgrounds/VoteQuickUnderlay.png", 400, 400);
+		pointsTileBackground = readImagePriv (resourcesFile
+				+ "Graphics/Point Tokens/BluePtsBG.png", 200, 200);
+		pointsTileBackgroundPQ = readImagePriv (resourcesFile
+				+ "Graphics/Point Tokens/RedPtsBG.png", 200, 200);
+		scoredPtsBG = readImagePriv (resourcesFile
+				+ "Graphics/Point Tokens/ScoredBGPts.png", 200, 200);
 
-		voteBGPTs = readImage (resourcesFile
-				+ "Graphics/Point Tokens/VoteBGPts.png");
-		backgroundWhite = readImage (resourcesFile
-				+ "Graphics/Global Backgrounds/Scoreboard BG BW.png");
-		backgroundBlue = readImage (resourcesFile
-				+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png");
-		backgroundRed = readImage (resourcesFile
-				+ "Graphics/Global Backgrounds/Scoreboard BG Red.png");
-		pprais = readImage (resourcesFile
-				+ "Graphics/Point Tokens/12PPrais.png");
-		ppraisbg = readImage (resourcesFile
-				+ "Graphics/Scoreboard Single Nation Backgrounds/Praise_BG.png");
+		voteBGPTs = readImagePriv (resourcesFile
+				+ "Graphics/Point Tokens/VoteBGPts.png", 200, 200);
+		backgroundWhite = readImagePriv (resourcesFile
+				+ "Graphics/Global Backgrounds/Scoreboard BG BW.png", 1920, 1080);
+		backgroundBlue = readImagePriv (resourcesFile
+				+ "Graphics/Global Backgrounds/Scoreboard BG Blue.png", 1920, 1080);
+		backgroundRed = readImagePriv (resourcesFile
+				+ "Graphics/Global Backgrounds/Scoreboard BG Red.png", 1920, 1080);
+		pprais = readImagePriv (resourcesFile
+				+ "Graphics/Point Tokens/12PPrais.png", 300, 300);
+		ppraisbg = readImagePriv (resourcesFile
+				+ "Graphics/Scoreboard Single Nation Backgrounds/Praise_BG.png", 300, 300);
 
-		voterPointToken = readImage (resourcesFile
-				+ "Graphics/Point Tokens/Calling.png");
+		voterPointToken = readImagePriv (resourcesFile
+				+ "Graphics/Point Tokens/Calling.png", 150, 150);
 
-		voteUnderlay = readImage (resourcesFile
-				+ "Graphics/SideBarTokens/VotingBGVoter.png");
+		voteUnderlay = readImagePriv (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGVoter.png", 500, 500);
 
-		intermediateBackground = readImage (resourcesFile
-				+ "Graphics/Global Backgrounds/IntermediateBackground.png");
-		voteFlagUnderlay = readImage (resourcesFile
-				+ "Graphics/SideBarTokens/VotingBGFlag.png");
-		voteNameUnderlay = readImage (resourcesFile
-				+ "Graphics/SideBarTokens/VotingBGName.png");
-		voteCounterUL = readImage (resourcesFile
-				+ "Graphics/SideBarTokens/VotingBGCounter.png");
-		voteCounterULSmall = readImage (resourcesFile
-				+ "Graphics/SideBarTokens/VotingBGCounterSmall.png");
-		ptHolder = readImage (resourcesFile
-				+ "Graphics/SideBarTokens/PTHolder.png");
+		intermediateBackground = readImagePriv (resourcesFile
+				+ "Graphics/Global Backgrounds/IntermediateBackground.png", 1280, 1050);
+		voteFlagUnderlay = readImagePriv (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGFlag.png", 400, 600);
+		voteNameUnderlay = readImagePriv (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGName.png", 400, 400);
+		voteCounterUL = readImagePriv (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGCounter.png", 820, 120);
+		voteCounterULSmall = readImagePriv (resourcesFile
+				+ "Graphics/SideBarTokens/VotingBGCounterSmall.png", 120, 120);
+		ptHolder = readImagePriv (resourcesFile
+				+ "Graphics/SideBarTokens/PTHolder.png", 400, 400);
 	}
 	
 	private void readDummies () throws IOException {
@@ -180,9 +180,12 @@ public class Utilities {
 		dummyPrettyFlag = dummyFlag;
 	}
 
+	private Image readImagePriv(String fileName, int width, int height) throws IOException {
+		return Files.exists (Paths.get (fileName)) ? new Image (new File(fileName).toURI ().toString (), width, height, false, false) : null;
+	}
+	
 	public static Image readImage(String fileName) throws IOException {
-		return Files.exists (Paths.get (fileName)) ? 
-				SwingFXUtils.toFXImage (ImageIO.read (new File (fileName)), null) : null;
+		return new Image (new File (fileName).toURI ().toString ());
 	}
 
 	private void readPtsTokens() throws IOException {

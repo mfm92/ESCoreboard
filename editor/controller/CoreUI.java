@@ -623,8 +623,9 @@ public class CoreUI extends Application implements Initializable {
 				Scoreboard sc = new Scoreboard();
 				sc.start (new Stage());
 			} catch (Exception e) { 
-				visualExceptionMsg ("Yikes! Try again :)");
-				e.printStackTrace ();
+				visualExceptionMsg ("Yikes! That shouldn't have happened..." + System.lineSeparator () + "Sorry. :( Try again.");
+			} catch (OutOfMemoryError oomerr) {
+				visualExceptionMsg ("That was too fast for me. :(" + System.lineSeparator () + "Try again in a second!");
 			}
 		});
 	}

@@ -17,7 +17,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -237,6 +236,12 @@ public class Scoreboard {
 	}
 	
 	private void setUpListeners() {		
+		
+		stage.setOnCloseRequest (event -> {
+			inCountryCounter = standings.getVotes ().size () * 10;
+			System.gc(); // knock knock.... ugh. why do I even bother...
+		});
+		
 		stage.addEventFilter (KeyEvent.KEY_RELEASED, event -> {
 			if (event.getCode () == KeyCode.PLUS && event.isControlDown () && !event.isAltDown () &&
 					voteTokenDuration.toSeconds () > minDuration.toSeconds ()) {
