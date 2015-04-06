@@ -6,6 +6,7 @@ build/
 #no docs?
 doc/
 libs/
+screenshots/
 fonts_used/
 *.txt
 *.tex
