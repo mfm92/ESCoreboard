@@ -485,8 +485,9 @@ public class CoreUI extends Application implements Initializable {
 			dirChooser.setTitle ("Folder that contains the flags...");
 			
 			File selected = dirChooser.showDialog (null);
+			if (selected == null) return;
 			
-			inputData.setFlagDirectory (selected == null ? null : selected.getAbsolutePath ().replace ("\\", "/"));
+			inputData.setFlagDirectory (selected.getAbsolutePath ().replace ("\\", "/"));
 		});
 		
 		flagDirButton.setOnMouseEntered (event -> {
@@ -512,8 +513,9 @@ public class CoreUI extends Application implements Initializable {
 			dirChooser.setTitle ("Folder that contains the entries...");
 			
 			File selectedFile = dirChooser.showDialog (null);
+			if (selectedFile == null) return;
 			
-			inputData.setEntriesDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ().replace ("\\", "/"));
+			inputData.setEntriesDirectory (selectedFile.getAbsolutePath ().replace ("\\", "/"));
 		});
 		
 		entryDirButton.setOnMouseEntered (event -> {
@@ -539,8 +541,9 @@ public class CoreUI extends Application implements Initializable {
 			dirChooser.setTitle ("Folder that contains the pretty flags...");
 			
 			File selectedFile = dirChooser.showDialog (null);
+			if (selectedFile == null) return;
 			
-			inputData.setPrettyFlagDirectory (selectedFile == null ? null : selectedFile.getAbsolutePath ().replace ("\\", "/"));
+			inputData.setPrettyFlagDirectory (selectedFile.getAbsolutePath ().replace ("\\", "/"));
 		});
 		
 		prettyFlagDirButton.setOnMouseEntered (event -> {

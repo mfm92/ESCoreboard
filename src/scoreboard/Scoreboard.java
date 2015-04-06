@@ -238,7 +238,7 @@ public class Scoreboard {
 	private void setUpListeners() {		
 		
 		stage.setOnCloseRequest (event -> {
-			inCountryCounter = standings.getVotes ().size () * 10;
+			inCountryCounter = standings.getStandings ().size () * 10;
 			System.gc(); // knock knock.... ugh. why do I even bother...
 		});
 		

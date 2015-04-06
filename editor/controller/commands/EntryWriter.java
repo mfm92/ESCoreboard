@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import model.ParticipantData;
@@ -14,6 +16,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -96,29 +99,140 @@ public class EntryWriter {
 		
 		Row headerRow = sheet.createRow (0);
 		
+		HashMap<String, ParticipantData> nameMap = new HashMap<>();
+		HashMap<ParticipantData, Integer> scoreMap = new HashMap<>();
+		HashMap<ParticipantData, Cell> scoreCellMap = new HashMap<>();
+		
 		Cell topLeftCell = headerRow.createCell (0);
 		topLeftCell.setCellValue (CoreUI.inputData.getNameOfEdition () + " //// " + CoreUI.inputData.getEditionNr ());
 		
+		ArrayList<ParticipantData> votees = new ArrayList<>();
+		ArrayList<ParticipantData> voters = new ArrayList<>();
+		FormulaEvaluator evaluator = workBook.getCreationHelper ().createFormulaEvaluator ();
+		
+		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
+			switch (pData.getStatus ()) {
+				case "P":
+					votees.add (pData); voters.add (pData); break;
+				case "V":
+					voters.add (pData); break;
+				case "O":
+					votees.add (pData); break;
+			}
+			
+			nameMap.put (pData.getShortName (), pData);
+		}
+
+		for (int i = 1; i < 26*26; i++) {
+			getColumnDenominator (i);
+		}
+		
 		int counter = 2;
-		for (ParticipantData pData : CoreUI.inputData.getParticipants()) {
+		for (ParticipantData pData : voters) {
 			Cell cell = headerRow.createCell (counter++);
-			cell.setCellValue (pData.getName ());
+			cell.setCellValue (pData.getShortName ());
+			
+			nameMap.put (pData.getName (), pData);
 			
 			CellStyle cS = cell.getCellStyle ();
 			cS.setRotation ((short) 45);
 			cS.setAlignment (CellStyle.ALIGN_CENTER);
 			cS.setFillBackgroundColor (HSSFColor.GREY_25_PERCENT.index);
+			cell.setCellStyle (cS);
 		}
 		
-		File os = new File ("spreadsheet/");	
-		os.mkdirs ();
-		os = new File ("spreadsheet/spreadsheet" + 
-				FilenameUtils.removeExtension (saveFile.getName ()) + ".xlsx");	
-		os.createNewFile ();
+		Cell sumHeader = headerRow.createCell (voters.size () + 3);
+		sumHeader.setCellValue ("TOTAL PTS");
 		
-		FileOutputStream fos = new FileOutputStream (os);
+		Cell placeHeader = headerRow.createCell (voters.size () + 4);
+		placeHeader.setCellValue ("PLACE");
+		
+		counter = 2;
+		for (ParticipantData pData : votees) {
+			Row voterRow = sheet.createRow (counter++);
+			Cell nameCell = voterRow.createCell (0);
+			nameCell.setCellValue (pData.getName ());
+			
+			for (int j = 2; j < 2 + voters.size (); ++j) {
+				ParticipantData voter = nameMap.get (headerRow.getCell (j).getStringCellValue ());
+				Cell cell = voterRow.createCell (j);
+				
+				if (voter == pData) {
+					cell.setCellValue ("X");
+					continue;
+				}
+				
+				if (CoreUI.inputData.getVotes ().get (voter) == null) {
+					continue;
+				}
+				
+				int counterV = 0;
+				for (ParticipantData vData : CoreUI.inputData.getVotes ().get (voter)) {
+					if (vData == pData) {
+						cell.setCellValue (indicesToPoints (counterV));
+					}
+					counterV++;
+				}
+			}
+			
+			String rowString = getColumnDenominator (voters.size () + 2);
+			Cell sumCell = voterRow.createCell ((int) voters.size() + 3);
+			Cell placeCell = voterRow.createCell ((int) voters.size () + 4);
+			sumCell.setCellFormula ("SUM(C" + counter + ":" + rowString + counter + ")");
+			scoreMap.put (pData, (int) evaluator.evaluate (sumCell).getNumberValue ());
+			scoreCellMap.put (pData, placeCell);
+			
+			if (counter > votees.size () + 1) {
+				
+				ArrayList<ParticipantData> pDatas = votees;
+				
+				Collections.sort (pDatas, (p1, p2) -> scoreMap.get (p2).compareTo (scoreMap.get (p1)));
+
+				int counterS = 1;
+				
+				for (ParticipantData pDataInner : pDatas) {
+					scoreCellMap.get (pDataInner).setCellValue (counterS++);
+				}
+			}
+		}
+		
+		File os = new File ("spreadsheet/");
+		os.mkdirs ();
+		File osText = new File ("spreadsheet/spreadsheet_" + 
+				FilenameUtils.removeExtension (saveFile.getName ()) + ".xlsx");	
+		osText.createNewFile ();
+		
+		FileOutputStream fos = new FileOutputStream (osText);
 		workBook.write (fos);
 		fos.close ();
 		workBook.close ();
+		
+	}
+	
+	private int indicesToPoints(int index) {
+		if (index == 0) return 12;
+		if (index == 1) return 10;
+
+		else return 10 - index;
+	}
+	
+	private String getColumnDenominator (int nr) {
+		
+		int nrSave = nr;
+		if (nr <= 0) return null;
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i = 0; i < 5; i++) {
+			if (nrSave <= 0) break;
+			sb.append ((char)('@' + (nrSave % 26 == 0 ? 26 : nrSave % 26)));
+			
+			boolean div = nrSave % 26 == 0;
+			nrSave /= 26;
+			if (div) nrSave --;
+		}
+		
+		sb.reverse ();
+		return sb.toString ();
 	}
 }
