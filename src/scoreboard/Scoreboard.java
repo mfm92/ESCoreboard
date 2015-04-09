@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -191,6 +192,8 @@ public class Scoreboard {
 	private Rectangle background;
 	private Standings standings;
 	int inCountryCounter;
+	boolean paused;
+	PauseTransition pTrans;
 	// --------------- //
 	
 	public void start(Stage primaryStage) throws InterruptedException, IOException {		
@@ -232,6 +235,7 @@ public class Scoreboard {
 	}
 	
 	private void runCycle() {
+		if (inCountryCounter > 10 * standings.getVotes ().size ()) return;
 		Platform.runLater (() -> to7ScreenMaker.showSplitScreen (this, standings, traditionalVoting));
 	}
 	
@@ -255,8 +259,13 @@ public class Scoreboard {
 				specialBorder = Math.min (participants.size (), specialBorder + 1);
 			} else if (event.getCode () == KeyCode.D && event.isControlDown () && event.isAltDown ()) {
 				specialBorder = Math.max (0, specialBorder - 1);
+			} else if (event.getCode () == KeyCode.P) {
+				paused = true;
+			} else if (event.getCode () == KeyCode.C) {
+				paused = false;
+				pTrans.jumpTo (Duration.seconds (299.5));
 			}
-		});
+		}); 
 	}
 
 	private void drawScoreboard (Stage primaryStage) throws IOException, InterruptedException {
@@ -295,6 +304,23 @@ public class Scoreboard {
 	}
 
 	void update(final ArrayList<Participant> standings,
+			final Participant voter, final ArrayList<Participant> oldStandings,
+			Standings overview) {
+		
+		pause (standings, voter, oldStandings, overview);
+	}
+	
+	void pause (final ArrayList<Participant> standings,
+			final Participant voter, final ArrayList<Participant> oldStandings,
+			Standings overview) {
+		if (paused) {
+			pTrans = new PauseTransition(Duration.seconds(300));			
+			pTrans.setOnFinished (event -> updateActual (standings, voter, oldStandings, overview));
+			pTrans.play ();
+		} else updateActual (standings, voter, oldStandings, overview);
+	}
+	
+	void updateActual (final ArrayList<Participant> standings,
 			final Participant voter, final ArrayList<Participant> oldStandings,
 			Standings overview) {
 		

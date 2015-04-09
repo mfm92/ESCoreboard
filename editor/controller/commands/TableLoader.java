@@ -59,6 +59,9 @@ public class TableLoader {
 		while ((line = reader.readLine ()) != null) {
 			String[] tokens = line.split ("\\$");
 			
+			int counter = 0;
+			for (String token : tokens) System.out.println (counter++ + ": " + token);
+			
 			ParticipantData participant = new ParticipantData (tokens[0], tokens[1],
 					tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8]);
 			CoreUI.inputData.addParticipant (participant);

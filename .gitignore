@@ -10,6 +10,10 @@ screenshots/
 fonts_used/
 *.txt
 *.tex
+*.aux
+*.log
+*.out
+*.gz
 
 #no spoilers
 resources/save/
