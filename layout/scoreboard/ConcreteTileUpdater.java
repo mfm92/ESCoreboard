@@ -1,5 +1,7 @@
 package scoreboard;
 
+import java.util.Map;
+
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -21,6 +23,10 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 		final int sizeDenom = (int) Math.ceil ((double) nrOfPart
 				/ (double) scoreboard.getColumnsNr());
 		Group newSuperNations = new Group ();
+		
+		for (Map.Entry<Participant, Group> pair : scoreboard.getGroupNationMap ().entrySet ()) {
+			pair.getValue ().getChildren ().clear ();
+		}
 
 		for (int position = 0; position < nrOfPart; position++) {
 
@@ -53,10 +59,10 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 			nationName.setLayoutY (0.65 * pointsBase.getHeight ());
 			nationName.setId ("nationName");
 			nationName.setTextAlignment (TextAlignment.CENTER);
-			nationName.setFont (Font.font (scoreboard.getDataCarrier().font_1, FontWeight.MEDIUM, nationName.getText ().length () > 21 ? 24 * (scoreboard.getScreenWidth () / 1920d) 
-					: 28 * (scoreboard.getScreenWidth () / 1920d)));
+			nationName.setFont (Font.font (scoreboard.getDataCarrier().font_1, FontWeight.MEDIUM, nationName.getText ().length () > 21 ? 26 * (scoreboard.getScreenWidth () / 1920d) 
+					: 29 * (scoreboard.getScreenWidth () / 1920d)));
 			nationName.setFill (position < scoreboard.getSpecialBorder() ? Color.WHITE
-					: Color.BLACK);
+					: Color.WHITE);
 
 			Text scoreTest = new Text();
 			scoreTest.setText (new Integer (scoreboard.getParticipants().get (position)
@@ -107,7 +113,7 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 					base.setFill (new ImagePattern (
 							scoreboard.getDataCarrier().nationTileBackgroundVoter));
 					pointsBase.setFill (new ImagePattern (scoreboard.getDataCarrier ().voteBGPTs));
-					nationName.setFill (Color.YELLOW);
+					nationName.setFill (Color.WHITE);
 					scoreTest.setFill (Color.WHITE);
 				}
 			}
@@ -123,14 +129,16 @@ public class ConcreteTileUpdater extends AbstractTileUpdater {
 				ptsView.setFitHeight (nationIcon.getFitHeight ());
 				ptsView.setFitWidth (nationIcon.getFitWidth ());
 				
-				if (position >= scoreboard.getSpecialBorder ()) nationName.setFill (Color.BLACK);
+				if (position >= scoreboard.getSpecialBorder ()) nationName.setFill (Color.WHITE);
 
 				if (scoreboard.getParticipants().get (position).getScoredFlag ()
 						&& !(nationName.getText ().endsWith (" has SCORED!") && !(nationName
 								.getText ().endsWith (" PQ!")))) {
 					
 					base.setFill (new ImagePattern (scoreboard.getDataCarrier().nationTileBackgroundScored));
+					
 					if (position < scoreboard.getSpecialBorder()) {
+						pointsBase.setFill (new ImagePattern (scoreboard.getDataCarrier ().scoredPtsBGPQ));
 						base.setFill (new ImagePattern (scoreboard.getDataCarrier().nationTileBackgroundPQScored));
 					} else {
 						pointsBase.setFill (new ImagePattern (scoreboard.getDataCarrier ().scoredPtsBG));

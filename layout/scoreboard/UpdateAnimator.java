@@ -49,7 +49,7 @@ public abstract class UpdateAnimator {
 		nationGroup.getChildren ().add (3, scoreVBox);
 	}
 	
-	void votesClear(Participant voter, Scoreboard scoreboard) {
+	void votesClear(Participant voter, Participant next, Scoreboard scoreboard) {
 		scoreboard.setCurrentVoter (voter);
 		for (Participant finalist : scoreboard.getParticipants()) {
 			finalist.setTmpScore (0);
@@ -61,7 +61,7 @@ public abstract class UpdateAnimator {
 		}
 		
 		(scoreboard.getColumnsNr () > 2 ? scoreboard.getBottomSideBar() : scoreboard.getRightSideBar ()).
-			makeSideOfScoreboard (scoreboard.getRoot (), voter, scoreboard);
+			makeSideOfScoreboard (scoreboard.getRoot (), voter, next, scoreboard);
 	}
 
 	static double getXCoordByPos(int position, Scoreboard scoreboard) {

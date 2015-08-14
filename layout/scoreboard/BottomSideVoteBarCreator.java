@@ -21,7 +21,7 @@ public class BottomSideVoteBarCreator extends VoteSideBarCreator {
 	int nrOfCalled = 0;
 
 	@Override
-	public void makeSideOfScoreboard(Group group, Participant voter,
+	public void makeSideOfScoreboard(Group group, Participant voter, Participant next,
 			Scoreboard scoreboard) {
 
 		nrOfCalled++;

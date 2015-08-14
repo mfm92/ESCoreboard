@@ -67,6 +67,7 @@ public class Utilities {
 	public Image ptHolder;
 	public Image voteQuickUnderlay;
 	public Image scoredPtsBG;
+	public Image scoredPtsBGPQ;
 	
 	public String font_1;
 	public String font_2;
@@ -137,6 +138,8 @@ public class Utilities {
 				+ "Graphics/Point Tokens/RedPtsBG.png", 200, 200);
 		scoredPtsBG = readImagePriv (resourcesFile
 				+ "Graphics/Point Tokens/ScoredBGPts.png", 200, 200);
+		scoredPtsBGPQ = readImagePriv (resourcesFile
+				+ "Graphics/Point Tokens/ScoredBGPtsPQ.png", 200, 200);
 
 		voteBGPTs = readImagePriv (resourcesFile
 				+ "Graphics/Point Tokens/VoteBGPts.png", 200, 200);
@@ -160,7 +163,7 @@ public class Utilities {
 		intermediateBackground = readImagePriv (resourcesFile
 				+ "Graphics/Global Backgrounds/IntermediateBackground.png", 1280, 1050);
 		voteFlagUnderlay = readImagePriv (resourcesFile
-				+ "Graphics/SideBarTokens/VotingBGFlag.png", 280, 720);
+				+ "Graphics/SideBarTokens/VotingBGFlag.png", 441, 611);
 		voteNameUnderlay = readImagePriv (resourcesFile
 				+ "Graphics/SideBarTokens/VotingBGName.png", 400, 400);
 		voteCounterUL = readImagePriv (resourcesFile
@@ -224,9 +227,16 @@ public class Utilities {
 		ExecutorService exeService = Executors.newFixedThreadPool (Runtime.getRuntime ().availableProcessors ());
 		
 		for (ParticipantData pData : CoreUI.inputData.getParticipants ()) {
+			
 			exeService.execute (() -> {
 				try {
+					
 					Image flag = readImage (flagFile + pData.getName () + ".png");
+					
+					if (!Files.exists (Paths.get (flagFile + pData.getName () + ".png"))) {
+						flag = readImage (flagFile + pData.getName () + ".jpg");
+					}
+					
 					Participant newNation = new Participant (pData.getName (), pData.getShortName (),
 						flag == null ? dummyFlag : flag);
 					

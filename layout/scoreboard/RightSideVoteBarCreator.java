@@ -22,7 +22,7 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 	int nrOfCalled = 0;
 
 	@Override
-	public void makeSideOfScoreboard(Group group, Participant voter,
+	public void makeSideOfScoreboard(Group group, Participant voter, Participant next,
 			Scoreboard scoreboard) {
 
 		nrOfCalled++;
@@ -82,9 +82,10 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.create ()
 				.text (voter.getName ())
 				.fill (Color.WHITE)
-				.font (Font.font ("RobotoLt", FontWeight.SEMI_BOLD, voter
-						.getName ().length () < 14 ? 74 * (scoreboard.getScreenWidth () / 1920d) 
-								: 52 * (scoreboard.getScreenWidth () / 1920d))).build ();
+				.font (Font.font 
+						("Coolvetica RG", FontWeight.SEMI_BOLD, 
+								getFontSizeCurrentVoter (voter.getName ())))
+								.build ();
 
 		VBox currentVoterVBox = VBoxBuilder.create ()
 				.layoutX (voteFlagUnderlay.getX ())
@@ -100,10 +101,12 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 				.fill (new ImagePattern (scoreboard.getDataCarrier().voteCounterUL))
 				.build ();
 
+		String nextie = next == null ? "" : " (next: " + next.getShortName ()  + ")";
+		
 		Text counter = TextBuilder
 				.create ()
-				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " out of "
-						+ scoreboard.getDataCarrier().voteMap.size ())
+				.text ((int) (Math.ceil ((nrOfCalled + 1) / 2)) + " / "
+						+ scoreboard.getDataCarrier().voteMap.size () + nextie)
 				.fill (Color.WHITE)
 				.font (Font.font (scoreboard.getDataCarrier().font_1, FontWeight.LIGHT, 32 * (scoreboard.getScreenWidth () / 1920d)))
 				.build ();
@@ -121,5 +124,12 @@ public class RightSideVoteBarCreator extends VoteSideBarCreator {
 
 		group.getChildren ().add (sidebar);
 
+	}
+	
+	private int getFontSizeCurrentVoter (String name) {
+		if (name.length () < 13)
+			return 74;
+		
+		else return 650 / name.length();
 	}
 }

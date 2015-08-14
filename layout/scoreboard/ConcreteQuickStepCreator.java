@@ -47,7 +47,9 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		}
 
 		final Participant currentVoterCopy = standings.getVotes ().get (scoreboard.inCountryCounter / 10).getVoter ();
-
+		final Participant next = ((scoreboard.inCountryCounter + 10) / 10) >= standings.getVotes ().size () ? null :
+			standings.getVotes ().get ((scoreboard.inCountryCounter + 10) / 10).getVoter ();
+		
 		Rectangle iR = new Rectangle();
 		iR.setWidth (scoreboard.getScreenWidth ());
 		iR.setHeight (scoreboard.getScreenHeight ());
@@ -78,22 +80,22 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		iR.setFill (new ImagePattern (scoreboard.getDataCarrier().backgroundBlue));
 		to7Group.getChildren ().add(new Group (iR, backgroundIntermediate, voteBoxRectangle, ptRect));
 		
-		scoreboard.getRightSideBar().makeSideOfScoreboard (to7Group, currentVoterCopy, scoreboard);
+		scoreboard.getRightSideBar().makeSideOfScoreboard (to7Group, currentVoterCopy, next, scoreboard);
 		
 		if (!traditionalVoting) {
 			ArrayList<Rectangle> rects = new ArrayList<> ();
 			ArrayList<ImageView> flags = new ArrayList<> ();
 			ArrayList<VBox> recTexts = new ArrayList<> ();
 
-			int shortage = (int)(Math.min (5.5d, 20 * (scoreboard.getVoteTokenDuration ().toSeconds () / 4d)));
+//			int shortage = (int)(Math.min (5.5d, 20 * (scoreboard.getVoteTokenDuration ().toSeconds () / 4d)));
 			
 			Entry recEntry = currentVoterCopy.getEntry ();
 			Media entry = recEntry.getMedia ();
 			MediaPlayer entryPlayer = new MediaPlayer (entry);
 			entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - shortage));
+			entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () + 5));
 			entryPlayer.setAutoPlay (true);
-			entryPlayer.setVolume (0);
+			entryPlayer.setVolume (0.3);
 			entryPlayer.setCycleCount (1);
 
 			MediaView entryView = new MediaView ();
@@ -147,7 +149,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 					Text recText = new Text();
 					recText.setText (currentVoterCopy.getVotes ().getReceivers ()[i].getName ());
 					recText.setFont (Font.font (scoreboard.getDataCarrier().font_1, FontWeight.MEDIUM, 24 * (scoreboard.getScreenWidth () / 1920d)));
-					recText.setFill (Color.web ("#1C1C1C"));
+					recText.setFill (Color.WHITE);
 					
 					rectVBox.getChildren().add (recText);
 					recTexts.add (rectVBox);
@@ -285,6 +287,11 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 			});
 			
 			entryPlayer.setOnEndOfMedia (() -> {
+				if (!scoreboard.isTraditionalVoting ())
+					scoreboard.getBackgroundMusic ().play ();
+				
+				clearNotSo (scoreboard.getRoot());
+				entryPlayer.dispose ();
 				scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
 				Platform.runLater (new VoteAdder (standings, scoreboard,
 						scoreboard.getDataCarrier(), scoreboard.inCountryCounter, traditionalVoting));
@@ -311,5 +318,21 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 		root.getChildren ().remove (root.lookup ("#backgroundI"));
 		root.getChildren ().remove (root.lookup ("#voteBox"));
 		root.getChildren ().remove (root.lookup ("#ptHolder"));
+	}
+	
+	private void clearNotSo (Group root) {
+		root.getChildren ().remove (root.lookup ("#12Strip"));
+		root.getChildren ().remove (root.lookup ("#12Content"));
+		root.getChildren ().remove (root.lookup ("#12Text"));
+		root.getChildren ().remove (root.lookup ("#12Flags"));
+		root.getChildren ().remove (root.lookup ("#12D"));
+		root.getChildren ().remove (root.lookup ("#media"));
+		root.getChildren ().remove (root.lookup ("#redBack"));
+		root.getChildren ().remove (root.lookup ("#Top6Rect"));
+		root.getChildren ().remove (root.lookup ("#Top6Text"));
+		root.getChildren ().remove (root.lookup ("#superText"));
+		root.getChildren ().remove (root.lookup ("#backgroundDummy"));
+		root.getChildren ().remove (root.lookup ("#backgroundI"));
+		root.getChildren ().remove (root.lookup ("#voteBox"));
 	}
 }

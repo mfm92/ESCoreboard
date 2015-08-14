@@ -147,6 +147,7 @@ public class EntryWriter {
 		
 		counter = 2;
 		FormulaEvaluator evaluator = workBook.getCreationHelper ().createFormulaEvaluator ();
+		
 		for (ParticipantData pData : votees) {
 			Row voterRow = sheet.createRow (counter++);
 			Cell nameCell = voterRow.createCell (0);

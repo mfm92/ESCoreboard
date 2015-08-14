@@ -38,7 +38,10 @@ public class QuickUpdater extends UpdateAnimator {
 		}
 
 		// CLEAR AFTER FULL VOTE
-		votesClear (voter, scoreboard);
+		Participant nextVoter = ((scoreboard.inCountryCounter + 10) / 10) >= overview.getVotes ().size () ? null :
+			overview.getVotes ().get ((scoreboard.inCountryCounter + 10) / 10).getVoter ();
+		
+		votesClear (voter, nextVoter, scoreboard);
 		scoreboard.getTileUpdater().updateBackgroundOnly (scoreboard);
 		final Votes votes = scoreboard.getDataCarrier().voteMap.get (voter);
 		ArrayList<Timeline> timelines = new ArrayList<> ();

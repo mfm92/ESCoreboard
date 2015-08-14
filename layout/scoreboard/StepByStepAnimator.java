@@ -31,9 +31,14 @@ public class StepByStepAnimator extends UpdateAnimator {
 			final ArrayList<Participant> oldStandings,
 			final ArrayList<Participant> standings, final boolean tradVP) {
 		
+		int off = scoreboard.isTraditionalVoting () ? 10 : 0;
+		
+		final Participant next = ((scoreboard.inCountryCounter + off) / 10) >= overview.getVotes ().size () ? null :
+			overview.getVotes ().get ((scoreboard.inCountryCounter + off) / 10).getVoter ();
+		
 		if (scoreboard.inCountryCounter % 10 == 1) {
 			scoreboard.getRoot().getChildren ().remove (scoreboard.getRoot().lookup ("#media"));
-			votesClear (voter, scoreboard);
+			votesClear (voter, next, scoreboard);
 			scoreboard.getTileUpdater().updateBackgroundOnly (scoreboard);
 		}
 		
@@ -130,6 +135,7 @@ public class StepByStepAnimator extends UpdateAnimator {
 			r.setOpacity (0.7);
 			r.setEffect (new MotionBlur (20, 20));
 			r.setLayoutX (0);
+			r.setId("rectWhite");
 			target.getChildren ().add (1, r);
 			
 			Timeline moveR = new Timeline();
@@ -185,6 +191,8 @@ public class StepByStepAnimator extends UpdateAnimator {
 					moveR.setOnFinished (eventTTFinished -> {
 						Collections.sort (scoreboard.getParticipants());								
 						scoreboard.getTileUpdater().updateTiles (scoreboard, receiver);
+						
+						target.getChildren ().remove ("#rectWhite");
 
 						// GET RID OF THAT
 						scoreboard.getGroupNationMap()
@@ -200,15 +208,30 @@ public class StepByStepAnimator extends UpdateAnimator {
 
 						pause.play ();
 						pause.setOnFinished (eventPause -> {
-							// SHOW 12 POINTER MEZZO
+							// SHOW 12 POINTER MEZZO AFTER ANOTHER PAUSE ^_^	
 							if (scoreboard.inCountryCounter % 10 == 1
 									&& scoreboard.inCountryCounter != 1) {
-								Platform.runLater (scoreboard.showAndPraise12Pointer (receiver, 
-										voter, overview, save, scoreboard));
+								
+								Timeline lookAtIt = new Timeline();
+								lookAtIt.getKeyFrames ().add(new KeyFrame
+										(Duration.seconds(6.3d), new KeyValue (scoreboard.getGroupNationMap ().get (receiver).layoutXProperty (), 
+												scoreboard.getGroupNationMap ().get (receiver).getLayoutX ())));
+								
+								lookAtIt.play ();
+								
+								lookAtIt.setOnFinished (e -> {
+									Platform.runLater (scoreboard.showAndPraise12Pointer (receiver, 
+											voter, overview, save, scoreboard));
+								});
+								
 								return;
 							}
 
 							// NEXT VOTES, PLEASE...
+							newFill.cancel ();
+							newFillPts.cancel();
+							System.gc();
+							
 							Platform.runLater (new VoteAdder (overview,
 									scoreboard, scoreboard.getDataCarrier(), save, tradVP));
 						});

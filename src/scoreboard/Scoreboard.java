@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -90,7 +91,7 @@ public class Scoreboard {
 	// ----------------------------- //
 	
 	// ----------------------------- //
-	private int specialBorder = 10;
+	private int specialBorder = 6;
 	private int transParts = 7;
 	// ----------------------------- //
 	
@@ -194,6 +195,7 @@ public class Scoreboard {
 	int inCountryCounter;
 	boolean paused;
 	PauseTransition pTrans;
+	private int nrOfScbsCr;
 	// --------------- //
 	
 	public void start(Stage primaryStage) throws InterruptedException, IOException {		
@@ -236,7 +238,10 @@ public class Scoreboard {
 	
 	private void runCycle() {
 		if (inCountryCounter > 10 * standings.getVotes ().size ()) return;
-		Platform.runLater (() -> to7ScreenMaker.showSplitScreen (this, standings, traditionalVoting));
+		
+		Platform.runLater (() -> {
+			to7ScreenMaker.showSplitScreen (this, standings, traditionalVoting);
+		});
 	}
 	
 	private void setUpListeners() {		
@@ -336,6 +341,9 @@ public class Scoreboard {
 			// GENERATE SCOREBOARD
 			generateImageScoreboard (root, voter);
 			
+			// RUN IT UP
+			root.getChildren().clear();
+			
 			// SHOW 12 PAIR
 			twelvePairShower.addTwelvePair (scoreboard, voter, receiver);
 
@@ -353,11 +361,11 @@ public class Scoreboard {
 
 		Media entry = recEntry.getMedia ();
 		MediaPlayer entryPlayer = new MediaPlayer (entry);
-		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration ()));
-		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration () - Math.min (16d, (10 + 3d*(2d / voteTokenDuration.toSeconds ())))));
+		entryPlayer.setStartTime (Duration.seconds (recEntry.getStartDuration () - 10d));
+		entryPlayer.setStopTime (Duration.seconds (recEntry.getStopDuration ()));
 		entryPlayer.setAutoPlay (true);
-		entryPlayer.setVolume (0);
 		entryPlayer.setCycleCount (1);
+		entryPlayer.setVolume (0.3d);
 
 		MediaView entryView = new MediaView ();
 		entryView.setPreserveRatio (false);
@@ -371,14 +379,21 @@ public class Scoreboard {
 		root.getChildren ().add (entryView);
 		entryPlayer.play ();
 		entryPlayer.setOnEndOfMedia (() -> {
+			root.getChildren().clear();			
+			System.gc ();
 			root.getChildren ().add (0, getBackground());
+			
+			entryPlayer.dispose ();
 			runCycle();
-		});	
+		});			
 	}
 
 	void generateImageScoreboard(Node rootNode, Participant voter) {
 		BufferedImage bufferedImage = new BufferedImage (screenWidth, screenHeight,
 				BufferedImage.TYPE_INT_ARGB);
+		
+		DecimalFormat scbFo = new DecimalFormat("00");
+		
 		WritableImage scoreboardImage = rootNode.snapshot (
 				new SnapshotParameters (), null);
 		BufferedImage scoreboard = SwingFXUtils.fromFXImage (scoreboardImage,
@@ -397,7 +412,8 @@ public class Scoreboard {
 			base.mkdirs ();
 		}
 		
-		destScoreboard = new File ("scoreboards/" + title + "/" + voter.getName () + ".png");
+		destScoreboard = new File ("scoreboards/" + title + "/" + 
+				scbFo.format (++nrOfScbsCr) + " " + voter.getName () + ".png");
 		destScoreboard.getParentFile ().mkdirs ();
 
 		try {
