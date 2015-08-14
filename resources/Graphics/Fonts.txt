@@ -1,0 +1,4 @@
+1=Signika
+2=Sansation
+3=Coolvetica RG
+4=Quizma
