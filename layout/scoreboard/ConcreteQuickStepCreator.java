@@ -286,10 +286,7 @@ public class ConcreteQuickStepCreator extends IntermediatePreparator {
 				}
 			});
 			
-			entryPlayer.setOnEndOfMedia (() -> {
-				if (!scoreboard.isTraditionalVoting ())
-					scoreboard.getBackgroundMusic ().play ();
-				
+			entryPlayer.setOnEndOfMedia (() -> {				
 				clearNotSo (scoreboard.getRoot());
 				entryPlayer.dispose ();
 				scoreboard.inCountryCounter += (scoreboard.getTransParts() - 1);
